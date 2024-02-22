@@ -1,8 +1,16 @@
+package com.pfe.server.Models;
+
+import com.pfe.server.Models.User;
+import jakarta.persistence.*;
+import com.pfe.server.Models.Address;
+import java.util.List;
+import java.util.Set;
+
 @Entity
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String firstName;
     private String lastName;
@@ -14,7 +22,7 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Address> addresses;
 
-    public Profile(int id, String firstName, String lastName, String phoneNumber, User user, Set<Address> addresses) {
+    public Profile(long id, String firstName, String lastName, String phoneNumber, User user, Set<Address> addresses) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -27,7 +35,8 @@ public class Profile {
 
     }
 
-    public int getId() {
+
+    public Long getId() {
         return id;
     }
 
@@ -51,7 +60,7 @@ public class Profile {
         return addresses;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
