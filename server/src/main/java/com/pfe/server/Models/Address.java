@@ -22,10 +22,5 @@ public class Address {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-
-
-
-
-
 }
 
