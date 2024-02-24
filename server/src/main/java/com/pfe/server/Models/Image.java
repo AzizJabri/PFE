@@ -9,23 +9,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Address {
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String street;
-    private String city;
-    private String state;
-    private String country;
-    private String postalCode;
+    private String url;
     @ManyToOne
-    @JoinColumn(name = "profile_id")
-    private Profile profile;
-
-
-
-
-
+    @JoinColumn(name = "product_id")
+    private Product product;
 
 }
-
