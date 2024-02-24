@@ -34,6 +34,7 @@ const Login = () => {
     onSubmit={(values, { setSubmitting }) => {
       auth.login(values.email, values.password).then(() => {
         toast.success('Logged in successfully');
+        navigator.push('/');
       }).catch((error) => {
         toast.error('Invalid email or password');
         });

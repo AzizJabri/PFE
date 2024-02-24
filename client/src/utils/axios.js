@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookies from 'js-cookie';
 
 
 let urls = {
@@ -7,11 +8,23 @@ let urls = {
 }
 const api = axios.create({
     baseURL: urls[process.env.NODE_ENV],
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
+    
 });
-api.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+
+// Add a request interceptor
+api.interceptors.request.use(
+    config => {
+        const token = Cookies.get('access_token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);
+
+
 
 export default api;
