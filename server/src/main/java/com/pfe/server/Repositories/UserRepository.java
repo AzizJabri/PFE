@@ -11,6 +11,8 @@ import com.pfe.server.Models.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String username);
 
+    void deleteByEmail(String email);
+
 
     Boolean existsByEmail(String email);
 }

@@ -2,6 +2,7 @@ package com.pfe.server.Models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.pfe.server.Models.User;
 import jakarta.persistence.*;
 import com.pfe.server.Models.Address;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "profiles")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -33,6 +35,7 @@ public class Profile {
     private User user;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<Address> addresses;
 
     public Profile( String firstName, String lastName, String phoneNumber, User user, Set<Address> addresses) {
