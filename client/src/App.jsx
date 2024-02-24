@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import AuthLayout from './layouts/AuthLayout'
 import Login from './pages/auth/Login'
 import NotFound from './pages/NotFound'
+import {CartProvider} from './providers/cart'
 
 
 function App() {
@@ -14,7 +15,8 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-      <Toaster position='top-center' reverseOrder={false}/>
+        <CartProvider>
+            <Toaster position='top-center' reverseOrder={false} />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path='/auth' element={<AuthLayout/>}>
@@ -26,8 +28,9 @@ function App() {
               <Route path="*" element={<NotFound/>} />
               {/* Add more routes */}
             </Routes>
+            </CartProvider>
       </AuthProvider>
-        </BrowserRouter>
+    </BrowserRouter>
 
   )
 }

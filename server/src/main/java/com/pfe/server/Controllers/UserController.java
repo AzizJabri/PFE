@@ -31,6 +31,7 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getUserDetails(Principal user) {
+        System.out.println(user);
         return ResponseEntity.ok(userRepository.findByEmail(user.getName()).orElse(null));
     }
 
@@ -88,5 +89,16 @@ public class UserController {
         currentUser.setPassword(encoder.encode(newPassword));
         userRepository.save(currentUser);
         return ResponseEntity.ok("Password changed successfully");
+    }
+
+    @PostMapping("/changeEmail")
+    public ResponseEntity<?> changeEmail(@RequestParam String newEmail, Principal user) {
+        User currentUser = userRepository.findByEmail(user.getName()).orElse(null);
+        if (currentUser == null) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        currentUser.setEmail(newEmail);
+        userRepository.save(currentUser);
+        return ResponseEntity.ok("Email changed successfully");
     }
 }

@@ -1,6 +1,8 @@
 package com.pfe.server.Models;
 
 import jakarta.persistence.*;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,6 +10,9 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+
+@AllArgsConstructor
+
 @NoArgsConstructor
 public class Address {
     @Id
@@ -21,6 +26,16 @@ public class Address {
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+
+    public Address( String street, String city, String state, String country, String postalCode, Profile profile) {
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.postalCode = postalCode;
+        this.profile = profile;
+    }
 
 }
 

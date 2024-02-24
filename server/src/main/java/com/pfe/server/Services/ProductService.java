@@ -14,4 +14,20 @@ public class ProductService {
     public List<Product> getAllProducts() {
         return ProductRepo.findAll();
     }
+
+    public Product getProduct(Long id) {
+        return ProductRepo.findById(id).orElse(null);
+    }
+
+    public void addProduct(Product product) {
+        ProductRepo.save(product);
+    }
+
+    public void updateProduct(Product product) {
+        ProductRepo.save(product);
+    }
+
+    public void deleteProduct(Long id) {
+        ProductRepo.deleteById(id);
+    }
 }
