@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../utils/axios';
+import Cookies from 'js-cookie';
 
 const AuthContext = createContext();
 
@@ -8,30 +9,23 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
     
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if(token) {
-      console.log(token)
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-        api.get('/users/me/').then((response) => {
-            setUser(response.data);
-            setIsLoading(false);
-        }).catch((error) => {
-            setIsLoading(false);
-            setUser(null);
-            localStorage.removeItem('token')
-        });
-    } else {
-        setIsLoading(false);
-        setUser(null);
+    const token = Cookies.get('access_token');
+    if (token) {
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      api.get('/users/me').then((response) => {
+        setUser(response.data);
+      });
     }
   }, []);
 
   const login = async (email, password) => {
     setIsLoading(true);
+    delete api.defaults.headers.common['Authorization']
     await api.post('auth/login', { email, password }).then(res => {
-        localStorage.setItem('token', res.data.token)
-        api.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
-        api.get('/users/me/').then((response) => {
+        Cookies.set('access_token', res.data.accessToken, { expires: 1 }, { secure: true });
+        Cookies.set('refresh_token', res.data.refreshToken, { expires: 7 }, { secure: true });
+        api.defaults.headers.common['Authorization'] = `${res.data.type} ${res.data.accessToken}`
+        api.get('/users/me').then((response) => {
             setUser(response.data);
         });
     })
@@ -41,7 +35,8 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     setIsLoading(true);
     //remove the token from the local storage
-    localStorage.removeItem('token')
+    Cookies.remove('access_token');
+    Cookies.remove('refresh_token');
     //remove the token from the axios header
     delete api.defaults.headers.common['Authorization']
     //set the user to null

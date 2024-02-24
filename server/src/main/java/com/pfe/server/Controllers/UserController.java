@@ -31,6 +31,7 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getUserDetails(Principal user) {
+        System.out.println(user);
         return ResponseEntity.ok(userRepository.findByEmail(user.getName()).orElse(null));
     }
 
