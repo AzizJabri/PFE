@@ -1,8 +1,16 @@
 package com.pfe.server.Models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +24,7 @@ public class Address {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    public Address(Long id, String street, String city, String state, String country, String postalCode, Profile profile) {
-        this.id = id;
+    public Address( String street, String city, String state, String country, String postalCode, Profile profile) {
         this.street = street;
         this.city = city;
         this.state = state;
@@ -26,63 +33,5 @@ public class Address {
         this.profile = profile;
     }
 
-    public Address() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
 }
 

@@ -1,8 +1,10 @@
 package com.pfe.server.Security.Services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pfe.server.Models.Profile;
 import com.pfe.server.Models.User;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +13,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
+@Getter
+@Setter
 public class UserDetailsImpl implements UserDetails {
 
     @Getter
@@ -24,14 +27,17 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private Profile profile;
+
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(Long id, String email, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+                           Collection<? extends GrantedAuthority> authorities, Profile profile) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+        this.profile = profile;
     }
 
     public static UserDetailsImpl build(User user) {
@@ -43,7 +49,8 @@ public class UserDetailsImpl implements UserDetails {
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities);
+                authorities,
+                user.getProfile());
     }
 
     @Override
@@ -60,6 +67,7 @@ public class UserDetailsImpl implements UserDetails {
     public String getUsername() {
         return email;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/Products")
+@RequestMapping("/api/products")
 public class ProductController {
     @Autowired
-    private ProductService ProdService;
-    @GetMapping("/getAllProduct")
+    private ProductService productService;
+    @GetMapping("/")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<List<Product>> getAllProduct() {
-        List<Product> Product = ProdService.getAllProducts();
-        return new ResponseEntity<>(Product, HttpStatus.OK);
+    public ResponseEntity<List<Product>> getAllProducts(Pageable pageable) {
+        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 }

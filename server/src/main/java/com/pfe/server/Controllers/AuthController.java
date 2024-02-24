@@ -1,6 +1,7 @@
 package com.pfe.server.Controllers;
 
 import com.pfe.server.Models.ERole;
+import com.pfe.server.Models.Profile;
 import com.pfe.server.Models.Role;
 import com.pfe.server.Models.User;
 import com.pfe.server.Payloads.Request.LoginRequest;
@@ -74,12 +75,6 @@ public class AuthController {
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
-        }
-
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
@@ -93,6 +88,9 @@ public class AuthController {
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
 
         user.setRoles(roles);
+        //set profile with default values
+        Profile profile = new Profile(signUpRequest.getEmail().split("@")[0], "", "", user, new HashSet<>());
+        user.setProfile(profile);
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
