@@ -29,7 +29,7 @@ public class ProductController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/addproduct")
+    @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
         Product savedProduct = productService.saveProduct(product);
@@ -39,16 +39,17 @@ public class ProductController {
     @PutMapping("/update/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
-        Product result = productService.updateProduct(id, updatedProduct);
+        Optional<Product> existingProduct = productService.getProductById(id);
 
-        if (result != null) {
+        if (existingProduct != null) {
+            Product result = productService.updateProduct(id, updatedProduct);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/deleteproduct/{id}")
+    @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         if (!productService.getProductById(id).isPresent()) {
