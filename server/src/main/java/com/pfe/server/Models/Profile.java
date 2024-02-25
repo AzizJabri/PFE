@@ -1,5 +1,10 @@
 package com.pfe.server.Models;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pfe.server.Models.User;
@@ -17,7 +22,9 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+
 @AllArgsConstructor
+
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +42,7 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Address> addresses;
 
+
     public Profile( String firstName, String lastName, String phoneNumber, User user, Set<Address> addresses) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,5 +50,6 @@ public class Profile {
         this.user = user;
         this.addresses = addresses;
     }
+
 
 }
