@@ -2,6 +2,7 @@ package com.pfe.server.Models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,9 @@ import lombok.Setter;
 @Table(name = "addresses")
 @Getter
 @Setter
+
 @AllArgsConstructor
+
 @NoArgsConstructor
 public class Address {
     @Id
