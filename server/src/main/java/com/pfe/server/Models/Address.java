@@ -28,14 +28,7 @@ public class Address {
     private Profile profile;
 
 
-    public Address( String street, String city, String state, String country, String postalCode, Profile profile) {
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.country = country;
-        this.postalCode = postalCode;
-        this.profile = profile;
-    }
+
 
 }
 
