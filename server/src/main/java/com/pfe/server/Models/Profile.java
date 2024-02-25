@@ -43,13 +43,7 @@ public class Profile {
     private Set<Address> addresses;
 
 
-    public Profile( String firstName, String lastName, String phoneNumber, User user, Set<Address> addresses) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.user = user;
-        this.addresses = addresses;
-    }
+
 
 
 }
