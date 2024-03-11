@@ -2,17 +2,19 @@ import React from 'react'
 import { useAuth } from '../auth/auth'
 import { Navigate, useLocation } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import Loading from '../components/Loading'
 
-const RequireNoAuth = ({children}) => {
-    const auth = useAuth()
+export const RequireAuth = ({children}) => {
+    const { user, isLoading } = useAuth()
     const location = useLocation()
-    if(auth.isLoading) {
+    if(isLoading) {
         return <Loading/>
     }
-    if (auth.user) {
-        return <Navigate to="/home" state={{ path: location.pathname }} />
+    if (!user) {
+        toast.error('You need to login to view this page!', {duration: 2000})
+        return <Navigate to="/auth/login" state={{ path: location.pathname }} />
     }
   return children
 }
 
-export default RequireNoAuth
+export default RequireAuth

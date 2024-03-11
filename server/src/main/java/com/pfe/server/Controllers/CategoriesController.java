@@ -1,6 +1,7 @@
 package com.pfe.server.Controllers;
 
 import com.pfe.server.Models.Category;
+import com.pfe.server.Payloads.Request.CreateCategoryRequest;
 import com.pfe.server.Services.CategoriesService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +16,7 @@ public class CategoriesController {
     private final CategoriesService categoriesService;
 
 
-    @GetMapping("")
+    @GetMapping("/")
     public List<Category> getCategories() {
         return categoriesService.getCategories();
     }
@@ -25,15 +26,16 @@ public class CategoriesController {
         return categoriesService.getCategory(Long.valueOf(id));
     }
 
-    @PostMapping("")
+    @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
-    public void addCategory(@RequestBody Category category) {
-        categoriesService.addCategory(category);
+    public void addCategory(@RequestBody CreateCategoryRequest category) {
+        categoriesService.addCategory(new Category(category.getName(), category.getDescription()));
     }
 
-    @PutMapping("")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void updateCategory(@RequestBody Category category) {
+    public void updateCategory(@PathVariable String id, @RequestBody Category category) {
+        category.setId(Long.valueOf(id));
         categoriesService.updateCategory(category);
     }
 

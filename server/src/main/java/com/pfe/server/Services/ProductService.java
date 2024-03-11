@@ -2,8 +2,11 @@ package com.pfe.server.Services;
 
 import com.pfe.server.Models.Product;
 import com.pfe.server.Repositories.ProductRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,37 +14,37 @@ import java.util.Optional;
 @Service
 public class ProductService {
     @Autowired
-    private ProductRepository ProductRepo;
-    public List<Product> getAllProducts() {
-        return ProductRepo.findAll();
+    private ProductRepository productRepository;
+    public Page<Product> getAllProducts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findAll(pageable);
     }
 
 
     public Optional<Product> getProductById(Long id) {
-        return ProductRepo.findById(id);
+        return productRepository.findById(id);
     }
 
     public Product saveProduct(Product product) {
-        return ProductRepo.save(product);
+        return productRepository.save(product);
     }
 
     public Product updateProduct(Long id, Product updatedProduct) {
-        Product existingProduct = ProductRepo.findById(id).orElse(null);
+        Product existingProduct = productRepository.findById(id).orElse(null);
 
         if (existingProduct != null) {
             existingProduct.setName(updatedProduct.getName());
             existingProduct.setDescription(updatedProduct.getDescription());
             existingProduct.setPrice(updatedProduct.getPrice());
-            existingProduct.setCategory(updatedProduct.getCategory());
             existingProduct.setImages(updatedProduct.getImages());
 
-            return ProductRepo.save(existingProduct);
+            return productRepository.save(existingProduct);
         }
 
         return null;
     }
 
     public void deleteProduct(Long id) {
-        ProductRepo.deleteById(id);
+        productRepository.deleteById(id);
     }
 }
