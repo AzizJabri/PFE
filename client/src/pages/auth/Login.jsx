@@ -3,11 +3,17 @@ import { ErrorMessage, Form,Formik,Field} from 'formik'
 import { useAuth } from '../../auth/auth'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 
 
 const Login = () => {
     const auth = useAuth()
+    const navigate = useNavigate()
+
+    if (auth.user) {
+        navigate('/')
+    }
 
   return (
     <Formik
@@ -34,10 +40,10 @@ const Login = () => {
     onSubmit={(values, { setSubmitting }) => {
       auth.login(values.email, values.password).then(() => {
         toast.success('Logged in successfully');
-        navigator.push('/');
+        navigate('/');
       }).catch((error) => {
         toast.error('Invalid email or password');
-        });
+      });
       setSubmitting(false);
     }}
   >

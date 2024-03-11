@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -45,7 +46,16 @@ public class Profile {
     @JsonManagedReference
     private Set<Address> addresses;
 
+    private String image;
 
+    public Profile(String firstName, String lastName, String phoneNumber, User user, Set<Address> addresses, String image) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.user = user;
+        this.addresses = addresses;
+        this.image = image;
+    }
 
 
 

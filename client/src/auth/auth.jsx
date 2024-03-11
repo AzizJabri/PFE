@@ -9,13 +9,26 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
     
   useEffect(() => {
-    const token = Cookies.get('access_token');
-    if (token) {
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      api.get('/users/me').then((response) => {
-        setUser(response.data);
-      });
-    }
+    const fetchUserData = async () => {
+      setIsLoading(true);
+      try {
+        const token = Cookies.get('access_token');
+        if (token) {
+          api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          const response = await api.get('/users/me');
+          setUser(response.data);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setUser(null); // Set user to null in case of error
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    fetchUserData();
   }, []);
 
   const login = async (email, password) => {

@@ -8,6 +8,9 @@ import AuthLayout from './layouts/AuthLayout'
 import Login from './pages/auth/Login'
 import NotFound from './pages/NotFound'
 import {CartProvider} from './providers/cart'
+import Logout from './pages/auth/Logout'
+import RequireAuth from './middlewares/RequireAuth'
+import Private from './pages/Private'
 
 
 function App() {
@@ -22,8 +25,9 @@ function App() {
               <Route path='/auth' element={<AuthLayout/>}>
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<div>Register</div>} />
-                <Route path="logout" element={<div>Logout</div>} />
+                <Route path="logout" element={<Logout/>} />
               </Route>
+              <Route path="/private" element={<RequireAuth><Private/></RequireAuth>} />
               
               <Route path="*" element={<NotFound/>} />
               {/* Add more routes */}

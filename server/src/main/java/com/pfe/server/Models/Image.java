@@ -1,5 +1,6 @@
 package com.pfe.server.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,17 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String url;
+    private String name;
+
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
+
+    public Image(String url, String name, Product product) {
+        this.url = url;
+        this.name = name;
+        this.product = product;
+    }
 
 }

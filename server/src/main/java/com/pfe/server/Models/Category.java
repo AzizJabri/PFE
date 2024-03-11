@@ -1,5 +1,6 @@
 package com.pfe.server.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,9 @@ public class Category {
 
     @Column(length = 100)
     private String description;
+
     @OneToMany(mappedBy = "category")
+    @JsonBackReference
     private List<Product> products;
     public Category(String name, String description) {
         this.name = name;

@@ -25,6 +25,32 @@ api.interceptors.request.use(
     }
 );
 
+// refresh token
+api.interceptors.response.use(
+    response => {
+        return response;
+    },
+    async function (error) {
+        const originalRequest = error.config;
+        if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            try {
+                const token = Cookies.get('refresh_token');
+                const response = await api.post('auth/refresh', { token: token });
+                Cookies.set('access_token', response.data.accessToken, { expires: 1 }, { secure: true });
+                originalRequest.headers['Authorization'] = `Bearer ${response.data.accessToken}`;
+                return api(originalRequest);
+            } catch (error) {
+                console.log('Error refreshing token:', error);
+                Cookies.remove('access_token');
+                Cookies.remove('refresh_token');
+                window.location.href = '/auth/login';
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
 
 
 export default api;

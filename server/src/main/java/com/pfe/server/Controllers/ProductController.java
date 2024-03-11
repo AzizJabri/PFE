@@ -1,47 +1,78 @@
 package com.pfe.server.Controllers;
 
+import com.pfe.server.Models.Category;
+import com.pfe.server.Models.Image;
 import com.pfe.server.Models.Product;
+import com.pfe.server.Payloads.Request.CreateProductRequest;
+import com.pfe.server.Services.CategoriesService;
 import com.pfe.server.Services.ProductService;
+import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import com.pfe.server.Services.ImageService;
 
-import java.awt.print.Pageable;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/v1/products")
 public class ProductController {
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Autowired
+    private CategoriesService categoriesService;
+
     @GetMapping("/")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<List<Product>> getAllProducts(Pageable pageable) {
-        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+    public Page<Product> getAllProducts(@RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size) {
+        return productService.getAllProducts(page, size);
     }
-    @GetMapping("/getbyidp/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Optional<Product> product = productService.getProductById(id);
         return product.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/add")
+    @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
-        Product savedProduct = productService.saveProduct(product);
-        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+    public ResponseEntity<Product> saveProduct(@ModelAttribute CreateProductRequest product) throws IOException {
+        Product newProduct = new Product(product.getName(), product.getDescription(), product.getPrice());
+        Category category = categoriesService.getCategory(product.getCategory());
+        if (category == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        newProduct.setCategory(category);
+
+        newProduct.setImages(new ArrayList<>());
+
+        String url = imageService.uploadImage(product.getImage());
+        Image newImage = new Image(url, product.getName(), newProduct);
+        newProduct.getImages().add(newImage);
+
+        Product result = productService.saveProduct(newProduct);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
         Optional<Product> existingProduct = productService.getProductById(id);
 
-        if (existingProduct != null) {
+        if (existingProduct.isPresent()) {
             Product result = productService.updateProduct(id, updatedProduct);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
@@ -49,24 +80,37 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        if (!productService.getProductById(id).isPresent()) {
+        if (productService.getProductById(id).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         productService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @GetMapping("/byCategory/{categoryId}")
-    public ResponseEntity<List<Product>> getProductsByCategoryId(@PathVariable Long categoryId) {
-        List<Product> products = productService.getProductsByCategoryId(categoryId);
 
-        if (!products.isEmpty()) {
-            return new ResponseEntity<>(products, HttpStatus.OK);
-        } else {
+    @PostMapping("/{id}/images")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Product> addImageToProduct(@PathVariable Long id, @RequestParam MultipartFile image) throws IOException {
+        Optional<Product> product = productService.getProductById(id);
+
+        if (product.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+        //validate multipart file is image
+        if (!Objects.requireNonNull(image.getContentType()).startsWith("image")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        String url = imageService.uploadImage(image);
+        Image newImage = new Image(url, product.get().getName(), product.get());
+        product.get().getImages().add(newImage);
+        productService.saveProduct(product.get());
+
+        return new ResponseEntity<>(product.get(), HttpStatus.OK);
+
     }
 }

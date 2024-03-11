@@ -1,9 +1,6 @@
 package com.pfe.server.Controllers;
 
-import com.pfe.server.Models.ERole;
-import com.pfe.server.Models.Profile;
-import com.pfe.server.Models.Role;
-import com.pfe.server.Models.User;
+import com.pfe.server.Models.*;
 import com.pfe.server.Payloads.Request.LoginRequest;
 import com.pfe.server.Payloads.Request.RegisterRequest;
 import com.pfe.server.Payloads.Responses.JwtResponse;
@@ -12,7 +9,9 @@ import com.pfe.server.Repositories.RoleRepository;
 import com.pfe.server.Repositories.UserRepository;
 import com.pfe.server.Security.Jwt.JwtUtils;
 import com.pfe.server.Security.Services.UserDetailsImpl;
+import com.pfe.server.Services.ImageService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +28,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthController {
     AuthenticationManager authenticationManager;
@@ -37,13 +37,8 @@ public class AuthController {
     PasswordEncoder encoder;
     JwtUtils jwtUtils;
 
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.encoder = encoder;
-        this.jwtUtils = jwtUtils;
-    }
+    ImageService imageService;
+
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -89,7 +84,7 @@ public class AuthController {
 
         user.setRoles(roles);
         //set profile with default values
-        Profile profile = new Profile(signUpRequest.getEmail().split("@")[0], "", "", user, new HashSet<>());
+        Profile profile = new Profile(signUpRequest.getEmail().split("@")[0], "", "", user, new HashSet<>(), imageService.getDefaultImage());
         user.setProfile(profile);
         userRepository.save(user);
 
@@ -126,5 +121,34 @@ public class AuthController {
 
     }
 
+    //create admin user with default values
+    @PostMapping("/createAdmin")
+    public ResponseEntity<?> createAdmin() {
+        if (userRepository.existsByEmail("azizjb.business@gmail.com")) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Initial admin already created!"));
+        }
+
+        User user = new User("azizjb.business@gmail.com",
+                encoder.encode("superstrongpassword"));
+
+        Set<Role> roles = new HashSet<>();
+
+        roles.add(roleRepository.findByName(ERole.ROLE_ADMIN)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+
+        roles.add(roleRepository.findByName(ERole.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+
+        user.setRoles(roles);
+        //set profile with default values
+        Profile profile = new Profile("Mohamed Aziz", "Jabri", "93617984", user, new HashSet<>(), imageService.getDefaultImage());
+        user.setProfile(profile);
+        userRepository.save(user);
+
+        return ResponseEntity.ok(new MessageResponse("Admin created successfully!"));
+
+    }
 
 }
