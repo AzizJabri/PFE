@@ -1,9 +1,6 @@
 package com.pfe.server.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,12 +16,15 @@ public class CartItem {
     @Id
     private int id;
 
-    @OneToOne
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 
     private int quantity;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
     public CartItem(Product product, int quantity, Cart cart) {
@@ -33,4 +33,9 @@ public class CartItem {
         this.cart = cart;
     }
 
+    public void setProductId(Long productId) {
+    }
+
+    public void setProductName(String productName) {
+    }
 }

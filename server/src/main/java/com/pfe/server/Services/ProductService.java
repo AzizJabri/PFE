@@ -48,7 +48,7 @@ public class ProductService {
         productRepository.deleteById(id);
     }
     public List<Product> getProductsByCategoryId(Long categoryId) {
-        return ProductRepo.findByCategory_Id(categoryId);
+        return productRepository.findByCategory_Id(categoryId);
     }
 }
 

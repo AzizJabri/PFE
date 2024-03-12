@@ -9,7 +9,7 @@ import com.pfe.server.Models.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String username);
+    Optional<User> findByEmail(String email);
 
     void deleteByEmail(String email);
 
