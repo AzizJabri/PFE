@@ -11,6 +11,9 @@ import {CartProvider} from './providers/cart'
 import Logout from './pages/auth/Logout'
 import RequireAuth from './middlewares/RequireAuth'
 import Private from './pages/Private'
+import Layout from './pages/products/Layout'
+import Products from './pages/products/Products'
+import ProductById from './pages/products/ProductById'
 
 
 function App() {
@@ -28,6 +31,11 @@ function App() {
                 <Route path="logout" element={<Logout/>} />
               </Route>
               <Route path="/private" element={<RequireAuth><Private/></RequireAuth>} />
+
+              <Route path='/products' element={<Layout/>}>
+                <Route index element={<Products/>} />
+                <Route path=':id' element={<ProductById/>} />
+              </Route>
               
               <Route path="*" element={<NotFound/>} />
               {/* Add more routes */}
