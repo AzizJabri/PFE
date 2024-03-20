@@ -5,44 +5,37 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
-@Table(name = "products")
+@Table(name = "orders")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String description ;
-    private double price;
+    private String status;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private Category category;
-
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Image> images;
-
-
-    public Product(String name, String description, double price) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
+    private List<OrderItems> orderItems = new ArrayList<>();
+    @JsonIgnore
+    public List<OrderItems> getOrderItems() {
+        return orderItems;
+    }
+    @JsonIgnore
+    public void setOrderItems(List<OrderItems> orderItems) {
+        this.orderItems = orderItems;
     }
 }
-
