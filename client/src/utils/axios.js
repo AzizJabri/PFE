@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 
 let urls = {
-    development: 'http://localhost:8000/api/v1/',
+    development: 'http://localhost:8001/api/v1/',
     production: 'https://your-production-url.com/'
 }
 const api = axios.create({
