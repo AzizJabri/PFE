@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,12 +33,14 @@ public class OrdersController {
 @Autowired
 private ProductService productService;
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Orders>> getAllOrders() {
         List<Orders> orders = ordersService.getAllOrders();
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Orders> getOrderById(@PathVariable Long id) {
         Optional<Orders> order = ordersService.getOrderById(id);
         return order.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
@@ -45,6 +48,7 @@ private ProductService productService;
     }
 
     @PostMapping("/")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Orders> createOrder(@RequestBody OrderRequest orderRequestDTO, Principal principal) {
         try {
             // Retrieve the user by email from the UserDetails object
@@ -103,6 +107,7 @@ private ProductService productService;
         }
     }
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Orders> updateOrder(@PathVariable Long id, @RequestBody OrderRequest orderRequest) {
         Orders updatedOrder = ordersService.updateOrder(id, orderRequest);
         if (updatedOrder != null) {
@@ -115,6 +120,7 @@ private ProductService productService;
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         ordersService.deleteOrder(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
