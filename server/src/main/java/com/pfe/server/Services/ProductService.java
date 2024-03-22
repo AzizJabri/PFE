@@ -57,14 +57,11 @@ public class ProductService {
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
-<<<<<<< Updated upstream
+  
     public Page<Product> getProductsByCategoryId(Long categoryId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return productRepository.findByCategory_Id(categoryId, pageable);
-=======
-    public List<Product> getProductsByCategoryId(Long categoryId) {
-        return productRepository.findByCategory_Id(categoryId);
->>>>>>> Stashed changes
+
     }
 }
 

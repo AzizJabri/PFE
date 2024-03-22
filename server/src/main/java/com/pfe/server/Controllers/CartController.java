@@ -2,6 +2,7 @@ package com.pfe.server.Controllers;
 
 import com.pfe.server.Models.Cart;
 import com.pfe.server.Models.CartItem;
+
 import com.pfe.server.Models.Product;
 import com.pfe.server.Models.User;
 import com.pfe.server.Payloads.Request.AddCartItem;
@@ -114,11 +115,5 @@ public class CartController {
 
         return cart;
     }
-
-
-
-
-
-
 
 }

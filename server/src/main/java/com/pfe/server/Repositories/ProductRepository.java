@@ -18,4 +18,5 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 
   Page<Product> findByNameIsContainingIgnoreCase(String name, Pageable pageable);
 
+
 }

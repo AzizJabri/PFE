@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -48,6 +49,7 @@ public class User {
     private Cart cart;
 
 
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(  name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -57,5 +59,9 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public Cart getCart() {
+        return cart;
     }
 }
