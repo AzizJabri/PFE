@@ -118,7 +118,7 @@ const Login = () => {
                       type="submit"
                       disabled={isSubmitting}
                     >
-                      <span className="inline-flex mx-auto">Login</span>
+                      <span className="inline-flex mx-auto">{isSubmitting ? <span className="loading loading-spinner loading-md"></span> : 'Login'}</span>
                     </button>
                   </div>
                 </div>

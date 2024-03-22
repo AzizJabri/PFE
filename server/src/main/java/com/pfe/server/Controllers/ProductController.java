@@ -35,10 +35,16 @@ public class ProductController {
     private CategoriesService categoriesService;
 
     @GetMapping("/")
-    @CrossOrigin(origins = "*")
-    public Page<Product> getAllProducts(@RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "10") int size) {
-        return productService.getAllProducts(page, size);
+    public Page<Product> getAllProducts(
+            @RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size, @RequestParam(required = false, defaultValue = "") String name, @RequestParam(required = false , defaultValue = "") String category) {
+        if (!name.isEmpty()) {
+            return productService.getProductsByName(name, page, size);
+        } else if (!category.isEmpty()) {
+            return productService.getProductsByCategory(Long.valueOf(category), page, size);
+        } else {
+            return productService.getAllProducts(page, size);
+        }
     }
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
