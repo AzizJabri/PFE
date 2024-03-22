@@ -25,6 +25,16 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
+    public Page<Product> getProductsByName(String name, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findByNameIsContainingIgnoreCase(name, pageable);
+    }
+
+    public Page<Product> getProductsByCategory(Long category, int page , int size){
+        Pageable pageable = PageRequest.of(page,size);
+        return productRepository.findByCategory_Id(category, pageable);
+    }
+
     public Product saveProduct(Product product) {
         return productRepository.save(product);
     }
@@ -47,8 +57,9 @@ public class ProductService {
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
-    public List<Product> getProductsByCategoryId(Long categoryId) {
-        return ProductRepo.findByCategory_Id(categoryId);
+    public Page<Product> getProductsByCategoryId(Long categoryId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findByCategory_Id(categoryId, pageable);
     }
 }
 

@@ -1,24 +1,33 @@
 import React from 'react'
+import { useCart } from '@/providers/cart'
+import { Link } from 'react-router-dom'
 
 const Product = ({product}) => {
+  const { addToCart } = useCart()
 
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
-        <figure><img src={product?.images[0]?.url} alt={product?.name} /></figure>
+    <div className="card w-full bg-base-100 shadow-xl p-3 border border-base-300">
+        <figure className="avatar">
+          <div className="rounded w-96">
+            <img src={product?.images[0]?.url} alt={product?.name} />
+          </div>
+        </figure>
         <div className="card-body">
-            <h2 className="card-title">
+            <Link to={`/products/${product.id}`} className="card-title">
             {product?.name}
-            <div className="badge badge-secondary">NEW</div>
-            </h2>
+            <div className="badge badge-secondary">{product?.price} TND</div>
+            </Link>
             <p>{product.description}</p>
             <div className="card-actions justify-end">
-                <div className="badge badge-outline">{product?.category?.name}</div>
+                <div className="badge badge-outline">{product?.category?.name || "No Category"}</div>
             </div>
         </div>
         {/*Center Buy button */}
-        <div className="card-actions justify-center">
-            <button className="btn btn-primary">Buy</button>
+        <div className="card-actions grid grid-cols-2">
+            <Link className="btn btn-primary" to={`/products/${product.id}`}>Buy</Link>
+            <button className="btn btn-accent" onClick={() => addToCart(product)}>Add to cart</button>
         </div>
+
     </div>
   )
 }
