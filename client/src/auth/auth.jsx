@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
         api.defaults.headers.common['Authorization'] = `${res.data.type} ${res.data.accessToken}`
         api.get('/users/me').then((response) => {
             setUser(response.data);
+            console.log(response.data)
         });
     })
     setIsLoading(false);
