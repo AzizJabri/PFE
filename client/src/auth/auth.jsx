@@ -13,13 +13,14 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(true);
       try {
         const token = Cookies.get('access_token');
-        if (token) {
-          api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-          const response = await api.get('/users/me');
-          setUser(response.data);
-        } else {
-          setUser(null);
-        }
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        await api.get('/users/me').then((response) => {
+            setUser(response.data);
+        }).catch((error) => {
+            console.log(error);
+            setUser(null);
+        });
+        
       } catch (error) {
         console.error('Error fetching user data:', error);
         setUser(null); // Set user to null in case of error

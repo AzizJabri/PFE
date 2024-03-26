@@ -10,10 +10,8 @@ module.exports = {
     'node_modules/react-daisyui/dist/**/*.js',
   ],
   prefix: "",
- 
- 
- plugins: [require("tailwindcss-animate"), require("daisyui")],
+  plugins: [require("tailwindcss-animate"), require("daisyui")],
   daisyui: {
-    themes: ["light", "cupcake","bumblebee"],
+    themes: ["light", "dark", "cupcake"],
   },
 }

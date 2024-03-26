@@ -11,20 +11,6 @@ const api = axios.create({
     
 });
 
-// Add a request interceptor
-api.interceptors.request.use(
-    config => {
-        const token = Cookies.get('access_token');
-        if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
-        }
-        return config;
-    },
-    error => {
-        return Promise.reject(error);
-    }
-);
-
 // refresh token
 api.interceptors.response.use(
     response => {
@@ -36,20 +22,39 @@ api.interceptors.response.use(
             originalRequest._retry = true;
             try {
                 const token = Cookies.get('refresh_token');
-                const response = await api.post('auth/refresh', { token: token });
-                Cookies.set('access_token', response.data.accessToken, { expires: 1 }, { secure: true });
-                originalRequest.headers['Authorization'] = `Bearer ${response.data.accessToken}`;
+                console.log('Token:', token);
+                if (!token) {
+                    return Promise.reject(error);
+                }
+                const formData = new FormData();
+                formData.append('refreshToken', token);
+
+                const refreshTokenResponse = await api.post('auth/refresh', formData, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                });
+                const newAccessToken = refreshTokenResponse.data.accessToken;
+                Cookies.set('access_token', newAccessToken, { expires: 1, secure: true });
+
+                // Update the Authorization header with the new access token
+                originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+
+                // Retry the original request with the updated token
                 return api(originalRequest);
             } catch (error) {
                 console.log('Error refreshing token:', error);
+                // Throw the error to maintain the error flow
                 Cookies.remove('access_token');
                 Cookies.remove('refresh_token');
-                window.location.href = '/auth/login';
+                return Promise.reject(error);
             }
         }
+        // For other errors, reject the promise
         return Promise.reject(error);
     }
 );
+
 
 
 

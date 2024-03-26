@@ -1,5 +1,9 @@
 package com.pfe.server.Models;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,17 +18,20 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CartItem {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JsonManagedReference
     private Product product;
 
     private int quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id" , referencedColumnName = "id" )
+    @JsonBackReference
     private Cart cart;
 
     public CartItem(Product product, int quantity, Cart cart) {
@@ -33,9 +40,4 @@ public class CartItem {
         this.cart = cart;
     }
 
-    public void setProductId(Long productId) {
-    }
-
-    public void setProductName(String productName) {
-    }
 }

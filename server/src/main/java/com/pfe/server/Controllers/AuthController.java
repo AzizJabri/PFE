@@ -85,6 +85,9 @@ public class AuthController {
         user.setRoles(roles);
         //set profile with default values
         Profile profile = new Profile(signUpRequest.getEmail().split("@")[0], "", "", user, new HashSet<>(), imageService.getDefaultImage());
+
+        user.setCart(new Cart(user));
+
         user.setProfile(profile);
         userRepository.save(user);
 
