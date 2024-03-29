@@ -2,12 +2,16 @@ package com.pfe.server.Controllers;
 
 
 import com.pfe.server.Models.ERole;
+import com.pfe.server.Models.Orders;
 import com.pfe.server.Models.Role;
 import com.pfe.server.Models.User;
 import com.pfe.server.Repositories.RoleRepository;
 import com.pfe.server.Repositories.UserRepository;
 import com.pfe.server.Security.Services.UserDetailsImpl;
+import com.pfe.server.Services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -16,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -28,13 +33,18 @@ public class UserController {
 
     @Autowired
     PasswordEncoder encoder;
-
+@Autowired
+    UserService userService;
     @GetMapping("/me")
     public ResponseEntity<?> getUserDetails(Principal user) {
         System.out.println(user);
         return ResponseEntity.ok(userRepository.findByEmail(user.getName()).orElse(null));
     }
-
+@GetMapping("/")
+public ResponseEntity<List<User>> getAllUsers() {
+    List<User> Users = userService.GetAllUsers();
+    return new ResponseEntity<>(Users, HttpStatus.OK);
+}
     @PostMapping("/promote")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> promoteUser(@RequestParam String email) {
@@ -65,7 +75,7 @@ public class UserController {
         return ResponseEntity.ok("User demoted from admin");
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@RequestParam String email) {
         User user = userRepository.findByEmail(email).orElse(null);
@@ -100,5 +110,15 @@ public class UserController {
         currentUser.setEmail(newEmail);
         userRepository.save(currentUser);
         return ResponseEntity.ok("Email changed successfully");
+    }
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User updatedUser) {
+        User user = userService.updateUser(id, updatedUser);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

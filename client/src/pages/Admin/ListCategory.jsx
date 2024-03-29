@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import api from '@/utils/axios';
 import Footer from '@/components/Footer';
 import Nav from '@/components/Nav';
+import { getCategory } from '@/providers/categories';
+import AddCategory from './AddCategory';
+import { Link } from 'react-router-dom';
 
 const ListCategory = () => {
   const [categories, setCategories] = useState([]);
@@ -12,7 +15,7 @@ const ListCategory = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await api.get(`/categories/?_page=${currentPage}&_limit=${categoriesPerPage}`);
+        const response = await getCategory(currentPage, categoriesPerPage); 
         setCategories(response.data);   
         console.log(response.data)
       } catch (error) {
@@ -25,7 +28,7 @@ const ListCategory = () => {
 
   const deleteCategory = async (categoryId) => {
     try {
-      await api.delete(`/categories/${categoryId}`);
+    deleteCategory(categoryId);
       setCategories(categories.filter(category => category.id !== categoryId));
       console.log('Category deleted successfully.');
     } catch (error) {
@@ -42,7 +45,7 @@ const ListCategory = () => {
 
   return (
     <div>
-      <Nav />
+      
       <br />
       <h4 className="text-4xl md:text-6xl font-semibold flex justify-center">
         List of Categories
@@ -67,7 +70,8 @@ const ListCategory = () => {
                 <td>{category.description}</td>
                 <td>
                   <button onClick={() => deleteCategory(category.id)} className="btn  mr-2">Delete</button>
-                  <button className="btn  ml-2">Update</button>
+                  <Link to={`/admin/update-categories/${category.id}`} className="btn ml-2">Update</Link>
+
                 </td>
               </tr>
             ))}
@@ -86,14 +90,14 @@ const ListCategory = () => {
 
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box">
-          <form method="dialog">
-        
+       
+        <AddCategory></AddCategory>
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => document.getElementById('my_modal_3').close()}>✕</button>
-          </form>
+       
         </div>
       </dialog>
       <br />
-      <Footer />
+     
     </div>
   );
 };

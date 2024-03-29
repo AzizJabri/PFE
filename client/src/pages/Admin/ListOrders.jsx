@@ -3,30 +3,31 @@ import api from '@/utils/axios';
 import Footer from '@/components/Footer';
 import Nav from '@/components/Nav';
 import AddOrder from './AddOrder';
-
-const ListOrders = () => {
-  const [orders, setOrders] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [ordersPerPage] = useState(5);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await api.get(`/orders?_page=${currentPage}&_limit=${ordersPerPage}`);
-        setOrders(response.data);   
-        console.log(response.data)
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      }
-    };
-
-    fetchOrders();
-  }, [currentPage, ordersPerPage]);
+import { DeleteOrders, getOrders } from '@/providers/Orders';
+import { Link } from 'react-router-dom';
+  const ListOrders = () => {
+    const [orders, setOrders] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [ordersPerPage] = useState(5);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+  
+    useEffect(() => {
+      const fetchOrders = async () => {
+        try {
+          const response = await getOrders(currentPage, ordersPerPage); 
+          setOrders(response.data);   
+          console.log(response.data)
+        } catch (error) {
+          console.error('Error fetching orders:', error);
+        }
+      };
+  
+      fetchOrders();
+    }, [currentPage, ordersPerPage]);
 
   const deleteOrder = async (orderId) => {
     try {
-      await api.delete(`/orders/${orderId}`);
+      DeleteOrders(orderId);
       setOrders(orders.filter(order => order.id !== orderId));
       console.log('Order deleted successfully.');
     } catch (error) {
@@ -34,7 +35,6 @@ const ListOrders = () => {
     }
   };
 
-  // Pagination Logic
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
   const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
@@ -45,7 +45,7 @@ const ListOrders = () => {
 
   return (
     <div>
-      <Nav />
+      
       <br />
       <h4 className="text-4xl md:text-6xl font-semibold flex justify-center">
         List of Orders
@@ -68,7 +68,7 @@ const ListOrders = () => {
                 <td>{order.status}</td>
                 <td>
                   <button onClick={() => deleteOrder(order.id)} className="btn  mr-2">Delete</button>
-                  <button className="btn  ml-2">Update</button>
+                  <Link to={`/admin/update-order/${order.id}`} className="btn ml-2">Update</Link>
                 </td>
               </tr>
             ))}
@@ -96,7 +96,7 @@ const ListOrders = () => {
         </div>
       </dialog>
 <br></br>
-      <Footer />
+
     </div>
   );
 };

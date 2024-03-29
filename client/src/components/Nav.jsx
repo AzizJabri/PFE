@@ -5,7 +5,7 @@ function Navbar() {
   const { user, logout } = useAuth();
 
   // Check if the user exists and has the admin role
-  const isAdmin = user && user.roles.some(role => role.name === 'ROLE_ADMIN');
+  const isAdmin = user && user.roles && user.roles.some(role => role.name === 'ROLE_ADMIN');
 
   return (
     <div className="navbar bg-base-100">
@@ -17,7 +17,7 @@ function Navbar() {
             </svg>
           </div>
           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-            <li><a>Products</a></li>
+            <li><Link to="/products">Products</Link></li>
             <li>
               <a>Categories</a>
               <ul className="p-2">
@@ -32,7 +32,7 @@ function Navbar() {
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li><a>Products</a></li>
+        <li><Link to="/products">Products</Link></li>
           <li>
             <details>
               <summary>Categories</summary>
@@ -68,7 +68,7 @@ function Navbar() {
           <Link to="/auth/login" className='btn btn-neutral'>Log in</Link>
         )}
         {isAdmin && (
-          <Link to="/Admin" className="btn btn-ghost">Manage </Link>
+          <Link to="/admin/home" className="btn btn-ghost">Manage </Link>
         )}
       </div>
     </div>

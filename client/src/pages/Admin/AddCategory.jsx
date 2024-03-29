@@ -1,32 +1,52 @@
-import React from 'react';
+import React from 'react'
+import { ErrorMessage, Form, Formik, Field } from 'formik'
+import { toast } from 'react-hot-toast'
+import { createCategory } from '@/providers/categories'
 
-const InputWithLabel = ({ label, placeholder, type = 'text', optional = false }) => (
-  <label className="input input-bordered flex items-center gap-2">
-    {label}
-    <input type={type} className="grow" placeholder={placeholder} />
-    {optional && <span className="badge badge-info">Optional</span>}
-  </label>
-);
-
-const SearchInputWithShortcut = () => (
-  <label className="input input-bordered flex items-center gap-2">
-    <input type="text" className="grow" placeholder="Search" />
-    <kbd className="kbd kbd-sm">⌘</kbd>
-    <kbd className="kbd kbd-sm">K</kbd>
-  </label>
-);
-
-const Addcategory = () => {
+const AddCategory = () => {
+  
   return (
     <div className="flex justify-center items-center h-screen">
       <div>
-        <InputWithLabel label="Name" placeholder="Daisy" />
-        <InputWithLabel label="Email" placeholder="daisy@site.com" />
-        <SearchInputWithShortcut />
-        <InputWithLabel label="Search" placeholder="Search" optional />
+        <Formik
+          initialValues={{
+            name: '',
+            description: '',
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            createCategory(values)
+              .then(() => {
+                toast.success('Category added successfully');
+              })
+              .catch((error) => {
+                toast.error('Error adding category: ' + error.message);
+              })
+              .finally(() => {
+                setSubmitting(false);
+              });
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form enctype="application/json"> {/* Add enctype attribute here */}
+              <Field name="name" placeholder="Name" />
+              <ErrorMessage name="name" component="div" className="text-red-500" />
+              <br />
+              <Field name="description" placeholder="Description" />
+              <ErrorMessage name="description" component="div" className="text-red-500" />
+              <br />
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full flex justify-center bg-blue-400 hover:bg-blue-500 text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
+              >
+                Submit
+              </button>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Addcategory;
+export default AddCategory

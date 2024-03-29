@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast' // Import the toast function
-import api from '@/utils/axios';
 
+import { CreateOrder } from '@/providers/Orders';
 const AddOrder = ({ closeModal }) => {
   const [status, setStatus] = useState('');
   const [orderItems, setOrderItems] = useState([{ product_id: '', quantity: '', price: '' }]);
@@ -31,7 +31,7 @@ const AddOrder = ({ closeModal }) => {
     }
     try {
       const orderRequestDTO = { status, orderItems };
-      const response = await api.post('/orders/', orderRequestDTO);
+      const response =  await CreateOrder(orderRequestDTO)
       console.log('Order created:', response.data);
       
       // Show success toast
