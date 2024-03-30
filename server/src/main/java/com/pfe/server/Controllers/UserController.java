@@ -93,6 +93,7 @@ public ResponseEntity<List<User>> getAllUsers() {
         if (currentUser == null) {
             return ResponseEntity.badRequest().body("User not found");
         }
+
         if (!encoder.matches(oldPassword, currentUser.getPassword())) {
             return ResponseEntity.badRequest().body("Old password is incorrect");
         }
@@ -100,6 +101,31 @@ public ResponseEntity<List<User>> getAllUsers() {
         userRepository.save(currentUser);
         return ResponseEntity.ok("Password changed successfully");
     }
+
+    @PostMapping("/changeUserPassword")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> changeUserPassword(@RequestParam String email, @RequestParam String newPassword) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user == null) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        user.setPassword(encoder.encode(newPassword));
+        userRepository.save(user);
+        return ResponseEntity.ok("Password changed successfully");
+    }
+
+    @PostMapping("/changeUserEmail")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> changeUserEmail(@RequestParam String oldEmail, @RequestParam String newEmail) {
+        User user = userRepository.findByEmail(oldEmail).orElse(null);
+        if (user == null) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        user.setEmail(newEmail);
+        userRepository.save(user);
+        return ResponseEntity.ok("Email changed successfully");
+    }
+
 
     @PostMapping("/changeEmail")
     public ResponseEntity<?> changeEmail(@RequestParam String newEmail, Principal user) {

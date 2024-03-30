@@ -27,7 +27,7 @@ const UpdateCategories = ({ onClose }) => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="max-w-md w-full p-4 space-y-4 bg-white rounded-lg shadow-md">
+      <div className="max-w-md w-full p-4 space-y-4 bg-base-200 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center">Update Category</h2>
         <Formik
           initialValues={{

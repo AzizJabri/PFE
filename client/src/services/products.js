@@ -17,7 +17,12 @@ export const getProduct = async (id) => {
 
 export const createProduct = async (formData) => {
     try {
-        const response = await api.post('products/', formData);
+        
+        const response = await api.post('products/', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
         return response.data; 
     } catch (error) {
         console.error('Error creating product:', error);

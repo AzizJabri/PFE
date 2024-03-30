@@ -46,7 +46,10 @@ const NavBar = () => {
   return (
     <div className="navbar bg-base-300 px-6 py-2">
         <div className="navbar-start">
-            <Link to={"/products/"} className="btn btn-ghost text-xl">E-Commerce</Link>
+            <Link to={"/"} className="btn btn-ghost text-xl hidden md:flex">E-Commerce</Link>
+            <label htmlFor="my-drawer" className="btn btn-square btn-ghost drawer-button flex md:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+            </label>
         </div>
         <div className="navbar-center hidden sm:flex w-2/6 ">
             <form className="input input-bordered flex items-center gap-2 w-full rounded-full" onSubmit={handleSubmit}>
@@ -121,17 +124,24 @@ const NavBar = () => {
                     </div>
                 </div>
             )}
-            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-300 rounded-box w-52">
+            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-300 rounded-box w-64">
                 {user ? (
                     // Render links for logged-in user
                     <>
                         <li>
                             <Link to="/profile" className="justify-between">
                                 Profile
-                                <span className="badge">New</span>
                             </Link>
                         </li>
                         <li><a>Settings</a></li>
+                        {user.roles.some(role => role.name === 'ROLE_ADMIN') && (
+                            <li>
+                                <Link to="/admin">
+                                    Admin Dashboard
+                                    <span className="badge badge-error">Private</span>
+                                </Link>
+                            </li>
+                        )}
                         <li><Link to="/auth/logout">Logout</Link></li>
                     </>
                 ) : (
@@ -144,6 +154,7 @@ const NavBar = () => {
                 )}
             </ul>
             </div>
+            
         </div>
     </div>
   )

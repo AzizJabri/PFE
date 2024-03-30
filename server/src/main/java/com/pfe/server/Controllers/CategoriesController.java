@@ -44,4 +44,9 @@ public class CategoriesController {
     public void deleteCategory(@PathVariable String id) {
         categoriesService.deleteCategory(Long.valueOf(id));
     }
+
+    @GetMapping("/top")
+    public List<Category> getTopCategories() {
+        return categoriesService.getTopCategories();
+    }
 }

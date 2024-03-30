@@ -5,10 +5,11 @@ import Hero from '@/components/hero';
 import Statics from '@/components/statics';
 import Category from '@/components/Category';
 import Footer from '@/components/Footer';
+import LandingNav from '@/components/LandingNav';
 function LandingPage() {
   return (
   <>
- <Nav/>
+ <LandingNav/>
  <br></br>
  <br></br>
  <br></br>

@@ -10,7 +10,12 @@ const RequireAdmin = ({children}) => {
     if(auth.isLoading) {
         return <Loading/>
     }
+    if (!auth.user) {
+        return <Navigate to="/auth/login" state={{ path: location.pathname }} />
+    }
+
     const roles = auth.user?.roles.map(role => role.name)
+
     if (!roles.includes('ROLE_ADMIN')) {
         toast.error('You are not authorized to view this page', { duration: 2000 })
         return <Navigate to="/" state={{ path: location.pathname }} />

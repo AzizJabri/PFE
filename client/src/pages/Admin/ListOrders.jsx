@@ -52,12 +52,15 @@ import { Link } from 'react-router-dom';
       </h4>
       <br />
       <br />
-      <div className="overflow-x-auto">
-        <table className="table">
+      <div className="overflow-x-auto px-5">
+        <table className="table border border-base-300">
           <thead>
             <tr>
               <th>ID</th>
               <th>Status</th>
+              <th>User</th>
+              <th>Shipping Address</th>
+              <th>Products</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -65,7 +68,65 @@ import { Link } from 'react-router-dom';
             {currentOrders.map((order, index) => (
               <tr key={index}>
                 <td>{order.id}</td>
-                <td>{order.status}</td>
+                <td>
+                  {(() => {
+                    switch (order.status) {
+                      case 'PENDING':
+                        return <span className="badge badge-warning">Pending</span>;
+                      case 'SHIPPED':
+                        return <span className="badge badge-primary">Shipped</span>;
+                      case 'DELIVERED':
+                        return <span className="badge badge-success">Delivered</span>;
+                      case 'CANCELED':
+                        return <span className="badge badge-error">Canceled</span>;
+                      default:
+                        return <span className="badge badge-neutral">Unknown</span>;
+                    }
+                  })()}
+                </td>
+
+                <td>
+                  <div className="flex items-center gap-3">
+                    <div className="avatar">
+                      <div className="mask mask-squircle w-12 h-12">
+                        <img src={order.user.profile.image} alt={order.user.profile.firstName} />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="font-bold">{order.user.profile.firstName} {order.user.profile.lastName}</div>
+                      <div className="text-sm opacity-50 space-x-1">
+                        {order.user.roles.map((role, index) => (
+                          <span key={index} className={`badge ${role.name === 'ROLE_ADMIN' ? "badge-secondary" : "badge-neutral"}`}>{role.name === 'ROLE_USER' ? 'User' : 'Admin'}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <div className="font-bold">{order.user.profile.addresses[0].street} {order.user.profile.addresses[0].city}</div>
+                    <div className="text-sm opacity-50">{order.user.profile.addresses[0].state}, {order.user.profile.addresses[0].postalCode}</div>
+                  </div>
+                </td>
+                <td>
+                  <ul className='menu bg-base-100 rounded-box'>
+                    {order.orderItems.map((item, index) => (
+                      <li key={index}>
+                        <div className="flex justify-between bg-base-200">
+                            <div className="avatar">
+                                <div className="w-12 rounded-xl">
+                                <img src={item.product?.images[0].url} />
+                                </div>
+                            </div>
+                            <span>{item.product.name}</span>
+                            <span>{item.product.price} TND</span>
+                            <span>x{item.quantity}</span>
+                        </div>
+                      </li>
+                    ))}
+
+                  </ul>
+                </td>
                 <td>
                   <button onClick={() => deleteOrder(order.id)} className="btn  mr-2">Delete</button>
                   <Link to={`/admin/update-order/${order.id}`} className="btn ml-2">Update</Link>
@@ -75,6 +136,7 @@ import { Link } from 'react-router-dom';
           </tbody>
         </table>
       </div>
+
 
       <div className="flex justify-center mt-4">
         <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} className="btn btn-neutral mr-2">Previous</button>

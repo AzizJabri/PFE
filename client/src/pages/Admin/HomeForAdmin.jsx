@@ -7,7 +7,7 @@ const HomeAdmin = () => {
       <div className="carousel carousel-center max-w-4xl p-4 space-x-4 bg-neutral rounded-box relative">
         <div className="carousel-item relative">
           <img src="/products.jpg" className="rounded-box h-80" alt="Carousel Image" />
-          <Link to="/admin/list-products" className="btn absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">Manage Products</Link>
+          <Link to="/admin/products" className="btn absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">Manage Products</Link>
         </div> 
         <div className="carousel-item relative">
           <img src="/categories.png" className="rounded-box h-80" alt="Carousel Image" />

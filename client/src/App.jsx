@@ -21,7 +21,6 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 const Failure = lazy(() => import('./pages/payment/Failure'));
 const Success = lazy(() => import('./pages/payment/Success'));
 const Profile = lazy(() => import('./pages/auth/Profile'));
-const MainAdmin = lazy(() => import('./pages/Admin/MainAdmin'));
 const HomeAdmin = lazy(() => import('./pages/Admin/HomeForAdmin'));
 const AddOrder = lazy(() => import('./pages/Admin/AddOrder'));
 const ListOrders = lazy(() => import('./pages/Admin/ListOrders'));
@@ -33,6 +32,7 @@ const AddProduct = lazy(() => import('./pages/Admin/AddProduct'));
 const AddUser = lazy(() => import('./pages/Admin/AddUser'));
 const UpdateCategories = lazy(() => import('./pages/Admin/UpdateCategories'));
 const UpdateOrder = lazy(() => import('./pages/Admin/UpdateOrder'));
+const RequireAdmin = lazy(() => import('./middlewares/RequireAdmin'));
 
 
 
@@ -62,15 +62,19 @@ function App() {
               </Route>
 
 
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route path="home" element={<HomeAdmin />} />
+              <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
+                <Route index element={<HomeAdmin />} />
+                <Route path="products" element={<ListProducts />}>
+                  <Route path="add" element={<AddProduct />} />
+                </Route>
+
+
+
                 <Route path="add-order" element={<AddOrder />} />
                 <Route path="list-orders" element={<ListOrders />} />
                 <Route path="list-category" element={<ListCategory />} />
                 <Route path="add-category" element={<Addcategory />} />
-                <Route path="list-products" element={<ListProducts />} />
                 <Route path="list-users" element={<ListUsers />} />
-                <Route path="add-product" element={<AddProduct />} />
                 <Route path="add-user" element={<AddUser />} />
                 <Route path="update-categories/:categoryId" element={<UpdateCategories />} />
                 <Route path="update-order/:orderId" element={<UpdateOrder />} />

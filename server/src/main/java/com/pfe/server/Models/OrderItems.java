@@ -30,9 +30,8 @@ public class OrderItems {
     @JsonBackReference
     private Orders order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
-    @JsonBackReference
     private Product product;
     @JsonIgnore
     public Orders getOrder() {

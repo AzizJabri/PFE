@@ -70,8 +70,8 @@ const ListUsers = () => {
     <td>{User.profile.lastName}</td>
     <td>{User.email}</td>
     <td>
-      {User.roles.map((role, roleIndex) => (
-        <span key={roleIndex}>{role.name}</span>
+      {User.roles.map((role, index) => (
+        <span key={index} className={`badge ${role.name === 'ROLE_ADMIN' ? "badge-secondary" : "badge-neutral"}`}>{role.name === 'ROLE_USER' ? 'User' : 'Admin'}</span>
       ))}
       </td>
    

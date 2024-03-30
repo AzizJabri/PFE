@@ -23,3 +23,7 @@ export const deleteCategory = async (categoryId) => {
 export const getCategories = async () => { 
     return await api.get(`categories/`);
 };
+
+export const getTopCategories = async () => { 
+    return await api.get(`categories/top`);
+};

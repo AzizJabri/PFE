@@ -37,4 +37,9 @@ public class CategoriesService {
     public List<Category> getCategories() {
         return categoriesRepository.findAll();
     }
+
+    public List<Category> getTopCategories() {
+        List<Category> categories =  categoriesRepository.findByOrderByProductsAsc();
+        return categories.subList(0, Math.min(categories.size(), 3));
+    }
 }

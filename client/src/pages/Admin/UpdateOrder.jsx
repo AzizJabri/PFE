@@ -77,14 +77,20 @@ const UpdateOrder = ({ closeModal }) => {
       )}
       <br />
       <br />
-      <label className="input input-bordered flex items-center gap-2">
+      <label>
         Status
-        <input
-          type="text"
+        <select
+        className='select select-bordered w-full max-w-xs'
+          name="status"
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          placeholder="Status"
-        />
+        >
+          <option value=""disabled selected>Select Status</option>
+          <option value="PENDING">Pending</option>
+          <option value="SHIPPED">Shipped</option>
+          <option value="DELIVERED">Delivered</option>
+          <option value="CANCELED">Canceled</option>
+        </select>
       </label>
       <br />
       <div className="space-x-2">
@@ -95,7 +101,7 @@ const UpdateOrder = ({ closeModal }) => {
               <input
                 type="text"
                 name="product_id"
-                value={item.product_id}
+                value={item.product.id}
                 onChange={(e) => handleChange(index, e)}
                 placeholder="Product ID"
               />
