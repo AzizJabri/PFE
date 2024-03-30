@@ -1,5 +1,6 @@
 package com.pfe.server.Services;
 
+import com.pfe.server.Models.EStatus;
 import com.pfe.server.Models.OrderItems;
 import com.pfe.server.Models.Orders;
 import com.pfe.server.Models.Product;
@@ -7,6 +8,7 @@ import com.pfe.server.Payloads.Request.OrderItemRequest;
 import com.pfe.server.Payloads.Request.OrderRequest;
 import com.pfe.server.Repositories.OrdersRepository;
 import com.pfe.server.Repositories.ProductRepository;
+import jakarta.persistence.EnumType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,10 @@ public class OrdersService {
         return ordersRepository.findAll();
     }
 
+    public List<Orders> getOrdersByUserId(Long userId) {
+        return ordersRepository.findByUserId(userId);
+    }
+
     public Optional<Orders> getOrderById(Long id) {
         return ordersRepository.findById(id);
     }
@@ -39,7 +45,7 @@ public class OrdersService {
         Optional<Orders> optionalOrder = ordersRepository.findById(id);
         if (optionalOrder.isPresent()) {
             Orders order = optionalOrder.get();
-            order.setStatus(orderRequest.getStatus());
+            order.setStatus(EStatus.valueOf(orderRequest.getStatus()));
 
             List<OrderItemRequest> orderItemRequests = orderRequest.getOrderItems();
             if (orderItemRequests != null) {

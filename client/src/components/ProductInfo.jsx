@@ -17,14 +17,14 @@ const ProductInfo = ({ product, addToCart }) => {
   
     return (
       <div className="container mx-auto px-4">
-        <div className="text-sm breadcrumbs pb-8 px-4">
+        <div className="text-sm breadcrumbs pb-8 pt-5 px-4">
             <ul>
                 <li><Link to={"/products/"}>Products</Link></li> 
                 <li><Link to={`/products?category=${product.category.id}`}>{product.category.name}</Link></li> 
                 <li>{product.name}</li>
             </ul>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8"> 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-6"> 
           <div className="flex flex-col items-center">
             <img
               src={selectedImage}
@@ -51,7 +51,7 @@ const ProductInfo = ({ product, addToCart }) => {
                       alt=""
                       role="button"
                       className={`cursor-pointer ${
-                        selectedImage === productImage.url ? 'border-2 border-base-300' : ''
+                        selectedImage === productImage.url ? 'border-2 border-neutral-500' : ''
                       }`}
                       onClick={() => handleThumbnailClick(productImage.url)}
                     />

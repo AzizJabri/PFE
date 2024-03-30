@@ -54,64 +54,79 @@ const Products = () => {
     };
 
     return (
-        <div className="flex">
-            {/* Categories Section */}
-            <div className="w-1/4 bg-base-200 p-4 h-auto min-h-screen">
-                <h2 className="text-lg font-semibold mb-4">Categories</h2>
-                <ul className="space-y-2">
-                    {loading ? (
-                        <>
-                            <GhostCategory />
-                            <GhostCategory />
-                            <GhostCategory />
-                            <GhostCategory />
-                            <GhostCategory />
-                        </>
-                    ) : (
-                        categories.map(category => (
-                            <li key={category.id}>
-                                <Link to={`/products/?category=${category.id}`} className="btn btn-ghost w-full text-left bg-base-100">{category.name}</Link>
-                            </li>
-                        ))
-                    )}
-                </ul>
-            </div>
+        <div class="drawer">
+  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content">
+    <div class="flex">
+      {/* Categories Section (Visible only on medium screens and above) */}
+      <div class="hidden md:block w-1/4 bg-base-200 p-4 h-auto min-h-screen">
+        <h2 class="text-lg font-semibold mb-4">Categories</h2>
+        <ul class="space-y-2">
+          {loading ? (
+            <>
+              <GhostCategory />
+              <GhostCategory />
+              <GhostCategory />
+              <GhostCategory />
+              <GhostCategory />
+            </>
+          ) : (
+            categories.map(category => (
+              <li key={category.id}>
+                <Link to={`/products/?category=${category.id}`} class="btn btn-ghost w-full text-left bg-base-100">{category.name}</Link>
+              </li>
+            ))
+          )}
+        </ul>
+      </div>
 
-            {/* Products Section */}
-            <div className="w-3/4 p-4">
-                <h1 className="text-2xl font-semibold mb-4">Products</h1>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 pb-4">
-                    {loading ? (
-                        <>
-                            <GhostProduct />
-                            <GhostProduct />
-                            <GhostProduct />
-                        </>
-                    ) : (
-                        productData.numberOfElements === 0 ? (
-                            <div>No products found</div>
-                        ) : (
-                            productData.content.map(product => (
-                                <Product key={product.id} product={product} />
-                            ))
-                        )
-                    )}
-                </div>
-                {productData.totalPages > 1 && (
-                    <div className="flex justify-center py-2">
-                        <div className={`join grid ${productData.pageable.pageNumber > 0 & productData.pageable.pageNumber < productData.totalPages - 1 ? "grid-cols-3" : "grid-cols-2"}`}>
-                            {productData.pageable.pageNumber > 0 && (
-                                <button className='join-item btn btn-outline' onClick={handlePreviousClick}>Previous</button>
-                            )}
-                            <div className="join-item btn btn-outline">{productData.pageable.pageNumber + 1}</div>
-                            {productData.pageable.pageNumber < productData.totalPages - 1 && (
-                                <button className='join-item btn btn-outline' onClick={handleNextClick}>Next</button>
-                            )}
-                        </div>
-                    </div>
-                )}
-            </div>
+      {/* Products Section */}
+      <div class="w-full md:w-3/4 p-4">
+        <h1 class="text-2xl font-semibold mb-4">Products</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 pb-4">
+          {loading ? (
+            <>
+              <GhostProduct />
+              <GhostProduct />
+              <GhostProduct />
+            </>
+          ) : (
+            productData.numberOfElements === 0 ? (
+              <div>No products found</div>
+            ) : (
+              productData.content.map(product => (
+                <Product key={product.id} product={product} />
+              ))
+            )
+          )}
         </div>
+        {productData.totalPages > 1 && (
+          <div class="flex justify-center py-2">
+            <div class={`join grid ${productData.pageable.pageNumber > 0 & productData.pageable.pageNumber < productData.totalPages - 1 ? "grid-cols-3" : "grid-cols-2"}`}>
+              {productData.pageable.pageNumber > 0 && (
+                <button class='join-item btn btn-outline' onClick={handlePreviousClick}>Previous</button>
+              )}
+              <div class="join-item btn btn-outline">{productData.pageable.pageNumber + 1}</div>
+              {productData.pageable.pageNumber < productData.totalPages - 1 && (
+                <button class='join-item btn btn-outline' onClick={handleNextClick}>Next</button>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+  <div class="drawer-side">
+    <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+    <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+      {/* Sidebar content here */}
+      <li><a href="#">Sidebar Item 1</a></li>
+      <li><a href="#">Sidebar Item 2</a></li>
+    </ul>
+  </div>
+</div>
+
+
     )
 }
 
