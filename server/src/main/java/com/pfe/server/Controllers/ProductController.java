@@ -17,6 +17,7 @@ import com.pfe.server.Services.ImageService;
 
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -56,13 +57,25 @@ public class ProductController {
     @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> saveProduct(@ModelAttribute CreateProductRequest product) throws IOException {
+        System.out.println(product.getCategory());
         Product newProduct = new Product(product.getName(), product.getDescription(), product.getPrice());
-        Category category = categoriesService.getCategory(product.getCategory());
-        if (category == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        newProduct.setCategory(category);
 
+        // Check if the category ID is not null
+        if (product.getCategory() == null) {
+            System.out.println("Category ID cannot be null");
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        }
+
+        // Retrieve the category by ID
+        Category category = categoriesService.getCategory(product.getCategory());
+
+        // Check if the category exists
+        if (category == null) {
+            System.out.println("Category not found with ID: " + product.getCategory());
+            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        }
+
+        newProduct.setCategory(category);
         newProduct.setImages(new ArrayList<>());
 
         String url = imageService.uploadImage(product.getImage());

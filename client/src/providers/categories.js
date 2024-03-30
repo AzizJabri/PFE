@@ -1,10 +1,10 @@
 import api from '../utils/axios';
 
-export const getCategories = async () => {
-    return await api.get('categories/');
+export const getCategory = async (currentPage, categoriesPerPage) => { 
+    return await api.get(`categories/?_page=${currentPage}&_limit=${categoriesPerPage}`);
 };
 
-export const getCategory = async (id) => {
+export const getCategoryByID = async (id) => {
     return await api.get(`categories/${id}`);
 };
 
@@ -16,7 +16,10 @@ export const updateCategory = async (id, data) => {
     return await api.put(`categories/${id}`, data);
 };
 
-export const deleteCategory = async (id) => {
-    return await api.delete(`categories/${id}`);
+export const deleteCategory = async (categoryId) => {
+    return await api.delete(`categories/${categoryId}`);
 };
 
+export const getCategories = async () => { 
+    return await api.get(`categories/`);
+};

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,31 +39,45 @@ public class OrdersService {
         return ordersRepository.save(order);
     }
 
+
+
     public Orders updateOrder(Long id, OrderRequest orderRequest) {
         Optional<Orders> optionalOrder = ordersRepository.findById(id);
         if (optionalOrder.isPresent()) {
             Orders order = optionalOrder.get();
             order.setStatus(EStatus.valueOf(orderRequest.getStatus()));
 
-            order.getOrderItems().clear();
-
             List<OrderItemRequest> orderItemRequests = orderRequest.getOrderItems();
             if (orderItemRequests != null) {
+                // Clearing the order items is removed as we'll update the existing ones
                 for (OrderItemRequest itemRequest : orderItemRequests) {
-                    OrderItems orderItem = new OrderItems();
-                    orderItem.setQuantity(itemRequest.getQuantity());
-                    orderItem.setPrice(itemRequest.getPrice());
+                    // Check if the order item exists in the current order
+                    Optional<OrderItems> optionalOrderItem = order.getOrderItems().stream()
+                            .filter(item -> Objects.equals(item.getId(), itemRequest.getId()))
+                            .findFirst();
 
-                    // Find product by ID and set it to the order item
-                    Long productId = itemRequest.getProduct_id();
-                    Optional<Product> optionalProduct = productService.getProductById(productId);
-                    if (optionalProduct.isPresent()) {
-                        orderItem.setProduct(optionalProduct.get());
-                        orderItem.setOrder(order); // Set the order to establish the relationship
-                        order.getOrderItems().add(orderItem);
+                    if (optionalOrderItem.isPresent()) {
+                        OrderItems orderItem = optionalOrderItem.get();
+                        orderItem.setQuantity(itemRequest.getQuantity());
+                        orderItem.setPrice(itemRequest.getPrice());
+
+                        // Find product by ID and set it to the order item
+                        Long productId = itemRequest.getProduct_id();
+                        if (productId != null) {
+                            Optional<Product> optionalProduct = productService.getProductById(productId);
+                            if (optionalProduct.isPresent()) {
+                                orderItem.setProduct(optionalProduct.get());
+                            } else {
+                                // Log a warning message for the missing product
+                                System.out.println("Product with ID " + productId + " not found.");
+                            }
+                        } else {
+                            // Log a warning message for the null productId
+                            System.out.println("Null productId encountered for itemRequest: " + itemRequest);
+                        }
                     } else {
-                        // Log a warning message for the missing product
-                        System.out.println("Product with ID " + productId + " not found.");
+                        // Log a warning message for the missing order item
+                        System.out.println("Order item with ID " + itemRequest.getId() + " not found in the order.");
                     }
                 }
             }

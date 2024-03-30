@@ -4,7 +4,6 @@ import Nav from '@/components/Nav';
 import Hero from '@/components/hero';
 import Statics from '@/components/statics';
 import Category from '@/components/Category';
-import Phone from '@/components/Phone';
 import Footer from '@/components/Footer';
 function LandingPage() {
   return (
@@ -18,9 +17,7 @@ function LandingPage() {
  <br></br>
 <Statics/>
 <Category/>
-<Phone/>
-<br></br>
-<br></br>
+
 <Footer/>
 </>
   );

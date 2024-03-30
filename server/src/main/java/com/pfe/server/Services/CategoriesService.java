@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -25,7 +26,8 @@ public class CategoriesService {
     }
 
     public Category getCategory(Long id) {
-        return categoriesRepository.findById(id).orElse(null);
+        Optional<Category> categoryOptional = categoriesRepository.findById(id);
+        return categoryOptional.orElseThrow(() -> new IllegalArgumentException("Category not found with id: " + id));
     }
 
     public Category getCategoryByName(String name) {
