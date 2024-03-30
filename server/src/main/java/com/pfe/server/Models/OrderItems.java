@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class OrderItems {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,13 +34,21 @@ public class OrderItems {
     @JoinColumn(name = "product_id")
     @JsonBackReference
     private Product product;
-@JsonIgnore
+    @JsonIgnore
     public Orders getOrder() {
         return order;
     }
-@JsonIgnore
+    @JsonIgnore
     public void setOrder(Orders order) {
         this.order = order;
     }
+
+    public OrderItems(int quantity, double price, Orders order, Product product) {
+        this.quantity = quantity;
+        this.price = price;
+        this.order = order;
+        this.product = product;
+    }
+
 }
 

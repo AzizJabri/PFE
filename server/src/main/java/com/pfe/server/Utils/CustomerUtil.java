@@ -15,7 +15,7 @@ public class CustomerUtil {
 
         CustomerSearchResult result = Customer.search(params);
 
-        return result.getData().size() > 0 ? result.getData().get(0) : null;
+        return !result.getData().isEmpty() ? result.getData().getFirst() : null;
     }
 
     public static Customer findOrCreateCustomer(String email, String name) throws StripeException {
@@ -30,7 +30,7 @@ public class CustomerUtil {
         Customer customer;
 
         // If no existing customer was found, create a new record
-        if (result.getData().size() == 0) {
+        if (result.getData().isEmpty()) {
 
             CustomerCreateParams customerCreateParams = CustomerCreateParams.builder()
                     .setName(name)
@@ -39,7 +39,7 @@ public class CustomerUtil {
 
             customer = Customer.create(customerCreateParams);
         } else {
-            customer = result.getData().get(0);
+            customer = result.getData().getFirst();
         }
 
         return customer;

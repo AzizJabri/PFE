@@ -21,7 +21,11 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private EStatus status;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonBackReference

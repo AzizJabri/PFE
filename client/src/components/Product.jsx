@@ -15,7 +15,7 @@ const Product = ({product}) => {
         <div className="card-body">
             <Link to={`/products/${product.id}`} className="card-title">
             {product?.name}
-            <div className="badge badge-secondary">{product?.price} TND</div>
+            <div className="badge text-xs md:text-md badge-accent md:text-base w-auto">{product?.price} TND</div>
             </Link>
             <p>{product.description}</p>
             <div className="card-actions justify-end">
