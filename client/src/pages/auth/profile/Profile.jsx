@@ -21,6 +21,7 @@ const Profile = () => {
   
     // Display the user profile with user details and profile details and profile picture
     return (
+        
         <div className="container mx-auto">
             <h1 className="text-3xl font-bold text-center py-2">Update Profile</h1>
             <div className="flex justify-center items-center">
@@ -56,6 +57,7 @@ const Profile = () => {
                 </div>
             </div>
         </div>
+      
     )
 }
 
