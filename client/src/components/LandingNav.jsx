@@ -1,9 +1,11 @@
 import React,{useEffect,useState} from 'react'
 import { getTopCategories } from '@/providers/categories'
 import { Link } from 'react-router-dom'
+import { useAuth } from '@/auth/auth';
 
 const LandingNav = () => {
     const [categories, setCategories] = useState([])
+    const { user } = useAuth()
     const [isDark, setIsDark] = useState(
         JSON.parse(localStorage.getItem('isDark')) || false
     )
@@ -47,12 +49,18 @@ const LandingNav = () => {
                 </ul>
                 </details>
             </li>
-            <li>
-                <Link tp={"/auth/login"}>Login</Link>
-            </li>
-            <li>
-                <Link to={"/auth/register"}>Register</Link>
-            </li>
+            {user  && (
+                <li><Link to={"/profile"}>Profile</Link></li>
+            )}
+
+            {!user && (
+                <li><Link to={"/auth/login"}>Login</Link></li>
+            )}
+            {!user && (
+                <li><Link to={"/auth/register"}>Register</Link></li>
+            )}
+
+            
             </ul>
         </div>
         <div className="dropdown dropdown-end">
