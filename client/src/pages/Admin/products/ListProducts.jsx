@@ -120,7 +120,7 @@ const ListProducts = () => {
                 <td>{product.category.name}</td>
                 <td>
                   <button onClick={() => handleDelete(product.id)} className="btn mr-2">Delete</button>
-                  <button className="btn ml-2">Update</button>
+                  <Link to={`update/${product.id}`} className="btn ml-2" onClick={() => document.getElementById('my_modal_3').showModal()}>Update</Link>
                 </td>
               </tr>
             ))

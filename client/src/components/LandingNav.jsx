@@ -47,6 +47,12 @@ const LandingNav = () => {
                 </ul>
                 </details>
             </li>
+            <li>
+                <Link tp={"/auth/login"}>Login</Link>
+            </li>
+            <li>
+                <Link to={"/auth/register"}>Register</Link>
+            </li>
             </ul>
         </div>
         <div className="dropdown dropdown-end">

@@ -4,6 +4,7 @@ import com.pfe.server.Models.Category;
 import com.pfe.server.Models.Image;
 import com.pfe.server.Models.Product;
 import com.pfe.server.Payloads.Request.CreateProductRequest;
+import com.pfe.server.Payloads.Request.UpdateProductRequest;
 import com.pfe.server.Services.CategoriesService;
 import com.pfe.server.Services.ProductService;
 import org.springframework.data.domain.Page;
@@ -88,7 +89,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody UpdateProductRequest updatedProduct) {
         Optional<Product> existingProduct = productService.getProductById(id);
 
         if (existingProduct.isPresent()) {
@@ -131,5 +132,27 @@ public class ProductController {
 
         return new ResponseEntity<>(product.get(), HttpStatus.OK);
 
+    }
+
+    @DeleteMapping("/{id}/images/{imageId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Product> deleteImageFromProduct(@PathVariable Long id, @PathVariable Long imageId) {
+        Optional<Product> product = productService.getProductById(id);
+
+        if (product.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Optional<Image> image = product.get().getImages().stream().filter(i -> i.getId().equals(imageId)).findFirst();
+
+        if (image.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        product.get().getImages().remove(image.get());
+        productService.saveProduct(product.get());
+        imageService.deleteImage(image.get().getUrl());
+
+        return new ResponseEntity<>(product.get(), HttpStatus.OK);
     }
 }

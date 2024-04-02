@@ -1,6 +1,7 @@
 package com.pfe.server.Services;
 
 import com.pfe.server.Models.Product;
+import com.pfe.server.Payloads.Request.UpdateProductRequest;
 import com.pfe.server.Repositories.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,11 @@ import java.util.Optional;
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CategoriesService categoriesService;
     public Page<Product> getAllProducts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return productRepository.findAll(pageable);
+        return productRepository.findAllByOrderByIdAsc(pageable);
     }
 
 
@@ -39,14 +42,14 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product updateProduct(Long id, Product updatedProduct) {
+    public Product updateProduct(Long id, UpdateProductRequest updatedProduct) {
         Product existingProduct = productRepository.findById(id).orElse(null);
 
         if (existingProduct != null) {
             existingProduct.setName(updatedProduct.getName());
             existingProduct.setDescription(updatedProduct.getDescription());
             existingProduct.setPrice(updatedProduct.getPrice());
-            existingProduct.setImages(updatedProduct.getImages());
+            existingProduct.setCategory(categoriesService.getCategory(updatedProduct.getCategory()));
 
             return productRepository.save(existingProduct);
         }

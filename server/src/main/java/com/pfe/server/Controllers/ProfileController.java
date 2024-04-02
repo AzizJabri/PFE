@@ -5,6 +5,7 @@ import com.pfe.server.Payloads.Request.UpdateProfileRequest;
 import com.pfe.server.Security.Services.UserDetailsImpl;
 import com.pfe.server.Security.Services.UserDetailsServiceImpl;
 import com.pfe.server.Services.AddressService;
+import com.pfe.server.Services.ImageService;
 import com.pfe.server.Services.ProfileService;
 import com.pfe.server.Services.UserService;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.pfe.server.Models.Profile;
 import com.pfe.server.Models.Address;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 
 @RestController
@@ -24,6 +27,8 @@ public class ProfileController {
     private final ProfileService profileService;
     @Autowired
     private final AddressService addressService;
+    @Autowired
+    private final ImageService imageService;
 
     @GetMapping("/")
     public ResponseEntity<Profile> getProfile(Principal principal) {
@@ -42,6 +47,19 @@ public class ProfileController {
         profile.setPhoneNumber(updateProfileRequest.getPhoneNumber());
         return ResponseEntity.ok(profileService.updateProfile(profile));
     }
+
+    @PostMapping("/image")
+    public ResponseEntity<Profile> updateProfileImage(Principal principal, @RequestParam MultipartFile image) throws IOException {
+        Profile profile = profileService.getProfile(principal.getName()).orElse(null);
+        if (profile == null) {
+            return ResponseEntity.notFound().build();
+        }
+        String oldImage = profile.getImage();
+        profile.setImage(imageService.uploadImage(image));
+        imageService.deleteImage(oldImage);
+        return ResponseEntity.ok(profileService.updateProfile(profile));
+    }
+
 
 
 

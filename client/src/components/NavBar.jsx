@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { useAuth } from '@/auth/auth'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useCart } from '@/providers/cart'
 import { useNavigate } from 'react-router-dom'
 
@@ -129,9 +129,9 @@ const NavBar = () => {
                     // Render links for logged-in user
                     <>
                         <li>
-                            <Link to="/profile" className="justify-between">
+                            <NavLink to="/profile" className="justify-between">
                                 Profile
-                            </Link>
+                            </NavLink>
                         </li>
                         <li><a>Settings</a></li>
                         {user.roles.some(role => role.name === 'ROLE_ADMIN') && (

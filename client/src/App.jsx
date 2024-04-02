@@ -20,19 +20,23 @@ const CartPage = lazy(() => import('./pages/CartPage'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const Failure = lazy(() => import('./pages/payment/Failure'));
 const Success = lazy(() => import('./pages/payment/Success'));
-const Profile = lazy(() => import('./pages/auth/Profile'));
+const Profile = lazy(() => import('./pages/auth/profile/Profile'));
 const HomeAdmin = lazy(() => import('./pages/Admin/HomeForAdmin'));
 const AddOrder = lazy(() => import('./pages/Admin/AddOrder'));
 const ListOrders = lazy(() => import('./pages/Admin/ListOrders'));
 const ListCategory = lazy(() => import('./pages/Admin/ListCategory'));
 const Addcategory = lazy(() => import('./pages/Admin/AddCategory'));
-const ListProducts = lazy(() => import('./pages/Admin/ListProducts'));
+const ListProducts = lazy(() => import('./pages/Admin/products/ListProducts'));
 const ListUsers = lazy(() => import('./pages/Admin/ListUsers'));
-const AddProduct = lazy(() => import('./pages/Admin/AddProduct'));
+const AddProduct = lazy(() => import('./pages/Admin/products/AddProduct'));
+const UpdateProduct = lazy(() => import('./pages/Admin/products/UpdateProduct'));
 const AddUser = lazy(() => import('./pages/Admin/AddUser'));
 const UpdateCategories = lazy(() => import('./pages/Admin/UpdateCategories'));
 const UpdateOrder = lazy(() => import('./pages/Admin/UpdateOrder'));
 const RequireAdmin = lazy(() => import('./middlewares/RequireAdmin'));
+const ProfileLayout = lazy(() => import('./layouts/ProfileLayout'));
+const Addresses = lazy(() => import('./pages/auth/profile/Addresses'));
+const UpdateImage = lazy(() => import('./pages/auth/profile/UpdateImage'));
 
 
 
@@ -54,7 +58,11 @@ function App() {
                 <Route path="logout" element={<Logout />} />
               </Route>
 
-              <Route path="/profile" element={<RequireAuth><Profile/></RequireAuth>} />
+              <Route path="/profile" element={<RequireAuth><ProfileLayout/></RequireAuth>} >
+                <Route index element={<Profile />} />
+                <Route path="addresses" element={<Addresses />} />
+                <Route path="update-image" element={<UpdateImage />} />
+              </Route>
 
               <Route path="/products" element={<ProductsLayout />}>
                 <Route index element={<Products />} />
@@ -66,6 +74,7 @@ function App() {
                 <Route index element={<HomeAdmin />} />
                 <Route path="products" element={<ListProducts />}>
                   <Route path="add" element={<AddProduct />} />
+                  <Route path="update/:productId" element={<UpdateProduct />} />
                 </Route>
 
 
