@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { useAuth } from '@/auth/auth';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { changeUserEmail, promoteUser, demoteUser, changeUserPassword } from '@/providers/Users'; // Import your API functions
+import { getUserByID } from '@/providers/Users';
 
-const UpdateUser = () => {
+const UpdateUserEmail = () => {
   const { userId } = useParams();
-  const { getUserById, updateUser } = useAuth();
   const navigate = useNavigate();
 
-  const [initialValues, setInitialValues] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    terms: false
-  });
+  const [oldEmail, setOldEmail] = useState('');
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await getUserById(userId);
-        const { email } = response.data; // Assuming the API response includes the user's email
-        setInitialValues({ ...initialValues, email });
+        const response = await getUserByID(userId);
+        setOldEmail(response.data.email);
       } catch (error) {
         console.error('Error fetching user:', error);
       }
@@ -30,54 +26,167 @@ const UpdateUser = () => {
     fetchUser();
   }, [userId]);
 
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      await changeUserEmail(oldEmail, values.newEmail);
+      toast.success('User email updated successfully');
+    } catch (error) {
+      toast.error('Error updating user email');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handlePromote = async () => {
+    try {
+       promoteUser(oldEmail);
+      toast.success('User promoted to admin');
+    } catch (error) {
+      toast.error('Error promoting user');
+    }
+  };
+
+  const handleDemote = async () => {
+    try {
+      await demoteUser(oldEmail);
+      toast.success('User demoted from admin');
+    } catch (error) {
+      toast.error('Error demoting user');
+    }
+  };
+
+  const handleChangePassword = async () => {
+    try {
+      await changeUserPassword(oldEmail, newPassword);
+      toast.success('User password changed successfully');
+      
+      setShowPasswordModal(false); // Close the modal after successful password change
+    } catch (error) {
+      toast.error('Error changing user password');
+    }
+  };
+
   return (
-    <Formik
-      initialValues={initialValues}
-      validate={values => {
-        // Validation logic remains the same
-      }}
-      onSubmit={(values, { setSubmitting }) => {
-        // Update user logic
-        updateUser(userId, values).then(() => {
-          toast.success('User updated successfully');
-          navigate(`/users/${userId}`); // Navigate to user details page
-        }).catch((error) => {
-          toast.error('Error updating user');
-        }).finally(() => {
-          setSubmitting(false);
-        });
-      }}
-    >
-      {({ isSubmitting }) => (
-        <Form className="space-y-5">
-          <h3 className="font-semibold text-2xl text-gray-800">Update User</h3>
-          <p className="text-gray-500">Update user information</p>
-          {/* Remaining form fields */}
+    <div>
+      <Formik
+        initialValues={{
+          newEmail: ''
+        }}
+        validate={values => {
+          const errors = {};
+          if (!values.newEmail) {
+            errors.newEmail = 'Required';
+          }
+          return errors;
+        }}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting }) => (
+         
+             <Form className="space-y-5">
+          <h3 className="font-semibold text-2xl text-gray-800 text-white">Update User Email</h3>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Email</label>
+            <label className="text-sm font-medium text-gray-700 text-white">Old Email</label>
+            <Field
+              className="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400"
+              type="text"
+              name="oldEmail"
+              value={oldEmail}
+              readOnly
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 text-white">New Email</label>
             <Field
               className="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400"
               type="email"
-              placeholder="Enter your email"
-              name="email"
+              placeholder="Enter new email"
+              name="newEmail"
             />
-            <ErrorMessage className="text-red-500" name="email" component="div" />
+            <ErrorMessage className="text-red-500" name="newEmail" component="div" />
           </div>
-          {/* Remaining form fields */}
-          <div>
+          <div className="flex justify-center space-x-2">
+  <button
+    className="w-1/3 bg-black-400 hover:bg-gray-500 text-white-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
+    type="submit"
+    disabled={isSubmitting}
+  >
+    <span className="inline-flex mx-auto">
+      {isSubmitting ? <span className="loading loading-spinner loading-md"></span> : "Update Email"}
+    </span>
+  </button>
+  <button
+    className="w-1/3 bg-black-400 hover:bg-gray-500 text-white-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
+    onClick={() => setShowPasswordModal(true)}
+  >
+    Change Password
+  </button>
+</div>
+
+          
+          <div className="flex justify-center gap-2">
+  <div className="w-1/3"> {/* Adjust the width as needed */}
+    <button
+      className="w-full bg-black-400 hover:bg-gray-500 text-white-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
+      onClick={handlePromote}
+      type="button"
+    >
+      Promote
+    </button>
+  </div>
+  <div className="w-1/3"> {/* Adjust the width as needed */}
+    <button
+      className="w-full bg-black-400 hover:bg-gray-500 text-white-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
+      onClick={handleDemote}
+      type="button"
+    >
+      Demote
+    </button>
+  </div>
+</div>
+
+
+            <br></br>
+        
+        </Form>
+         
+        )}
+      </Formik>
+      
+    
+
+      {/* Password change modal */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg">
+            <h2 className="text-xl font-semibold mb-4">Change Password</h2>
+            <div className="mb-4">
+              <label htmlFor="newPassword" className="block mb-2">New Password</label>
+              <input
+                type="password"
+                id="newPassword"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="border border-gray-300 px-3 py-2 rounded-lg w-full"
+              />
+            </div>
             <button
-              className="w-full flex justify-center bg-blue-400 hover:bg-blue-500 text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
-              type="submit"
-              disabled={isSubmitting}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+              onClick={handleChangePassword}
             >
-              <span className="inline-flex mx-auto">{isSubmitting ? <span className="loading loading-spinner loading-md"></span> : "Update"}</span>
+              Change Password
+            </button>
+            <button
+              className="ml-4 text-gray-600 px-4 py-2 rounded-lg border border-gray-300"
+              onClick={() => setShowPasswordModal(false)}
+            >
+              Cancel
             </button>
           </div>
-          {/* Remaining form fields */}
-        </Form>
+        </div>
       )}
-    </Formik>
+    </div>
   );
 };
 
-export default UpdateUser;
+export default UpdateUserEmail;

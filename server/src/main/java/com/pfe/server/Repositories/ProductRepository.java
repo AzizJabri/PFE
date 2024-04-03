@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends PagingAndSortingRepository<Product, Long>, JpaRepository<Product, Long>{
 
-  Page<Product> findAll(Pageable pageable);
+  Page<Product> findAllByOrderByIdAsc(Pageable pageable);
 
   Page<Product> findByCategory_Id(Long categoryId, Pageable pageable);
 

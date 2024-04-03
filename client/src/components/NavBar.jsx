@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { useAuth } from '@/auth/auth'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useCart } from '@/providers/cart'
 import { useNavigate } from 'react-router-dom'
 
@@ -48,7 +48,7 @@ const NavBar = () => {
         <div className="navbar-start">
             <Link to={"/"} className="btn btn-ghost text-xl hidden md:flex">E-Commerce</Link>
             <label htmlFor="my-drawer" className="btn btn-square btn-ghost drawer-button flex md:hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
             </label>
         </div>
         <div className="navbar-center hidden sm:flex w-2/6 ">
@@ -129,9 +129,9 @@ const NavBar = () => {
                     // Render links for logged-in user
                     <>
                         <li>
-                            <Link to="/profile" className="justify-between">
+                            <NavLink to="/profile" className="justify-between">
                                 Profile
-                            </Link>
+                            </NavLink>
                         </li>
                         <li><a>Settings</a></li>
                         {user.roles.some(role => role.name === 'ROLE_ADMIN') && (

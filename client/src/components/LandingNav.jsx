@@ -1,9 +1,11 @@
 import React,{useEffect,useState} from 'react'
-import { getTopCategories } from '@/providers/categories'
+import { getCategories } from '@/providers/categories'
 import { Link } from 'react-router-dom'
+import { useAuth } from '@/auth/auth';
 
 const LandingNav = () => {
     const [categories, setCategories] = useState([])
+    const { user } = useAuth()
     const [isDark, setIsDark] = useState(
         JSON.parse(localStorage.getItem('isDark')) || false
     )
@@ -16,8 +18,9 @@ const LandingNav = () => {
         const fetchCategories = async () => {
             try {
                 //set the 3 categories
-                const response = await getTopCategories()
+                const response = await getCategories()
                 setCategories(response.data)
+                console.log(response.data)
             } catch (error) {
                 console.error('Error fetching Categories:', error)
             }
@@ -47,6 +50,18 @@ const LandingNav = () => {
                 </ul>
                 </details>
             </li>
+            {user  && (
+                <li><Link to={"/profile"}>Profile</Link></li>
+            )}
+
+            {!user && (
+                <li><Link to={"/auth/login"}>Login</Link></li>
+            )}
+            {!user && (
+                <li><Link to={"/auth/register"}>Register</Link></li>
+            )}
+
+            
             </ul>
         </div>
         <div className="dropdown dropdown-end">

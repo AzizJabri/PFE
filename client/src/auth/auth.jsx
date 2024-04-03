@@ -69,14 +69,14 @@ export const AuthProvider = ({ children }) => {
 
 
 const changePassword = async (values) => {
-    await api.post('users/set_password/', values).then(res => {
+    await api.post('users/changePassword', values).then(res => {
         return res.data
     })
 }
 
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout,register, changePassword }}>
+    <AuthContext.Provider value={{ user, isLoading, login, logout,register, changePassword, setUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -3,6 +3,7 @@ import Footer from '@/components/Footer';
 import Nav from '@/components/Nav';
 import { getUsers, DeleteUsers } from '@/providers/Users';
 import AddUser from './AddUser';
+import { Link } from 'react-router-dom';
 
 
 const ListUsers = () => {
@@ -77,7 +78,7 @@ const ListUsers = () => {
    
                 <td>
                   <button onClick={() => deleteUsers(User.email)} className="btn  mr-2">Delete</button>
-                  <button className="btn  ml-2">Update</button>
+                  <Link to={`/admin/updateUser/${User.id}`} className="btn ml-2" >Update</Link>
                 </td>
               </tr>
             ))}
