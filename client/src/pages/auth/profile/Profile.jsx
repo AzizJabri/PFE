@@ -1,25 +1,21 @@
-import React,{useState} from 'react'
-import { useAuth } from '@/auth/auth'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
-import { updateProfile, changeImage } from '@/services/profile'
-import toast from 'react-hot-toast'
+import React, { useState } from 'react';
+import { useAuth } from '@/auth/auth';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { updateProfile } from '@/services/profile';
+import toast from 'react-hot-toast';
 
 const Profile = () => {
-    const { user, setUser } = useAuth()
+    const { user, setUser } = useAuth();
 
     const handleSubmit = async (values) => {
         try {
-            await updateProfile(values).then((response) => {
-                setUser({...user, profile: response.data})
-            })
-            toast.success('Profile updated successfully')
-            
+            const response = await updateProfile(values);
+            setUser({ ...user, profile: response.data });
+            toast.success('Profile updated successfully');
         } catch (error) {
-            toast.error('Error updating profile: ' + error.message)
+            toast.error('Error updating profile: ' + error.message);
         }
-    }
-  
-    // Display the user profile with user details and profile details and profile picture
+    };
     return (
         
         <div className="container mx-auto">
@@ -57,8 +53,7 @@ const Profile = () => {
                 </div>
             </div>
         </div>
-      
-    )
-}
+    );
+};
 
-export default Profile
+export default Profile;

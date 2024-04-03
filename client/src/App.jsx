@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast'
 import { CartProvider } from './providers/cart'
 import React, { lazy, Suspense } from 'react';
 import Loading from './components/Loading'
+import UpdateUser from './pages/Admin/UpdateUser'
 
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const AuthLayout = lazy(() => import('./layouts/AuthLayout'));
@@ -37,7 +38,7 @@ const RequireAdmin = lazy(() => import('./middlewares/RequireAdmin'));
 const ProfileLayout = lazy(() => import('./layouts/ProfileLayout'));
 const Addresses = lazy(() => import('./pages/auth/profile/Addresses'));
 const UpdateImage = lazy(() => import('./pages/auth/profile/UpdateImage'));
-
+const updateUser = lazy(() => import('./pages/Admin/UpdateUser'));
 
 
 const LazyLoadingFallback = () => <Loading/>;
@@ -75,6 +76,7 @@ function App() {
                 <Route path="products" element={<ListProducts />}>
                   <Route path="add" element={<AddProduct />} />
                   <Route path="update/:productId" element={<UpdateProduct />} />
+                
                 </Route>
 
 
@@ -87,6 +89,7 @@ function App() {
                 <Route path="add-user" element={<AddUser />} />
                 <Route path="update-categories/:categoryId" element={<UpdateCategories />} />
                 <Route path="update-order/:orderId" element={<UpdateOrder />} />
+                <Route path="/admin/updateUser/:userId" element={<UpdateUser />} />
               </Route>
 
               <Route path="/cart" element={<ProductsLayout />}>
