@@ -1,10 +1,7 @@
 package com.pfe.server.Controllers;
 
 
-import com.pfe.server.Models.ERole;
-import com.pfe.server.Models.Orders;
-import com.pfe.server.Models.Role;
-import com.pfe.server.Models.User;
+import com.pfe.server.Models.*;
 import com.pfe.server.Repositories.RoleRepository;
 import com.pfe.server.Repositories.UserRepository;
 import com.pfe.server.Security.Services.UserDetailsImpl;
@@ -21,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -45,6 +43,10 @@ public ResponseEntity<List<User>> getAllUsers() {
     List<User> Users = userService.GetAllUsers();
     return new ResponseEntity<>(Users, HttpStatus.OK);
 }
+    @GetMapping("/{id}")
+    public User getUserByID(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
     @PostMapping("/promote")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> promoteUser(@RequestParam String email) {
@@ -137,14 +139,5 @@ public ResponseEntity<List<User>> getAllUsers() {
         userRepository.save(currentUser);
         return ResponseEntity.ok("Email changed successfully");
     }
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User updatedUser) {
-        User user = userService.updateUser(id, updatedUser);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+
 }
