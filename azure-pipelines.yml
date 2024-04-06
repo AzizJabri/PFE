@@ -8,7 +8,7 @@ trigger:
 - main
 
 pool:
-  name : "New Pool"
+  name : "AzurePool"
 
 steps:
 - task: Maven@4
