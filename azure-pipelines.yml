@@ -1,17 +1,23 @@
 trigger:
+
   - master
 
 pool:
   name : "AzurePool"
 
 steps:
+  - task: JavaToolInstaller@0
+    inputs:
+      versionSpec: '21'
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'PreInstalled'
   - task: Maven@3
     displayName: Build with Maven
     inputs:
       mavenPomFile: "server/pom.xml"
       mavenOptions: "-Xmx3072m"
       javaHomeOption: "JDKVersion"
-      jdkVersionOption: "1.8"
+      jdkVersionOption: "1.17"
       jdkArchitectureOption: "x64"
       publishJUnitResults: false
       goals: "package"
