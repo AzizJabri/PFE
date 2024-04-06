@@ -26,8 +26,12 @@ steps:
 
   - checkout: self
 
-  - script: |
-      # Build the Spring Boot application
-      cd server
-      mvn clean package
-    displayName: 'Build Spring Boot App'
+  - task: Maven@4
+    inputs:
+      mavenPomFile: 'server/pom.xml'
+      publishJUnitResults: false
+      javaHomeOption: 'JDKVersion'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: false
