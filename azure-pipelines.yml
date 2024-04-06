@@ -5,33 +5,29 @@ pool:
   name: 'AzurePool'
 
 steps:
-  - task: JavaToolInstaller@0
-    inputs:
-      versionSpec: '17'
-      jdkArchitectureOption: 'x64'
-      jdkSourceOption: 'LocalDirectory'
-      jdkFile: './jdk'
-      cleanDestinationDirectory: true
-    displayName: 'Install JDK 17'
-
   - script: |
+      # Install JDK 21
       sudo apt update
-      sudo apt install -y maven
-    displayName: 'Install Maven'
+      sudo apt install -y openjdk-17-jdk
+      
+      # Set JAVA_HOME environment variable
+      export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      export PATH=$JAVA_HOME/bin:$PATH
+
+      # Verify installation
+      java -version
 
   - script: |
-      export M2_HOME=/usr/share/maven
-      export MAVEN_HOME=/usr/share/maven
-      export PATH=${M2_HOME}/bin:${PATH}
-    displayName: 'Set up Maven Environment Variables'
+      # Install Maven
+      sudo apt install -y maven
+      
+      # Verify installation
+      mvn -version
 
-  - task: Maven@3
-    displayName: 'Build with Maven'
-    inputs:
-      mavenPomFile: 'server/pom.xml'
-      mavenOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.17'  # Change this to '17' or the desired Java version
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-      goals: 'package'
+  - checkout: self
+
+  - script: |
+      # Build the Spring Boot application
+      cd server
+      mvn clean package
+    displayName: 'Build Spring Boot App'
