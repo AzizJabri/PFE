@@ -2,16 +2,36 @@ trigger:
   - main
 
 pool:
-  name : "AzurePool"
+  name: 'AzurePool'
 
 steps:
-  - task: Maven@3
-    displayName: Build with Maven
+  - task: JavaToolInstaller@0
     inputs:
-      mavenPomFile: "server/pom.xml"
-      mavenOptions: "-Xmx3072m"
-      javaHomeOption: "JDKVersion"
-      jdkVersionOption: "1.17"
-      jdkArchitectureOption: "x64"
+      versionSpec: '17'
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'LocalDirectory'
+      jdkFile: './jdk'
+      cleanDestinationDirectory: true
+    displayName: 'Install JDK 17'
+
+  - script: |
+      sudo apt update
+      sudo apt install -y maven
+    displayName: 'Install Maven'
+
+  - script: |
+      export M2_HOME=/usr/share/maven
+      export MAVEN_HOME=/usr/share/maven
+      export PATH=${M2_HOME}/bin:${PATH}
+    displayName: 'Set up Maven Environment Variables'
+
+  - task: Maven@3
+    displayName: 'Build with Maven'
+    inputs:
+      mavenPomFile: 'server/pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'  # Change this to '17' or the desired Java version
+      jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-      goals: "package"
+      goals: 'package'
