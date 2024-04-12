@@ -48,3 +48,14 @@ steps:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.jar'
       ArtifactName: 'drop'
       publishLocation: 'Container'
+  
+  - task: DockerInstaller@0
+    inputs:
+      dockerVersion: '17.09.0-ce'
+  
+  - task: Docker@2
+    inputs:
+      containerRegistry: 'PFE ACR'
+      repository: 'spring-server'
+      command: 'buildAndPush'
+      Dockerfile: 'server/Dockerfile'
