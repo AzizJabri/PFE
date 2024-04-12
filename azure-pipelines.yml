@@ -57,5 +57,12 @@ steps:
     inputs:
       containerRegistry: 'PFE ACR'
       repository: 'spring-server'
-      command: 'buildAndPush'
+      command: 'build'
       Dockerfile: 'server/Dockerfile'
+      arguments: '--build-arg JAR_FILE=$(Build.ArtifactStagingDirectory)/app.jar'
+  
+  - task: Docker@2
+    inputs:
+      containerRegistry: 'PFE ACR'
+      repository: 'spring-server'
+      command: 'push'
