@@ -1,0 +1,38 @@
+trigger:
+  - main
+
+pool:
+  name: 'AzurePool'
+
+steps:
+  - script: |
+      # Install JDK 21
+      sudo apt update
+      sudo apt install -y openjdk-21-jdk
+      
+      # Set JAVA_HOME environment variable
+      export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      export PATH=$JAVA_HOME/bin:$PATH
+
+      # Verify installation
+      java -version
+
+  - script: |
+      # Install Maven
+      sudo apt install -y maven
+      
+      # Verify installation
+      mvn -version
+
+  - checkout: self
+
+  - task: Maven@4
+    inputs:
+      mavenPomFile: 'server/pom.xml'
+      options: '-DskipTests'
+      publishJUnitResults: false
+      javaHomeOption: 'JDKVersion'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: false
