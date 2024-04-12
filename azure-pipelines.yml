@@ -36,3 +36,9 @@ steps:
       mavenAuthenticateFeed: false
       effectivePomSkip: false
       sonarQubeRunAnalysis: false
+       
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/target/app.jar'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
