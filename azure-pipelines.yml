@@ -39,7 +39,7 @@ steps:
       
   - task: CopyFiles@2
     inputs:
-      SourceFolder: 'target'
+      SourceFolder: 'server/target'
       Contents: 'app.jar'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
        
