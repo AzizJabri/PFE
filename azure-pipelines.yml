@@ -53,6 +53,8 @@ steps:
     inputs:
       dockerVersion: '17.09.0-ce'
   
+  - script: systemctl status docker
+  
   - task: Docker@2
     inputs:
       containerRegistry: 'PFE ACR'
