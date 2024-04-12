@@ -5,7 +5,7 @@ const Failure = () => {
     const navigate = useNavigate()
     useEffect(() => {
         setTimeout(() => {
-            navigate('/')
+            navigate('/products')
         }, 3000)
     }, [])
   return (

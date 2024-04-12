@@ -11,6 +11,8 @@ import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import com.stripe.param.checkout.SessionCreateParams.LineItem.PriceData;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +22,21 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/payment")
 @CrossOrigin
-@AllArgsConstructor
 public class PaymentController {
-    private final UserService userService;
-    private final CartService cartService;
-    private final AddressService addressService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CartService cartService;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
     private OrdersService ordersService;
+
+    @Value("${app.STRIPE_SECRET}")
+    private String stripeSecret;
+
+    @Value("${app.FRONTEND_URL}")
+    private String frontendURL;
 
     @PostMapping("/checkout")
     ResponseEntity<MessageResponse> checkout(Principal principal) throws StripeException {
@@ -39,8 +50,8 @@ public class PaymentController {
             return ResponseEntity.badRequest().body(new MessageResponse("No address found"));
         }
 
-        Stripe.apiKey = "sk_test_51OYZO6CCzjTSf1q3hCtBqYsPIN3uOnGrJSRfeyzISCleBxlpxMT7sSlO905l1xmDGHZuNtji9oX1uMdAWt2bnRg400JUFdMdBx";
-        String clientBaseURL = "http://localhost:5173";
+        Stripe.apiKey = stripeSecret;
+        String clientBaseURL = frontendURL.isEmpty() ? "http://localhost:5173" : frontendURL;
 
         // Start by finding an existing customer record from Stripe or creating a new one if needed
         Customer customer = CustomerUtil.findOrCreateCustomer(user.getEmail(), user.getProfile().getFirstName());
