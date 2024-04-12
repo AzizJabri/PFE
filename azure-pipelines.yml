@@ -53,7 +53,7 @@ steps:
     inputs:
       dockerVersion: '17.09.0-ce'
   
-  - script: sudo apt install docker.io
+  - script: sudo apt -y install docker.io
   
   - task: Docker@2
     inputs:
