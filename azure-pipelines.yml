@@ -86,4 +86,5 @@ steps:
       containerRegistry: 'PFE ACR'
       repository: 'spring-server'
       command: 'push'
+      tags: 'latest'
     displayName: Push image to ACR
