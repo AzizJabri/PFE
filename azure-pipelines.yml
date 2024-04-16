@@ -1,5 +1,11 @@
 trigger:
-  - main
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - server
+  
 
 pool:
   name: 'AzurePool'
@@ -16,6 +22,7 @@ steps:
 
       # Verify installation
       java -version
+    displayName: Install JDK 21
 
   - script: |
       # Install Maven
@@ -23,6 +30,7 @@ steps:
       
       # Verify installation
       mvn -version
+    displayName: Install Maven
 
   - checkout: self
 
@@ -36,42 +44,48 @@ steps:
       mavenAuthenticateFeed: false
       effectivePomSkip: false
       sonarQubeRunAnalysis: false
+    displayName: Build Spring Boot App
       
   - task: CopyFiles@2
     inputs:
       SourceFolder: 'server/target'
       Contents: 'app.jar'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    displayName: Copy app.jar to Artifacts Directory
        
   - task: CopyFiles@2
     inputs:
       SourceFolder: 'server'
       Contents: 'Dockerfile'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    displayName: Copy Dockerfile to Artifacts Directory
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.jar'
       ArtifactName: 'drop'
       publishLocation: 'Container'
+    displayName: Publish app.jar to Artifacts
   
   - script: |
       sudo apt-get -y update
       sudo apt install -y docker.io
       sudo systemctl start docker
       sudo chmod 777 /var/run/docker.sock
-
+    displayName: Install Docker
   - task: DockerInstaller@0
     inputs:
       dockerVersion: '17.09.0-ce'
+    displayName: Configure Docker CLI
   
-  - script: ls -l server/target
   - task: Docker@2
     inputs:
       containerRegistry: 'PFE ACR'
       repository: 'spring-server'
       command: 'build'
       Dockerfile: '$(Build.ArtifactStagingDirectory)/Dockerfile'
+      tags: 'latest'
       arguments: '--build-arg JAR_FILE=app.jar'
+    displayName: Build Server Doker image
 
   
   - task: Docker@2
@@ -79,3 +93,5 @@ steps:
       containerRegistry: 'PFE ACR'
       repository: 'spring-server'
       command: 'push'
+      tags: 'latest'
+    displayName: Push image to ACR
