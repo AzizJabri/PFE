@@ -43,6 +43,11 @@ steps:
       Contents: 'app.jar'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
        
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: 'server'
+      Contents: 'Dockerfile'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.jar'
@@ -65,8 +70,7 @@ steps:
       containerRegistry: 'PFE ACR'
       repository: 'spring-server'
       command: 'build'
-      Dockerfile: 'server/Dockerfile'
-      buildContext: '$(Build.ArtifactStagingDirectory)'
+      Dockerfile: '$(Build.ArtifactStagingDirectory)/Dockerfile'
       arguments: '--build-arg JAR_FILE=app.jar'
 
   
