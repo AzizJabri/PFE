@@ -59,7 +59,7 @@ steps:
     inputs:
       dockerVersion: '17.09.0-ce'
   
-  - script: ls -l
+  - script: ls -l server/target
   - task: Docker@2
     inputs:
       containerRegistry: 'PFE ACR'
