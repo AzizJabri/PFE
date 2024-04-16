@@ -66,7 +66,9 @@ steps:
       repository: 'spring-server'
       command: 'build'
       Dockerfile: 'server/Dockerfile'
-      arguments: '--build-arg JAR_FILE=./$(Build.ArtifactStagingDirectory)/app.jar'
+      buildContext: '$(Build.ArtifactStagingDirectory)'
+      arguments: '--build-arg JAR_FILE=app.jar'
+
   
   - task: Docker@2
     inputs:
