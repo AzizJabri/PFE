@@ -49,12 +49,15 @@ steps:
       ArtifactName: 'drop'
       publishLocation: 'Container'
   
+  - script: |
+      sudo apt-get -y update
+      sudo apt install -y docker.io
+      sudo systemctl start docker
+      sudo chmod 777 /var/run/docker.sock
+
   - task: DockerInstaller@0
     inputs:
       dockerVersion: '17.09.0-ce'
-  
-  - script: sudo apt -y install docker.io
-  
   - task: Docker@2
     inputs:
       containerRegistry: 'PFE ACR'
