@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Routes, Route, HashRouter } from 'react-router-dom'
 import { AuthProvider } from './auth/auth'
 import { Toaster } from 'react-hot-toast'
 import { CartProvider } from './providers/cart'
@@ -45,7 +45,7 @@ const LazyLoadingFallback = () => <Loading/>;
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AuthProvider>
         <CartProvider>
           <Toaster position="top-center" reverseOrder={false} />
@@ -106,7 +106,7 @@ function App() {
           </Suspense>
         </CartProvider>
       </AuthProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

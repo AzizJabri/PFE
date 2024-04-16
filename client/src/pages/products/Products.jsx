@@ -32,19 +32,18 @@ const Products = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            try{
-              setLoading(true);
-              const productResponse = await getProducts(page, size, search, category).
-              setProductData(productResponse.data)
-              const categoryResponse = await getCategories()
-              setCategories(categoryResponse.data)
-              setLoading(false);
-            } catch (error) {
-              toast.error('Failed to fetch products', { duration: 2000 })
-              setLoading(false);
-            }
+            
+            setLoading(true);
+            const productResponse = await getProducts(page, size, search, category)
+            setProductData(productResponse.data)
+            const categoryResponse = await getCategories()
+            setCategories(categoryResponse.data)
+            setLoading(false);
+            
         }
-        fetchData();
+        fetchData().then(() => {}).catch(() => {
+          toast.error('Error loading products')
+      })
     }, [page, size, search, category])
 
     const handlePreviousClick = () => {

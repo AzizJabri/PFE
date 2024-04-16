@@ -87,7 +87,7 @@ const UpdateUserEmail = () => {
         onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
-          <Form className="space-y-5 ">
+          <Form className="space-y-5 bg-base-200 p-5 rounded rounded-2xl">
             <h3 className="font-semibold text-2xl ">Update User Email</h3>
             <div className="space-y-2">
               <label className="text-sm font-medium ">Old Email</label>
@@ -113,9 +113,10 @@ const UpdateUserEmail = () => {
                 component="div"
               />
             </div>
+            <h1 className="text-xl">Actions:</h1>
             <div className="flex justify-center space-x-2">
               <button
-                className="w-1/3 bg-black-400 hover:bg-gray-500 text-white-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
+                className="w-1/3 btn btn-outline"
                 type="submit"
                 disabled={isSubmitting}
               >
@@ -128,7 +129,7 @@ const UpdateUserEmail = () => {
                 </span>
               </button>
               <button
-                className="w-1/3 bg-black-400 hover:bg-gray-500 text-white-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
+                className="w-1/3 btn btn-outline"
                 onClick={() => setShowPasswordModal(true)}
               >
                 Change Password
@@ -140,7 +141,7 @@ const UpdateUserEmail = () => {
                 {" "}
                 {/* Adjust the width as needed */}
                 <button
-                  className="w-full bg-black-400 hover:bg-gray-500 text-white-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
+                  className="w-full btn btn-outline"
                   onClick={handlePromote}
                   type="button"
                 >
@@ -151,7 +152,7 @@ const UpdateUserEmail = () => {
                 {" "}
                 {/* Adjust the width as needed */}
                 <button
-                  className="w-full bg-black-400 hover:bg-gray-500 text-white-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
+                  className="w-full btn btn-outline"
                   onClick={handleDemote}
                   type="button"
                 >
