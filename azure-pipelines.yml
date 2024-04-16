@@ -58,6 +58,8 @@ steps:
   - task: DockerInstaller@0
     inputs:
       dockerVersion: '17.09.0-ce'
+  
+  - script: ls -l
   - task: Docker@2
     inputs:
       containerRegistry: 'PFE ACR'
