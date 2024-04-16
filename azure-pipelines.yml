@@ -77,6 +77,7 @@ steps:
       repository: 'spring-server'
       command: 'build'
       Dockerfile: '$(Build.ArtifactStagingDirectory)/Dockerfile'
+      tags: 'latest'
       arguments: '--build-arg JAR_FILE=app.jar'
     displayName: Build Server Doker image
 
