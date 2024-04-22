@@ -7,91 +7,99 @@ trigger:
       - server
   
 
-pool:
-  vmImage : "ubuntu-latest"
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      name: "AzurePool"
+    steps:
+    - script: |
+        # Install JDK 21
+        sudo apt update
+        sudo apt install -y openjdk-21-jdk
+        
+        # Set JAVA_HOME environment variable
+        export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+        export PATH=$JAVA_HOME/bin:$PATH
 
-steps:
-  - script: |
-      # Install JDK 21
-      sudo apt update
-      sudo apt install -y openjdk-21-jdk
-      
-      # Set JAVA_HOME environment variable
-      export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-      export PATH=$JAVA_HOME/bin:$PATH
+        # Verify installation
+        java -version
+      displayName: Install JDK 21
 
-      # Verify installation
-      java -version
-    displayName: Install JDK 21
+    - script: |
+        # Install Maven
+        sudo apt install -y maven
+        
+        # Verify installation
+        mvn -version
+      displayName: Install Maven
 
-  - script: |
-      # Install Maven
-      sudo apt install -y maven
-      
-      # Verify installation
-      mvn -version
-    displayName: Install Maven
+    - checkout: self
 
-  - checkout: self
+    - task: Maven@4
+      inputs:
+        mavenPomFile: 'server/pom.xml'
+        options: '-DskipTests'
+        publishJUnitResults: false
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: false
+      displayName: Build Spring Boot App
+        
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'server/target'
+        Contents: 'app.jar'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      displayName: Copy app.jar to Artifacts Directory
+         
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'server'
+        Contents: 'Dockerfile'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      displayName: Copy Dockerfile to Artifacts Directory
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.jar'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+      displayName: Publish app.jar to Artifacts
 
-  - task: Maven@4
-    inputs:
-      mavenPomFile: 'server/pom.xml'
-      options: '-DskipTests'
-      publishJUnitResults: false
-      javaHomeOption: 'JDKVersion'
-      mavenVersionOption: 'Default'
-      mavenAuthenticateFeed: false
-      effectivePomSkip: false
-      sonarQubeRunAnalysis: false
-    displayName: Build Spring Boot App
-      
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: 'server/target'
-      Contents: 'app.jar'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    displayName: Copy app.jar to Artifacts Directory
-       
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: 'server'
-      Contents: 'Dockerfile'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    displayName: Copy Dockerfile to Artifacts Directory
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.jar'
-      ArtifactName: 'drop'
-      publishLocation: 'Container'
-    displayName: Publish app.jar to Artifacts
-  
-  - script: |
-      sudo apt-get -y update
-      sudo apt install -y docker.io
-      sudo systemctl start docker
-      sudo chmod 777 /var/run/docker.sock
-    displayName: Install Docker
-  - task: DockerInstaller@0
-    inputs:
-      dockerVersion: '17.09.0-ce'
-    displayName: Configure Docker CLI
-  
-  - task: Docker@2
-    inputs:
-      containerRegistry: 'PFE ACR'
-      repository: 'spring-server'
-      command: 'build'
-      Dockerfile: '$(Build.ArtifactStagingDirectory)/Dockerfile'
-      tags: 'latest'
-      arguments: '--build-arg JAR_FILE=app.jar'
-    displayName: Build Server Doker image
+- stage: Deploy
+  jobs:
+  - job: Deploy
+    pool:
+      name: "AzurePool"
+    steps:
+    - script: |
+        sudo apt-get -y update
+        sudo apt install -y docker.io
+        sudo systemctl start docker
+        sudo chmod 777 /var/run/docker.sock
+      displayName: Install Docker
+    - task: DockerInstaller@0
+      inputs:
+        dockerVersion: '17.09.0-ce'
+      displayName: Configure Docker CLI
+    
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'PFE ACR'
+        repository: 'spring-server'
+        command: 'build'
+        Dockerfile: '$(Build.ArtifactStagingDirectory)/Dockerfile'
+        tags: 'latest'
+        arguments: '--build-arg JAR_FILE=app.jar'
+      displayName: Build Server Docker image
 
-  
-  - task: Docker@2
-    inputs:
-      containerRegistry: 'PFE ACR'
-      repository: 'spring-server'
-      command: 'push'
-      tags: 'latest'
-    displayName: Push image to ACR
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'PFE ACR'
+        repository: 'spring-server'
+        command: 'push'
+        tags: 'latest'
+      displayName: Push image to ACR
