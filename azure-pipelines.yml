@@ -14,26 +14,6 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - script: |
-        # Install JDK 21
-        sudo apt update
-        sudo apt install -y openjdk-21-jdk
-        
-        # Set JAVA_HOME environment variable
-        export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-        export PATH=$JAVA_HOME/bin:$PATH
-
-        # Verify installation
-        java -version
-      displayName: Install JDK 21
-
-    - script: |
-        # Install Maven
-        sudo apt install -y maven
-        
-        # Verify installation
-        mvn -version
-      displayName: Install Maven
 
     - checkout: self
 
@@ -88,10 +68,23 @@ stages:
     - checkout: self
     - script: ls -l
     - script: ls -l $(Build.ArtifactStagingDirectory)
-  
+    - task: DownloadBuildArtifacts@1
+      inputs:
+        buildType: 'current'
+        downloadType: 'specific'
+        itemPattern: 'drop/**'
+        downloadPath: '$(System.ArtifactsDirectory)'
+        cleanDestinationFolder: true
+      
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'server'
+        Contents: 'Dockerfile'
+        TargetFolder: '$(System.ArtifactsDirectory)'
+
     - script: |
         # Build Docker image
-        docker build -t spring-server $(Build.ArtifactStagingDirectory)
+        docker build -t spring-server $(System.ArtifactsDirectory)
       displayName: Build Docker image
 
     - script: |
