@@ -66,8 +66,7 @@ stages:
       displayName: Azure CLI Login to ACR
 
     - checkout: self
-    - script: ls -l
-    - script: ls -l $(Build.ArtifactStagingDirectory)
+    
     - task: DownloadBuildArtifacts@1
       inputs:
         buildType: 'current'
@@ -89,11 +88,11 @@ stages:
 
     - script: |
         # Tag Docker image
-        docker tag spring-server PFEACR.azurecr.io/spring-server:latest
+        docker tag spring-server pfeacrdevops.azurecr.io/spring-server:latest
       displayName: Tag Docker image
 
     - script: |
         # Push Docker image to Azure Container Registry
-        docker push PFEACR.azurecr.io/spring-server:latest
+        docker push pfeacrdevops.azurecr.io/spring-server:latest
       displayName: Push Docker image to ACR
 
