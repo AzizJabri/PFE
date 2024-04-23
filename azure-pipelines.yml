@@ -85,12 +85,20 @@ stages:
         inlineScript: 'az acr login --name PfeAcrDevops'
       displayName: Azure CLI Login to ACR
 
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'PFE ACR'
-        repository: 'spring-server'
-        command: 'buildAndPush'
-        Dockerfile: 'server/Dockerfile'
-        tags: 'latest'
-        arguments: '--build-arg JAR_FILE=$(Build.ArtifactStagingDirectory)/app.jar'
-      displayName: Build and Push Server Docker image to ACR
+    - checkout: self
+  
+    - script: |
+        # Build Docker image
+        docker build -t spring-server $(Build.ArtifactStagingDirectory)
+      displayName: Build Docker image
+
+    - script: |
+        # Tag Docker image
+        docker tag spring-server PFEACR.azurecr.io/spring-server:latest
+      displayName: Tag Docker image
+
+    - script: |
+        # Push Docker image to Azure Container Registry
+        docker push PFEACR.azurecr.io/spring-server:latest
+      displayName: Push Docker image to ACR
+
