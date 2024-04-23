@@ -62,7 +62,7 @@ stages:
         azureSubscription: 'azureDevOpsStage'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: 'az acr login --name PfeAcrDevops'
+        inlineScript: 'az acr login --name $(acrDisplayName)'
       displayName: Azure CLI Login to ACR
 
     - checkout: self
@@ -88,11 +88,11 @@ stages:
 
     - script: |
         # Tag Docker image
-        docker tag spring-server pfeacrdevops.azurecr.io/spring-server:latest
+        docker tag spring-server $(acr-name)/spring-server:latest
       displayName: Tag Docker image
 
     - script: |
         # Push Docker image to Azure Container Registry
-        docker push pfeacrdevops.azurecr.io/spring-server:latest
+        docker push $(acr-name)/spring-server:latest
       displayName: Push Docker image to ACR
 
