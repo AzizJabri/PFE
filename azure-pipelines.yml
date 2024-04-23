@@ -43,6 +43,8 @@ stages:
         options: '-DskipTests'
         publishJUnitResults: false
         javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.21'
+        jdkArchitectureOption: 'x64'
         mavenVersionOption: 'Default'
         mavenAuthenticateFeed: false
         effectivePomSkip: false
