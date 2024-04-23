@@ -77,6 +77,14 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'azureDevOpsStage'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az acr login --name PfeAcrDevops'
+      displayName: Azure CLI Login to ACR
+
     - task: Docker@2
       inputs:
         containerRegistry: 'PFE ACR'
