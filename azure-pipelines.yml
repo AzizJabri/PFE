@@ -86,6 +86,14 @@ stages:
         dockerVersion: '17.09.0-ce'
       displayName: Configure Docker CLI
     
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'azureDevOpsStage'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az acr login'
+        arguments: '--name PfeAcrDevops'
+    
     - task: Docker@2
       inputs:
         containerRegistry: 'PFE ACR'
