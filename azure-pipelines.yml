@@ -86,6 +86,7 @@ stages:
       displayName: Azure CLI Login to ACR
 
     - checkout: self
+    - script: ls -l
   
     - script: |
         # Build Docker image
