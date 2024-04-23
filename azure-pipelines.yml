@@ -87,6 +87,7 @@ stages:
 
     - checkout: self
     - script: ls -l
+    - script: ls -l $(Build.ArtifactStagingDirectory)
   
     - script: |
         # Build Docker image
