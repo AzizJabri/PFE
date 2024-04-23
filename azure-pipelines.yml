@@ -12,7 +12,7 @@ stages:
   jobs:
   - job: Build
     pool:
-      name: "AzurePool"
+      vmImage: 'ubuntu-latest'
     steps:
     - script: |
         # Install JDK 21
@@ -73,41 +73,14 @@ stages:
   jobs:
   - job: Deploy
     pool:
-      name: "AzurePool"
+      vmImage: 'ubuntu-latest'
     steps:
-    - script: |
-        sudo apt-get -y update
-        sudo apt install -y docker.io
-        sudo systemctl start docker
-        sudo chmod 777 /var/run/docker.sock
-      displayName: Install Docker
-    - task: DockerInstaller@0
-      inputs:
-        dockerVersion: '17.09.0-ce'
-      displayName: Configure Docker CLI
-    
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: 'azureDevOpsStage'
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: 'az acr login'
-        arguments: '--name PfeAcrDevops'
-    
     - task: Docker@2
       inputs:
         containerRegistry: 'PFE ACR'
         repository: 'spring-server'
-        command: 'build'
-        Dockerfile: '$(Build.ArtifactStagingDirectory)/Dockerfile'
+        command: 'buildAndPush'
+        Dockerfile: 'server/Dockerfile'
         tags: 'latest'
-        arguments: '--build-arg JAR_FILE=app.jar'
-      displayName: Build Server Docker image
-
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'PFE ACR'
-        repository: 'spring-server'
-        command: 'push'
-        tags: 'latest'
-      displayName: Push image to ACR
+        arguments: '--build-arg JAR_FILE=$(Build.ArtifactStagingDirectory)/app.jar'
+      displayName: Build and Push Server Docker image to ACR
