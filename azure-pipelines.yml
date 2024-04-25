@@ -16,6 +16,17 @@ stages:
     steps:
 
     - checkout: self
+  
+    - task: SonarQubePrepare@5
+      inputs:
+        SonarQube: 'PfeSonar'
+        scannerMode: 'Other'
+        extraProperties: |
+          # Additional properties that will be passed to the scanner,
+          # Put one key=value per line, example:
+          # sonar.exclusions=**/*.bin
+          sonar.projectKey=PFE_DevOps_PFE_37595dbe-4f5e-433f-a397-b949cb8d1a58
+          sonar.projectName=PFE
 
     - task: Maven@4
       inputs:
@@ -28,7 +39,7 @@ stages:
         mavenVersionOption: 'Default'
         mavenAuthenticateFeed: false
         effectivePomSkip: false
-        sonarQubeRunAnalysis: false
+        sonarQubeRunAnalysis: true
       displayName: Build Spring Boot App
         
     - task: CopyFiles@2
