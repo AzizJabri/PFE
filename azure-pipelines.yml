@@ -41,7 +41,8 @@ stages:
         mavenVersionOption: 'Default'
         mavenAuthenticateFeed: false
         effectivePomSkip: false
-        sonarQubeRunAnalysis: false
+        sonarQubeRunAnalysis: true
+        sqMavenPluginVersionChoice: 'latest'
       displayName: Build Spring Boot App
         
     - task: SonarQubePublish@5
