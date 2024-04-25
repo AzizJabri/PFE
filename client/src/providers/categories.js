@@ -27,3 +27,17 @@ export const getCategories = async () => {
 export const getTopCategories = async () => { 
     return await api.get(`categories/top`);
 };
+export const fetchCategoryNamesByIds = async (ids) => {
+    try {
+        const promises = ids.map(async (id) => {
+            const response = await api.get(`categories/name/${id}`);
+            return response.data;
+        });
+        
+        const categoryNames = await Promise.all(promises);
+        return categoryNames;
+    } catch (error) {
+        console.error('Error fetching category names by IDs:', error);
+        return null;
+    }
+};

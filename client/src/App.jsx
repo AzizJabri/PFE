@@ -6,6 +6,7 @@ import { CartProvider } from './providers/cart'
 import React, { lazy, Suspense } from 'react';
 import Loading from './components/Loading'
 import UpdateUser from './pages/Admin/UpdateUser'
+import CardBarChart from './components/chartbar'
 
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const AuthLayout = lazy(() => import('./layouts/AuthLayout'));
@@ -39,6 +40,8 @@ const ProfileLayout = lazy(() => import('./layouts/ProfileLayout'));
 const Addresses = lazy(() => import('./pages/auth/profile/Addresses'));
 const UpdateImage = lazy(() => import('./pages/auth/profile/UpdateImage'));
 const updateUser = lazy(() => import('./pages/Admin/UpdateUser'));
+const Chartpage = lazy(() => import('./pages/Admin/Charts/chartpage'));
+
 
 
 const LazyLoadingFallback = () => <Loading/>;
@@ -90,6 +93,7 @@ function App() {
                 <Route path="update-categories/:categoryId" element={<UpdateCategories />} />
                 <Route path="update-order/:orderId" element={<UpdateOrder />} />
                 <Route path="/admin/updateUser/:userId" element={<UpdateUser />} />
+                <Route path="chart" element={<Chartpage/>} />
               </Route>
 
               <Route path="/cart" element={<ProductsLayout />}>
