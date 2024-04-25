@@ -21,13 +21,10 @@ stages:
       inputs:
         SonarQube: 'PfeSonar'
         scannerMode: 'CLI'
-        configMode: 'file'
-        extraProperties: |
-          # Additional properties that will be passed to the scanner,
-          # Put one key=value per line, example:
-          # sonar.exclusions=**/*.bin
-          sonar.projectKey=PFE_DevOps_PFE_37595dbe-4f5e-433f-a397-b949cb8d1a58
-          sonar.projectName=PFE
+        configMode: 'manual'
+        cliProjectKey: 'PFE_DevOps_PFE_3b7c461e-db96-4350-a67b-dcc210e3df48'
+        cliSources: '.'
+        extraProperties: ''
       
     - task: Maven@4
       inputs:
