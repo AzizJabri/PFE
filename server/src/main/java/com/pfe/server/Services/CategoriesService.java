@@ -3,7 +3,6 @@ package com.pfe.server.Services;
 import com.pfe.server.Models.Category;
 import com.pfe.server.Repositories.CategoriesRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.redis.connection.zset.Tuple;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,9 +42,4 @@ public class CategoriesService {
         List<Category> categories =  categoriesRepository.findByOrderByProductsAsc();
         return categories.subList(0, Math.min(categories.size(), 3));
     }
-    public String findCategoryNameById(Long id) {
-        Category category = categoriesRepository.findCategoryById(id);
-        return category != null ? category.getName() : null;
-    }
-
 }

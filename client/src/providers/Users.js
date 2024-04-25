@@ -81,4 +81,15 @@ export const changeUserEmail = async (oldEmail, newEmail) => {
       console.error('Failed to change user password:', error);
       throw new Error('Failed to change user password');
     }
+
   };
+ export const getNewUserCountLastWeek = async () => {
+    try {
+      const response = await api.get(`users/newusers-lastweek`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching new user count:', error);
+      throw error;
+    }
+  };
+

@@ -20,23 +20,23 @@ const Register = () => {
         validate={values => {
           const errors = {};
           if (!values.email) {
-            errors.email = 'Required';
+            errors.email = '(Required)';
           } else if (
             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
               values.email,
             )
           ) {
-            errors.email = 'Invalid email address';
+            errors.email = '(Invalid email address)';
           }
           if (!values.password) {
-            errors.password = 'Required';
+            errors.password = '(Required)';
           } else if (values.password.length < 8) {
-            errors.password = 'Password must be at least 6 characters';
+            errors.password = '(Password must be at least 6 characters)';
           }
           if (!values.confirmPassword) {
-            errors.confirmPassword = 'Required';
+            errors.confirmPassword = '(Required)';
           } else if (values.confirmPassword !== values.password) {
-            errors.confirmPassword = 'Passwords do not match';
+            errors.confirmPassword = '(Passwords do not match)';
           }
           if (!values.terms) {
             errors.terms = 'You must accept the terms and conditions';
@@ -53,80 +53,82 @@ const Register = () => {
                 setSubmitting(false)
             })
         }}
+        validateOnChange={false}
+        validateOnBlur={false}
       >
         {({ isSubmitting }) => (
           <Form>
-            <div className="bg-no-repeat bg-cover bg-center relative bg-gradient-to-b from-blue-800 to-cyan-400">
+            <div className="bg-no-repeat bg-cover bg-center relative bg-gradient-to-b from-primary to-accent">
               <div className="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
                 <div className="flex-col flex  self-center p-10 sm:max-w-5xl xl:max-w-2xl  z-10">
-                  <div className="self-start hidden lg:flex flex-col  text-white">
+                  <div className="self-start hidden lg:flex flex-col  text-primary-content">
                     <img src="" className="mb-3" />
                     <h1 className="mb-3 font-bold text-4xl">Create Your Account Now! </h1>
                     <p className="pr-3">
                       Welcome to our registration page. To get started, please fill out the required information below.
                     </p>
-                    <Link to="/auth/login">Already have an account? Login here</Link>
+                    <Link to="/auth/login" className='link '>Already have an account? Login here</Link>
                   </div>
                 </div>
                 <div className="flex justify-center self-center  z-10">
-                  <div className="p-12 bg-white mx-auto rounded-2xl w-100 ">
+                  <div className="p-12 bg-base-200 mx-auto rounded-2xl w-100 ">
                     <div className="mb-4">
-                      <h3 className="font-semibold text-2xl text-gray-800">Create an account</h3>
-                      <p className="text-gray-500">Please fill to be a member</p>
+                      <h3 className="font-semibold text-2xl text-base-content">Create an account</h3>
+                      <p>Please fill to be a member</p>
                     </div>
                     <div className="space-y-5">
                       <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700 tracking-wide">
-                          Email
+                        <label className="text-sm font-medium tracking-wide">
+                          Email 
                         </label>
                         <Field
-                          className="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-blue-400"
+                          className="input input-bordered w-full"
                           type="email"
                           placeholder="Enter your email"
                           name="email"
                         />
-                        <ErrorMessage className='text-red-500' name="email" component="div" />
+                        <ErrorMessage className='text-red-500' name="email" component="span" />
                       </div>
                       <div className="space-y-2">
-                        <label className="mb-5 text-sm font-medium text-gray-700 tracking-wide">
-                          Password
+                        <label className="mb-5 text-sm font-medium tracking-wide">
+                          Password 
                         </label>
                         <Field
-                          className="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-blue-400"
+                          className="input input-bordered w-full"
                           type="password"
                           placeholder="Enter your password"
                           name="password"
                         />
-                        <ErrorMessage className='text-red-500' name="password" component="div" />
+                        <ErrorMessage className='text-red-500' name="password" component="span" />
                       </div>
                       <div className="space-y-2">
-                        <label className="mb-5 text-sm font-medium text-gray-700 tracking-wide">
-                          Confirm Password
+                        <label className="mb-5 text-sm font-medium tracking-wide">
+                          Confirm Password 
                         </label>
                         <Field
-                          className="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-blue-400"
+                          className="input input-bordered w-full"
                           type="password"
                           placeholder="Enter your password"
                           name="confirmPassword"
                         />
-                        <ErrorMessage className='text-red-500' name="confirmPassword" component="div" />
+                        <ErrorMessage className='text-red-500' name="confirmPassword" component="span" />
                       </div>
                       <div>
                         <label className="inline-flex items-center cursor-pointer">
                           <Field
                             type="checkbox"
-                            className="form-checkbox h-5 w-5 text-gray-600"
+                            className="checkbox"
                             name="terms"
                           />
-                          <span className="ml-2 text-sm font-medium text-gray-700">
+                          <span className="ml-2 text-sm font-medium">
                             I agree with terms and conditions
                           </span>
                         </label>
-                          <ErrorMessage className='text-red-500' name="terms" component="div" />
+                          <ErrorMessage className='text-red-500' name="terms" component="span" />
                       </div>
                       <div>
                         <button
-                          className="w-full flex justify-center bg-blue-400  hover:bg-blue-500 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500"
+                          className="w-full btn btn-primary"
                           type="submit"
                           disabled={isSubmitting}
                         >
@@ -135,9 +137,9 @@ const Register = () => {
                       </div>
                     </div>
                     <div className="flex flex-col items-center justify-center mt-6">
-                      <div className="text-gray-600 font-light">
+                      <div className="font-light">
                         Already have an account?
-                        <Link to="/auth/login" className="text-blue-400 hover:text-blue-500">
+                        <Link to="/auth/login" className="link link-primary">
                           Login
                         </Link>
                       </div>

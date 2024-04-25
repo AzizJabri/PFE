@@ -1,0 +1,20 @@
+.chart-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    position: relative; 
+  }
+  
+  .chart-container > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .chart-container > *:first-child {
+    z-index: 1; /* Ensure the first component appears behind the second one */
+  }
+  .product{
+    margin-left: 50em;
+    margin-top: 6em;
+  }

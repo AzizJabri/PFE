@@ -39,3 +39,42 @@ export const deleteProduct = async (id) => {
     return await api.delete(`products/${id}`);
 };
 
+export async function fetchProductCountsByCategory() {
+    try {
+      const response = await api.get("products/countByCategory");
+      console.log(response);
+      if (response.status !== 200) {
+        throw new Error("Failed to fetch data");
+      }
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return null;
+    }
+  }
+  
+  export const fetchProductNamesByIds = async (ids) => {
+    try {
+        const promises = ids.map(async (id) => {
+            const response = await api.get(`products/name/${id}`);
+            return response.data;
+        });
+        
+        const productNames = await Promise.all(promises);
+        return productNames;
+    } catch (error) {
+        console.error('Error fetching product names by IDs:', error);
+        return null;
+    }
+};
+export const  getCountOfAllProducts=async () => {
+      try {
+        const response = await api.get(`products/count`);
+        console.log(response.data);
+        return response.data;
+        
+      } catch (error) {
+        throw new Error('Failed to fetch count of all products');
+      }
+    };
+  

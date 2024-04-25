@@ -56,7 +56,10 @@ public class ProfileController {
         }
         String oldImage = profile.getImage();
         profile.setImage(imageService.uploadImage(image));
-        imageService.deleteImage(oldImage);
+        //do not delete the default image
+        if (!oldImage.equals(imageService.getDefaultImage())) {
+            imageService.deleteImage(oldImage);
+        }
         return ResponseEntity.ok(profileService.updateProfile(profile));
     }
 
