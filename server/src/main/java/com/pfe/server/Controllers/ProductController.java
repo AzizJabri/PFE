@@ -155,4 +155,21 @@ public class ProductController {
 
         return new ResponseEntity<>(product.get(), HttpStatus.OK);
     }
+    @GetMapping("/countByCategory")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Object[]>> countProductsByCategoryId() {
+        List<Object[]> counts = productService.countProductsByCategoryId();
+        return ResponseEntity.ok(counts);
+    }
+    @GetMapping("/name/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String getProductByName(@PathVariable Long id){
+        return productService.findProductNameById(id);
+    }
+    @GetMapping("/count")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Long> countAllProducts() {
+        Long totalProducts = productService.countAllProducts();
+        return ResponseEntity.ok(totalProducts);
+    }
 }

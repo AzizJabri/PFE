@@ -139,5 +139,11 @@ public ResponseEntity<List<User>> getAllUsers() {
         userRepository.save(currentUser);
         return ResponseEntity.ok("Email changed successfully");
     }
+    @GetMapping("/newusers-lastweek")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Long> getNewUserCountLastWeek() {
+        Long newUserCount = userService.getNewUserCountLastWeek();
+        return ResponseEntity.ok(newUserCount);
+    }
 
 }

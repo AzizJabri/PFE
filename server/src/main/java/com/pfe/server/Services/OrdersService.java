@@ -6,10 +6,12 @@ import com.pfe.server.Models.Orders;
 import com.pfe.server.Models.Product;
 import com.pfe.server.Payloads.Request.OrderItemRequest;
 import com.pfe.server.Payloads.Request.OrderRequest;
+import com.pfe.server.Repositories.Order_itemsRepository;
 import com.pfe.server.Repositories.OrdersRepository;
 import com.pfe.server.Repositories.ProductRepository;
 import jakarta.persistence.EnumType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ public class OrdersService {
     private OrdersRepository ordersRepository;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private Order_itemsRepository orderItemRepository;
     public List<Orders> getAllOrders() {
         return ordersRepository.findAll();
     }
@@ -95,4 +99,19 @@ public class OrdersService {
     public void deleteOrder(Long id) {
         ordersRepository.deleteById(id);
     }
+    public List<Object[]> findTop5ProductsByRepetitionCount() {
+        return orderItemRepository.findTop5ProductsByRepetitionCount();
+    }
+    public Double sumAllPrices() {
+        return orderItemRepository.sumAllPrices();
+    }
+    public Optional<Long> findMostRepetitiveUserId() {
+        List<Long> userIds = ordersRepository.findMostRepetitiveUserId();
+        if (userIds.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(userIds.get(0));
+        }
+    }
+
 }

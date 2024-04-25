@@ -1,5 +1,6 @@
 package com.pfe.server.Services;
 
+import com.pfe.server.Models.Category;
 import com.pfe.server.Models.Product;
 import com.pfe.server.Payloads.Request.UpdateProductRequest;
 import com.pfe.server.Repositories.ProductRepository;
@@ -65,6 +66,16 @@ public class ProductService {
         Pageable pageable = PageRequest.of(page, size);
         return productRepository.findByCategory_Id(categoryId, pageable);
 
+    }
+    public List<Object[]> countProductsByCategoryId() {
+        return productRepository.countProductsByCategoryId();
+    }
+    public String findProductNameById(Long id) {
+        Product product = productRepository.findProductById(id);
+        return product != null ? product.getName() : null;
+    }
+    public Long countAllProducts() {
+        return productRepository.countAll();
     }
 }
 

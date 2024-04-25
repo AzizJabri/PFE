@@ -14,4 +14,6 @@ public interface CategoriesRepository extends JpaRepository<Category, Long> {
 
     //get top 3 categories with most products
     List<Category> findByOrderByProductsAsc();
+    Category findCategoryById(Long id);
+
 }

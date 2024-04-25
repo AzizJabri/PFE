@@ -4,6 +4,7 @@ import com.pfe.server.Models.Category;
 import com.pfe.server.Payloads.Request.CreateCategoryRequest;
 import com.pfe.server.Services.CategoriesService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +47,14 @@ public class CategoriesController {
     }
 
     @GetMapping("/top")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Category> getTopCategories() {
         return categoriesService.getTopCategories();
     }
+    @GetMapping("/name/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String getCategoryByName(@PathVariable Long id){
+        return categoriesService.findCategoryNameById(id);
+    }
 }
+

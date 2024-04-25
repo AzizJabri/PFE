@@ -10,7 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -38,7 +40,8 @@ public class User {
     @JsonIgnore
     @Size(max = 120)
     private String password;
-
+    @CreationTimestamp
+    private LocalDateTime createdDate;
     //profile
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -64,4 +67,5 @@ public class User {
     public Cart getCart() {
         return cart;
     }
+
 }
