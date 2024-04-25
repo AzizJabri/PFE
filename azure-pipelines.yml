@@ -7,6 +7,7 @@ trigger:
       - server
   
 
+
 stages:
 - stage: Build
   jobs:
@@ -23,8 +24,9 @@ stages:
         scannerMode: 'CLI'
         configMode: 'manual'
         cliProjectKey: 'PFE_DevOps_PFE_3b7c461e-db96-4350-a67b-dcc210e3df48'
+        cliProjectName: 'PFE'
         cliSources: '.'
-        extraProperties: ''
+        extraProperties: 
       
     - task: Maven@4
       inputs:
