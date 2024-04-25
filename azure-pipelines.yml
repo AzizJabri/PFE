@@ -45,6 +45,10 @@ stages:
     - task: SonarQubeAnalyze@5
       inputs:
         jdkversion: 'JAVA_HOME_21_X64'
+      
+    - task: SonarQubePublish@5
+      inputs:
+        pollingTimeoutSec: '300'
     - task: CopyFiles@2
       inputs:
         SourceFolder: 'server/target'
