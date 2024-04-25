@@ -39,9 +39,12 @@ stages:
         mavenVersionOption: 'Default'
         mavenAuthenticateFeed: false
         effectivePomSkip: false
-        sonarQubeRunAnalysis: true
+        sonarQubeRunAnalysis: false
       displayName: Build Spring Boot App
         
+    - task: SonarQubeAnalyze@5
+      inputs:
+        jdkversion: 'JAVA_HOME_21_X64'
     - task: CopyFiles@2
       inputs:
         SourceFolder: 'server/target'
