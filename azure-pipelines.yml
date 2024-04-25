@@ -99,7 +99,7 @@ stages:
 
     - script: |
         # Build Docker image
-        docker build -t spring-server $(System.ArtifactsDirectory)
+        docker build -t spring-server $(System.ArtifactsDirectory) --build-arg JAR_FILE=app.jar
       displayName: Build Docker image
 
     - script: |
