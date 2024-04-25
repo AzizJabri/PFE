@@ -20,16 +20,14 @@ stages:
     - task: SonarQubePrepare@5
       inputs:
         SonarQube: 'PfeSonar'
-        scannerMode: 'Other'
+        scannerMode: 'CLI'
+        configMode: 'file'
         extraProperties: |
           # Additional properties that will be passed to the scanner,
           # Put one key=value per line, example:
           # sonar.exclusions=**/*.bin
           sonar.projectKey=PFE_DevOps_PFE_37595dbe-4f5e-433f-a397-b949cb8d1a58
           sonar.projectName=PFE
-    - task: SonarQubeAnalyze@5
-      inputs:
-        jdkversion: 'JAVA_HOME_21_X64'
       
     - task: Maven@4
       inputs:
@@ -41,10 +39,12 @@ stages:
         mavenVersionOption: 'Default'
         mavenAuthenticateFeed: false
         effectivePomSkip: false
-        sonarQubeRunAnalysis: true
-        sqMavenPluginVersionChoice: 'latest'
+        sonarQubeRunAnalysis: false
       displayName: Build Spring Boot App
-        
+
+    - task: SonarQubeAnalyze@5
+      inputs:
+        jdkversion: 'JAVA_HOME_21_X64'
     - task: SonarQubePublish@5
       inputs:
         pollingTimeoutSec: '300'
