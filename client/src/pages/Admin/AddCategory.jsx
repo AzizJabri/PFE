@@ -6,7 +6,7 @@ import { createCategory } from '@/providers/categories'
 const AddCategory = () => {
   
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center p-5">
       <div>
         <Formik
           initialValues={{
@@ -27,20 +27,36 @@ const AddCategory = () => {
           }}
         >
           {({ isSubmitting }) => (
-            <Form enctype="application/json"> {/* Add enctype attribute here */}
-              <Field name="name" placeholder="Name" />
-              <ErrorMessage name="name" component="div" className="text-red-500" />
-              <br />
-              <Field name="description" placeholder="Description" />
-              <ErrorMessage name="description" component="div" className="text-red-500" />
-              <br />
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full flex justify-center bg-blue-400 hover:bg-blue-500 text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
-              >
-                Submit
-              </button>
+            <Form enctype="application/json" className='space-y-5'> 
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Name</label>
+                <Field
+                  name="name"
+                  type="text"
+                  className="input input-bordered w-full"
+                  placeholder="Enter category name"
+                />
+                <ErrorMessage name="name" component="div" className="text-error" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Description</label>
+                <Field
+                  name="description"
+                  type="text"
+                  className="input input-bordered w-full"
+                  placeholder="Enter category description"
+                />
+                <ErrorMessage name="description" component="div" className="text-error" />
+              </div>
+              <div className="flex justify-center">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn btn-primary w-full"
+                >
+                  Add Category
+                </button>
+              </div>
             </Form>
           )}
         </Formik>

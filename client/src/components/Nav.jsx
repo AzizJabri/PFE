@@ -35,17 +35,15 @@ function Navbar() {
         <ul className="menu menu-horizontal px-1">
           <li><NavLink to="/admin/products">Products</NavLink></li>
           <li>
-            <details>
-              <summary>Categories</summary>
-              <ul className="p-2">
-                <li><a>clothes</a></li>
-                <li><a>Phones</a></li>
-              </ul>
-            </details>
+            <NavLink to="/admin/list-orders">Orders</NavLink>
           </li>
           <li>
-            <NavLink to="/admin/categories">Categories</NavLink>
+            <NavLink to="/admin/list-category">Categories</NavLink>
           </li>
+          <li>
+            <NavLink to="/admin/list-users">Users</NavLink>
+          </li>
+          
         </ul>
       </div>
       <div className="navbar-end">

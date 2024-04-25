@@ -3,6 +3,7 @@ package com.pfe.server.Services;
 import com.pfe.server.Models.Category;
 import com.pfe.server.Repositories.CategoriesRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

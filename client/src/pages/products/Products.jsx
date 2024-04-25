@@ -6,6 +6,7 @@ import Loading from '@/components/Loading'
 import { getCategories } from '@/providers/categories'
 import GhostProduct from '@/components/GhostProduct'
 import GhostCategory from '@/components/GhostCategory'
+import toast from 'react-hot-toast'
 
 const Products = () => {
     const [productData, setProductData] = useState({
@@ -31,14 +32,18 @@ const Products = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            
             setLoading(true);
             const productResponse = await getProducts(page, size, search, category)
             setProductData(productResponse.data)
             const categoryResponse = await getCategories()
             setCategories(categoryResponse.data)
             setLoading(false);
+            
         }
-        fetchData();
+        fetchData().then(() => {}).catch(() => {
+          toast.error('Error loading products')
+      })
     }, [page, size, search, category])
 
     const handlePreviousClick = () => {

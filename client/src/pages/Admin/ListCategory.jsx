@@ -11,12 +11,14 @@ const ListCategory = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [categoriesPerPage] = useState(5);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await getCategory(currentPage, categoriesPerPage); 
         setCategories(response.data);   
+        setLoading(false);
         console.log(response.data)
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -52,8 +54,8 @@ const ListCategory = () => {
       </h4>
       <br />
       <br />
-      <div className="overflow-x-auto">
-        <table className="table">
+      <div className="overflow-x-auto px-4">
+        <table className="table border border-base-300">
           <thead>
             <tr>
               <th>ID</th>
@@ -63,7 +65,23 @@ const ListCategory = () => {
             </tr>
           </thead>
           <tbody>
-            {currentCategories.map((category, index) => (
+          {loading ? (
+            // Rendering skeleton placeholders while loading
+            Array.from({ length: 5 }).map((_, index) => (
+              <tr key={index}>
+                <td><div className="skeleton h-6 w-16"></div></td>
+                <td><div className="skeleton h-6 w-24"></div></td>
+                <td><div className="skeleton h-6 w-48"></div></td>
+                <td><div className="skeleton h-6 w-16"></div></td>
+                <td><div className="skeleton h-6 w-24"></div></td>
+                <td>
+                  <button className="btn mr-2"><div className="skeleton h-6 w-16"></div></button>
+                  <button className="btn ml-2"><div className="skeleton h-6 w-16"></div></button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            currentCategories.map((category, index) => (
               <tr key={index}>
                 <td>{category.id}</td>
                 <td>{category.name}</td>
@@ -74,7 +92,8 @@ const ListCategory = () => {
 
                 </td>
               </tr>
-            ))}
+            ))
+          )}
           </tbody>
         </table>
       </div>
