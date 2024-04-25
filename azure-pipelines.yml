@@ -31,7 +31,7 @@ stages:
     - script: |
         FILTERED_PARAMS=$(echo $SONARQUBE_SCANNER_PARAMS | sed 's/"sonar.branch.name":"[^"]*"\,//g')
         echo "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$FILTERED_PARAMS"
-      displayName: Filter out non-CE sonar parameters
+      displayName: Filter out Branch Name
     - task: Maven@4
       inputs:
         mavenPomFile: 'server/pom.xml'
@@ -65,9 +65,9 @@ stages:
         publishLocation: 'Container'
       displayName: Publish app.jar to Artifacts
 
-- stage: Deploy
+- stage: Deliver
   jobs:
-  - job: Deploy
+  - job: Deliver
     pool:
       vmImage: 'ubuntu-latest'
     steps:
@@ -88,12 +88,14 @@ stages:
         itemPattern: 'drop/**'
         downloadPath: '$(System.ArtifactsDirectory)'
         cleanDestinationFolder: true
+      displayName: Download app.jar from Artifacts
       
     - task: CopyFiles@2
       inputs:
         SourceFolder: 'server'
         Contents: 'Dockerfile'
         TargetFolder: '$(System.ArtifactsDirectory)'
+      displayName: Copy Dockerfile to Artifacts Directory
 
     - script: |
         # Build Docker image
@@ -110,3 +112,9 @@ stages:
         docker push $(acr-name)/spring-server:latest
       displayName: Push Docker image to ACR
 
+# - stage: Deploy
+#   jobs:
+#   - job: Deploy
+#     pool:
+#       vmImage: 'ubuntu-latest'
+#     steps:
