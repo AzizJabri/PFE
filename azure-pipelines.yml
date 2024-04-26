@@ -112,9 +112,23 @@ stages:
         docker push $(acr-name)/spring-server:latest
       displayName: Push Docker image to ACR
 
-# - stage: Deploy
-#   jobs:
-#   - job: Deploy
-#     pool:
-#       vmImage: 'ubuntu-latest'
-#     steps:
+- stage: Deploy
+  jobs:
+  - job: Deploy
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - checkout: self
+    
+    - task: KubectlInstaller@0
+      inputs:
+        kubectlVersion: 'latest'
+    
+    - task: Kubernetes@1
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceEndpoint: 'PFE AKS'
+        command: 'apply'
+        arguments: '-f ./k8s'
+        secretType: 'dockerRegistry'
+        containerRegistryType: 'Azure Container Registry'
