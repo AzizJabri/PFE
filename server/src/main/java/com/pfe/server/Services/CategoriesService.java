@@ -43,4 +43,8 @@ public class CategoriesService {
         List<Category> categories =  categoriesRepository.findByOrderByProductsAsc();
         return categories.subList(0, Math.min(categories.size(), 3));
     }
+    public String findCategoryNameById(Long id) {
+        Category category = categoriesRepository.findCategoryById(id);
+        return category != null ? category.getName() : null;
+    }
 }
