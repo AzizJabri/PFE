@@ -26,7 +26,9 @@ public class OrdersService {
     @Autowired
     private ProductService productService;
     @Autowired
-    private Order_itemsRepository orderItemRepository;
+
+    private Order_itemsRepository OrderitemsRepository;
+
     public List<Orders> getAllOrders() {
         return ordersRepository.findAll();
     }
@@ -99,12 +101,14 @@ public class OrdersService {
     public void deleteOrder(Long id) {
         ordersRepository.deleteById(id);
     }
+
     public List<Object[]> findTop5ProductsByRepetitionCount() {
         return orderItemRepository.findTop5ProductsByRepetitionCount();
     }
     public Double sumAllPrices() {
         return orderItemRepository.sumAllPrices();
     }
+
     public Optional<Long> findMostRepetitiveUserId() {
         List<Long> userIds = ordersRepository.findMostRepetitiveUserId();
         if (userIds.isEmpty()) {
@@ -113,5 +117,6 @@ public class OrdersService {
             return Optional.of(userIds.get(0));
         }
     }
+
 
 }

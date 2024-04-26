@@ -87,6 +87,16 @@ public class ProductService {
         return productRepository.countProductsByCategoryId();
     }
     public String findProductNameById(Long id) {
+
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent()) {
+            return productOptional.get().getName();
+        } else {
+            throw new RuntimeException("Product not found");
+        }
+    }
+    public Long countAllProducts() {
+        return productRepository.count();
         Product product = productRepository.findProductById(id);
         return product != null ? product.getName() : null;
     }

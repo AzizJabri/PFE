@@ -6,6 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import org.springframework.data.redis.core.RedisHash;
+
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +25,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 
   @Query("SELECT p.category.id, COUNT(p) FROM Product p GROUP BY p.category.id")
   List<Object[]> countProductsByCategoryId();
+
 
   Product findProductById(Long id);
   @Query("SELECT COUNT(p) FROM Product p")

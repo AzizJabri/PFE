@@ -49,4 +49,9 @@ public class CategoriesController {
     public List<Category> getTopCategories() {
         return categoriesService.getTopCategories();
     }
+    @GetMapping("/name/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String getCategoryByName(@PathVariable Long id){
+        return categoriesService.findCategoryNameById(id);
+    }
 }
