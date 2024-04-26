@@ -12,7 +12,6 @@ import com.pfe.server.Services.ProductService;
 import com.pfe.server.Services.UserService;
 import jdk.jfr.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,6 @@ public class OrdersController {
     private ProductService productService;
     @Autowired
     CartService cartService;
-
     @GetMapping("/")
     public ResponseEntity<List<Orders>> getAllOrders(Principal principal) {
         User user = userService.getUserByEmail(principal.getName());
@@ -89,23 +87,5 @@ public class OrdersController {
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         ordersService.deleteOrder(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-    @GetMapping("/top5products")
-    @PreAuthorize("hasRole('ADMIN')")
-    public List<Object[]> getTop5ProductsByRepetitionCount() {
-        return ordersService.findTop5ProductsByRepetitionCount();
-    }
-    @GetMapping("/sumprices")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Double> sumAllPrices() {
-        Double totalPrice = ordersService.sumAllPrices();
-        return ResponseEntity.ok(totalPrice);
-    }
-
-    @GetMapping("/most-repetitive-user-id")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Long> findMostRepetitiveUserId() {
-        Optional<Long> userId = ordersService.findMostRepetitiveUserId();
-        return userId.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 }

@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
@@ -26,7 +26,7 @@ import java.util.Set;
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "email")
         })
-public class User {
+public class User  implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
