@@ -1,5 +1,6 @@
 package com.pfe.server.Services;
 
+import com.pfe.server.Models.Category;
 import com.pfe.server.Models.Product;
 import com.pfe.server.Payloads.Request.UpdateProductRequest;
 import com.pfe.server.Repositories.ProductRepository;
@@ -86,6 +87,7 @@ public class ProductService {
         return productRepository.countProductsByCategoryId();
     }
     public String findProductNameById(Long id) {
+
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isPresent()) {
             return productOptional.get().getName();
@@ -95,6 +97,11 @@ public class ProductService {
     }
     public Long countAllProducts() {
         return productRepository.count();
+        Product product = productRepository.findProductById(id);
+        return product != null ? product.getName() : null;
+    }
+    public Long countAllProducts() {
+        return productRepository.countAll();
     }
 }
 

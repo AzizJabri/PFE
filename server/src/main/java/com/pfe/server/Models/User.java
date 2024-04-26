@@ -10,9 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-
+import org.hibernate.annotations.CreationTimestamp;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +25,7 @@ import java.util.Set;
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "email")
         })
-public class User implements Serializable {
+public class User  implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,7 +39,8 @@ public class User implements Serializable {
     @JsonIgnore
     @Size(max = 120)
     private String password;
-
+    @CreationTimestamp
+    private LocalDateTime createdDate;
     //profile
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -65,4 +66,5 @@ public class User implements Serializable {
     public Cart getCart() {
         return cart;
     }
+
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -44,6 +45,11 @@ public class UserService {
             user.setRoles(updatedUser.getRoles());
             return userRepository.save(user);
         }).orElse(null);
+    }
+    public Long getNewUserCountLastWeek() {
+        LocalDateTime startDate = LocalDate.now().minusDays(7).atStartOfDay();
+        LocalDateTime endDate = LocalDate.now().atStartOfDay().plusDays(1).minusNanos(1);
+        return userRepository.countByCreatedDateBetween(startDate, endDate);
     }
 
 
