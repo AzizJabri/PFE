@@ -46,11 +46,6 @@ public class UserService {
             return userRepository.save(user);
         }).orElse(null);
     }
-    public Long getNewUserCountLastWeek() {
-        LocalDateTime startDate = LocalDate.now().minusDays(7).atStartOfDay();
-        LocalDateTime endDate = LocalDate.now().atStartOfDay().plusDays(1).minusNanos(1);
-        return userRepository.countByCreatedDateBetween(startDate, endDate);
-    }
 
 
 }

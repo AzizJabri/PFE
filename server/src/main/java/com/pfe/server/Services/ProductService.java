@@ -96,11 +96,6 @@ public class ProductService {
         }
     }
     public Long countAllProducts() {
-        return productRepository.count();
-        Product product = productRepository.findProductById(id);
-        return product != null ? product.getName() : null;
-    }
-    public Long countAllProducts() {
         return productRepository.countAll();
     }
 }

@@ -39,8 +39,11 @@ public class User  implements Serializable{
     @JsonIgnore
     @Size(max = 120)
     private String password;
+
+    //created_at
     @CreationTimestamp
-    private LocalDateTime createdDate;
+    private LocalDateTime created_at;
+
     //profile
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference

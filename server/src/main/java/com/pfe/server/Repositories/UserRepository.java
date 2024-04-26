@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.redis.core.RedisHash;
@@ -22,8 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Boolean existsByEmail(String email);
 
-    @Query("SELECT COUNT(u) FROM User u WHERE u.createdDate >= :startDate AND u.createdDate <= :endDate")
-    Long countByCreatedDateBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
-    Optional<User> findById(Long Id);
+
+    @NotNull Optional<User> findById(Long Id);
 
 }
