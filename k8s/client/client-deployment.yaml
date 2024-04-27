@@ -9,6 +9,11 @@ spec:
   selector:
     matchLabels:
       app: react-client
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   template:
     metadata:
       labels:
@@ -16,7 +21,7 @@ spec:
     spec:
       containers:
       - name: react-client
-        image: your_registry/react-client:latest
+        image: pfeacr.azurecr.io/spring-server:41
         imagePullPolicy: Always
         ports:
         - containerPort: 80
