@@ -70,6 +70,8 @@ stages:
   - job: Deliver
     pool:
       vmImage: 'ubuntu-latest'
+    variables:
+    - group: ACRGroup
     steps:
     - task: AzureCLI@2
       inputs:
