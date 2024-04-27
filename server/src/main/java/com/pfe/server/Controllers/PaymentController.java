@@ -61,8 +61,8 @@ public class PaymentController {
                 SessionCreateParams.builder()
                         .setMode(SessionCreateParams.Mode.PAYMENT)
                         .setCustomer(customer.getId())
-                        .setSuccessUrl(clientBaseURL + "/payment/success?session_id={CHECKOUT_SESSION_ID}")
-                        .setCancelUrl(clientBaseURL + "/payment/failure");
+                        .setSuccessUrl(clientBaseURL + "#/payment/success?session_id={CHECKOUT_SESSION_ID}")
+                        .setCancelUrl(clientBaseURL + "#/payment/failure");
 
         Orders order = cartService.createOrderFromCart(user);
         if (order == null) {
