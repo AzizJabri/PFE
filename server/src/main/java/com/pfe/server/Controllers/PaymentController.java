@@ -51,7 +51,7 @@ public class PaymentController {
         }
 
         Stripe.apiKey = stripeSecret;
-        String clientBaseURL = frontendURL.isEmpty() ? "http://localhost:5173" : frontendURL;
+        String clientBaseURL = frontendURL;
 
         // Start by finding an existing customer record from Stripe or creating a new one if needed
         Customer customer = CustomerUtil.findOrCreateCustomer(user.getEmail(), user.getProfile().getFirstName());
