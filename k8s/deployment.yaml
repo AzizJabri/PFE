@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: spring-server
-        image: pfeacrdevops.azurecr.io/spring-server:latest
+        image: $(acrName)/spring-server:$(imageTag)
         imagePullPolicy: Always
         ports:
         - containerPort: 8001
