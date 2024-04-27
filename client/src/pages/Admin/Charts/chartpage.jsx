@@ -9,26 +9,26 @@ function chartpage() {
       <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-white rounded-lg shadow-md p-4">
+        <div className="bg-base-200 rounded-lg shadow-md p-4">
           <h2 className="text-xl font-semibold mb-2">Product Chart</h2>
-          <ProductChart />
+          <ChartNumbers />
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-4">
+        <div className="bg-base-200 rounded-lg shadow-md p-4">
           <h2 className="text-xl font-semibold mb-2">Card Bar Chart</h2>
-          <CardBarChart />
+          <BestUser />
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        <div className="bg-white rounded-lg shadow-md p-4">
+        <div className="bg-base-200 rounded-lg shadow-md p-4">
           <h2 className="text-xl font-semibold mb-2">Chart Numbers</h2>
-          <ChartNumbers />
+          <ProductChart />
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-4">
+        <div className="bg-base-200 rounded-lg shadow-md p-4">
           <h2 className="text-xl font-semibold mb-2">Best User</h2>
-          <BestUser />
+          <CardBarChart />
         </div>
       </div>
     </div>

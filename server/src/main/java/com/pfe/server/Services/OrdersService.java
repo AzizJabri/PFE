@@ -1,14 +1,13 @@
 package com.pfe.server.Services;
 
-import com.pfe.server.Models.EStatus;
-import com.pfe.server.Models.OrderItems;
-import com.pfe.server.Models.Orders;
-import com.pfe.server.Models.Product;
+import com.pfe.server.Models.*;
 import com.pfe.server.Payloads.Request.OrderItemRequest;
 import com.pfe.server.Payloads.Request.OrderRequest;
 import com.pfe.server.Repositories.OrderItemRepository;
 import com.pfe.server.Repositories.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -105,13 +104,10 @@ public class OrdersService {
         return OrderitemsRepository.sumAllPrices();
     }
 
-    public Optional<Long> findMostRepetitiveUserId() {
-        List<Long> userIds = ordersRepository.findMostRepetitiveUserId();
-        if (userIds.isEmpty()) {
-            return Optional.empty();
-        } else {
-            return Optional.of(userIds.getFirst());
-        }
+    public Optional<List<User>> findMostRepetitiveUserId() {
+        Pageable pageable = PageRequest.of(0, 5);
+        List<User> topUsers = ordersRepository.findMostRepetitiveUserId(pageable);
+        return Optional.of(topUsers);
     }
 
 

@@ -8,8 +8,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class Orders implements Serializable {
     @Enumerated(EnumType.STRING)
     private EStatus status;
 
+    @CreationTimestamp
+    private LocalDateTime created_at;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

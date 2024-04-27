@@ -23,7 +23,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 
   Page<Product> findByNameIsContainingIgnoreCase(String name, Pageable pageable);
 
-  @Query("SELECT p.category.id, COUNT(p) FROM Product p GROUP BY p.category.id")
+  @Query("SELECT p.category, COUNT(p) FROM Product p GROUP BY p.category")
   List<Object[]> countProductsByCategoryId();
 
 

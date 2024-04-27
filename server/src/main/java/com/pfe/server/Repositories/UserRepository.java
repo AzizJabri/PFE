@@ -26,4 +26,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @NotNull Optional<User> findById(Long Id);
 
+    //get users registered in the last 7 days
+    @Query("SELECT COUNT(u) FROM User u WHERE u.created_at >= :date")
+    Long countUsersRegisteredAfter(@Param("date") LocalDateTime date);
+
+
 }

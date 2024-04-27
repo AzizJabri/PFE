@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { fetchMostRepetitiveUserId } from '@/providers/Orders';
-import { getUserByID } from '@/providers/Users';
 
 const BestUser = () => {
-  const [mostRepetitiveUserId, setMostRepetitiveUserId] = useState(null);
-  const [userDetails, setUserDetails] = useState(null);
+  const [users, setUsers] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-
-        const userId = await fetchMostRepetitiveUserId();
-        setMostRepetitiveUserId(userId);
-
-        const user = await getUserByID(userId);
-        setUserDetails(user);
-        console.log(user.data)
+        const data = await fetchMostRepetitiveUserId();
+        setUsers(data);
+        
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -25,39 +19,33 @@ const BestUser = () => {
   }, []);
 
   return (
-    <div>
+    <div className="container mx-auto p-4">
+      <h1 className="text-white text-3xl font-extrabold text-center mb-4">Best Clients</h1>
       <div className="overflow-x-auto">
-      <h1 className="text-white-700 text-3xl font-extrabold text-center">
-    Best Client
-</h1>
-<br></br>
-        <table className="table">
+        <table className="table-auto w-full">
           <thead>
-            <tr>
-            
-              <th></th>
-              <th>ID</th>
-              <th>First Name</th>
-              <th>Last Name</th>
+            <tr className="bg-gray-800 text-white">
+              <th className="px-4 py-2"></th>
+              <th className="px-4 py-2">ID</th>
+              <th className="px-4 py-2">First Name</th>
+              <th className="px-4 py-2">Last Name</th>
             </tr>
           </thead>
           <tbody>
-*            {userDetails && (
-              <tr>
-              
-                <td><img src={userDetails.data.profile.image} alt="User" /></td>
-                <td>{userDetails.data.id}</td>
-                <td>{userDetails.data.profile.firstName}</td>
-                <td>{userDetails.data.profile.lastName}</td>
-              </tr>
-            )}
+            {
+              users && users.map((user, index) => (
+                <tr key={index}>
+                  <td className="px-4 py-2"><img src={user.profile.image} alt="User" className="w-10 h-10 rounded-full avatar" /></td>
+                  <td className="px-4 py-2">{user.id}</td>
+                  <td className="px-4 py-2">{user.profile.firstName}</td>
+                  <td className="px-4 py-2">{user.profile.lastName}</td>
+                </tr>
+              ))
+            }
           </tbody>
-         
         </table>
       </div>
-      <br></br>
     </div>
- 
   );
 };
 

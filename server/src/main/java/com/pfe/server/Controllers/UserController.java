@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -140,5 +141,17 @@ public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok("Email changed successfully");
     }
 
+    @GetMapping("count")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Long> countAllUsers() {
+        return ResponseEntity.ok(userRepository.count());
+    }
+
+    //get users new in the last 7 days
+    @GetMapping("newUsers")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Long> getNewUsers() {
+        return ResponseEntity.ok(userRepository.countUsersRegisteredAfter(LocalDateTime.now().minusDays(7)));
+    }
 
 }

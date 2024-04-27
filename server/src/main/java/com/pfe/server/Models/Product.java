@@ -31,7 +31,6 @@ public class Product implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @JsonManagedReference
     private Category category;
 
 

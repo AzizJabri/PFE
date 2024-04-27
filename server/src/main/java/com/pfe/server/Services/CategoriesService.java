@@ -3,6 +3,7 @@ package com.pfe.server.Services;
 import com.pfe.server.Models.Category;
 import com.pfe.server.Repositories.CategoriesRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,7 +36,8 @@ public class CategoriesService {
     }
 
     public List<Category> getCategories() {
-        return categoriesRepository.findAll();
+        //sort based on id
+        return categoriesRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     public List<Category> getTopCategories() {

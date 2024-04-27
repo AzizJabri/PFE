@@ -10,9 +10,10 @@ import java.util.List;
 @Repository
 
 public interface OrderItemRepository extends JpaRepository<OrderItems,Long> {
-    @Query("SELECT oi.product.id, COUNT(oi.product.id) AS repetitionCount " +
+    @Query("SELECT p, COUNT(oi.product.id) AS repetitionCount " +
             "FROM OrderItems oi " +
-            "GROUP BY oi.product.id " +
+            "JOIN oi.product p " +
+            "GROUP BY p " +
             "ORDER BY repetitionCount DESC " +
             "LIMIT 5")
     List<Object[]> findTop5ProductsByRepetitionCount();

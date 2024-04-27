@@ -51,39 +51,42 @@ const ListUsers = () => {
       <br />
       <br />
       <div className="overflow-x-auto">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>email</th>
-              <th>Role</th>
-             
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Image</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
           {currentUsers.map((User, index) => (
-  <tr key={index}>
-    <td>{User.id}</td>
-    <td>{User.profile.firstName}</td>
-    <td>{User.profile.lastName}</td>
-    <td>{User.email}</td>
-    <td>
-      {User.roles.map((role, index) => (
-        <span key={index} className={`badge ${role.name === 'ROLE_ADMIN' ? "badge-secondary" : "badge-neutral"}`}>{role.name === 'ROLE_USER' ? 'User' : 'Admin'}</span>
-      ))}
-      </td>
-   
-                <td>
-                  <button onClick={() => deleteUsers(User.email)} className="btn  mr-2">Delete</button>
-                  <Link to={`/admin/updateUser/${User.id}`} className="btn ml-2" >Update</Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            <tr key={index}>
+              <td>{User.id}</td>
+              <td>
+                <img src={User.profile.image} alt={`Image of ${User.profile.firstName}`} className='avatar w-10 h-10 rounded-full' />
+              </td>
+              <td>{User.profile.firstName}</td>
+              <td>{User.profile.lastName}</td>
+              <td>{User.email}</td>
+              <td>
+                {User.roles.map((role, index) => (
+                  <span key={index} className={`badge ${role.name === 'ROLE_ADMIN' ? "badge-secondary" : "badge-neutral"}`}>{role.name === 'ROLE_USER' ? 'User' : 'Admin'}</span>
+                ))}
+              </td>
+              <td>
+                <button onClick={() => deleteUsers(User.email)} className="btn  mr-2">Delete</button>
+                <Link to={`/admin/updateUser/${User.id}`} className="btn ml-2">Update</Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
       </div>
 
       <div className="flex justify-center mt-4">

@@ -5,6 +5,7 @@ import com.pfe.server.Models.Image;
 import com.pfe.server.Models.Product;
 import com.pfe.server.Payloads.Request.CreateProductRequest;
 import com.pfe.server.Payloads.Request.UpdateProductRequest;
+import com.pfe.server.Payloads.Responses.MessageResponse;
 import com.pfe.server.Services.CategoriesService;
 import com.pfe.server.Services.ProductService;
 import org.hibernate.annotations.Cache;
@@ -156,7 +157,7 @@ public class ProductController {
 
         product.get().getImages().remove(image.get());
         productService.saveProduct(product.get());
-        imageService.deleteImage(image.get().getUrl());
+        imageService.deleteProductImage(image.get().getUrl(), image.get().getId());
 
         return new ResponseEntity<>(product.get(), HttpStatus.OK);
     }

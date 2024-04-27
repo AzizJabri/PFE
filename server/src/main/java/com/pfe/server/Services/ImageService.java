@@ -26,6 +26,11 @@ public class ImageService {
         azureBlobStorageService.deleteImage(imageUrl);
     }
 
+    public void  deleteProductImage(String imageUrl, Long id) {
+        azureBlobStorageService.deleteImage(imageUrl);
+        imageRepository.deleteById(id);
+    }
+
     public String getDefaultImage() {
         return azureBlobStorageService.getDefaultImage();
     }

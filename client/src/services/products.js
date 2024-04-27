@@ -39,6 +39,31 @@ export const deleteProduct = async (id) => {
     return await api.delete(`products/${id}`);
 };
 
+export const addImageToProduct = async (id, formData) => {
+    console.log(formData)
+    try {
+        const response = await api.post(`products/${id}/images`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error adding image to product:', error);
+        throw new Error('Failed to add image to product. Please try again.');
+    }
+}
+
+export const deleteImageFromProduct = async (productId, imageId) => {
+    try {
+        const response = await api.delete(`products/${productId}/images/${imageId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting image from product:', error);
+        throw new Error('Failed to delete image from product. Please try again.');
+    }
+}
+
 export async function fetchProductCountsByCategory() {
     try {
       const response = await api.get("products/countByCategory");

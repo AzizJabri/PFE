@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ErrorMessage, Form, Formik, Field } from 'formik';
 import { toast } from 'react-hot-toast';
 import { getCategoryByID, updateCategory } from '@/providers/categories';
 
-const UpdateCategories = ({ onClose }) => {
+const UpdateCategories = () => {
   const { categoryId } = useParams();
   const [category, setCategory] = useState(null);
+
+  const navigator = useNavigate();
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -38,7 +40,7 @@ const UpdateCategories = ({ onClose }) => {
             updateCategory(categoryId, values)
               .then(() => {
                 toast.success('Category updated successfully');
-                onClose();
+                navigator('/admin/list-category');
               })
               .catch((error) => {
                 toast.error('Error updating category: ' + error.message);

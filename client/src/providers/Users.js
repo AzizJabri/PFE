@@ -85,7 +85,7 @@ export const changeUserEmail = async (oldEmail, newEmail) => {
   };
  export const getNewUserCountLastWeek = async () => {
     try {
-      const response = await api.get(`users/newusers-lastweek`);
+      const response = await api.get(`users/newUsers`);
       return response.data;
     } catch (error) {
       console.error('Error fetching new user count:', error);

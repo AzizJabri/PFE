@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import ReactApexChart from 'react-apexcharts';
 import { fetchProductByOrder } from "@/providers/Orders";
-import { fetchProductNamesByIds } from "@/services/products";
 
 export default function ProductChart(props) {
     const [chartData, setChartData] = useState({
         series: [],
         options: {
             chart: {
+                foreColor: '#9baec8',
                 height: 390,
                 type: 'radialBar',
             },
@@ -56,36 +56,29 @@ export default function ProductChart(props) {
     });
 
     useEffect(() => {
-        // Fetch data
         fetchProductByOrder()
             .then(data => {
-                const responseData = data.map(item => [item[0], item[1]]);
+                // Extract product names and repetition counts from the data
+                const formattedData = data.map(item => ({
+                    name: item[0].name,
+                    repetitionCount: item[1]
+                  }));
+                const responseData = formattedData.map(item => [item.name, item.repetitionCount]);
                 const series = responseData.map(item => item[1]);
-                const productIds = responseData.map(item => item[0]); // Extract product IDs
-
-                // Fetch product names asynchronously
-                fetchProductNamesByIds(productIds)
-                    .then(productNames => {
-                        // Use product names as labels
-                        const labels = productNames.map((name, index) => name || `Product ${productIds[index]}`);
-
-                        // Update state with fetched and processed data
-                        setChartData(prevData => ({
-                            ...prevData,
-                            series: series,
-                            options: {
-                                ...prevData.options,
-                                labels: labels,
-                            }
-                        }));
-                    })
-                    .catch(error => {
-                        console.error('Error fetching product names:', error);
-                        setChartData(prevData => ({ ...prevData, error: error.message }));
-                    });
+                const labels = responseData.map(item => item[0]);
+    
+                // Update state with fetched and processed data
+                setChartData(prevData => ({
+                    ...prevData,
+                    series: series,
+                    options: {
+                        ...prevData.options,
+                        labels: labels,
+                    }
+                }));
             })
             .catch(error => {
-                console.error('Error fetching chart data:', error);
+                console.error('Error fetching product data:', error);
                 setChartData(prevData => ({ ...prevData, error: error.message }));
             });
     }, []);
@@ -97,7 +90,7 @@ export default function ProductChart(props) {
     }
 
     return (
-        <div className="relative flex flex-col min-w-0 break-words bg-dark w-full mb-6 shadow-lg rounded">
+        <div className="relative flex flex-col min-w-0 break-words bg-dark w-full mb-6 rounded">
             <div className="rounded-t mb-0 px-4 py-3 bg-transparent">
                 <div className="flex flex-wrap items-center">
                     <div className="relative w-full max-w-full flex-grow flex-1">
@@ -105,13 +98,15 @@ export default function ProductChart(props) {
                             Performance
                         </h6>
                         <h2 className="text-blueGray-700 text-xl font-semibold">
-                            TOP 5 Best Sales Products
+                            TOP 5 Best Sold Products
                         </h2>
                     </div>
                 </div>
             </div>
-            <div className="mt-2" id="chart">
-                <ReactApexChart options={options} series={series} type="radialBar" height={270} width={380} />
+            <div className="p-4 flex-auto" id="chart">
+                <div className="relative" >
+                    <ReactApexChart options={options} series={series} type="pie" width={550} />
+                </div>
             </div>
         </div>
     );

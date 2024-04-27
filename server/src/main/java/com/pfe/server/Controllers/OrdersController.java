@@ -88,10 +88,10 @@ public class OrdersController {
         ordersService.deleteOrder(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @GetMapping("/most-repetitive-user-id")
-    public ResponseEntity<Long> findMostRepetitiveUserId() {
-        Optional<Long> userId = ordersService.findMostRepetitiveUserId();
-        return userId.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    @GetMapping("/mostActiveUsers")
+    public ResponseEntity<List<User>> findMostRepetitiveUserId() {
+        Optional<List<User>> users = ordersService.findMostRepetitiveUserId();
+        return users.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     @GetMapping("/top5products")
     @PreAuthorize("hasRole('ADMIN')")
@@ -102,6 +102,9 @@ public class OrdersController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Double> sumAllPrices() {
         Double totalPrice = ordersService.sumAllPrices();
+        //limit to 2 decimal places
+        totalPrice = Math.round(totalPrice * 100.0) / 100.0;
+
         return ResponseEntity.ok(totalPrice);
     }
 }

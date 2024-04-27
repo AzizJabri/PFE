@@ -149,11 +149,14 @@ const ListProducts = () => {
       </div>
 
       <dialog id="my_modal_3" className="modal">
-        <div className="modal-box">
+        <div className="modal-box overflow-y-scroll no-scrollbar">
           <Outlet />
           {/* Render the AddProduct component directly */}
           <Link to={""} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => document.getElementById('my_modal_3').close()}>✕</Link>
         </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
       </dialog>
       <br></br>
     

@@ -27,6 +27,9 @@ function Navbar() {
             <li>
               <NavLink to="/admin/orders">Orders</NavLink>
             </li>
+            <li>
+              <NavLink to="/admin/reports">Reports</NavLink>
+            </li>
           </ul>
         </div>
         <Link to={"/admin"} className="btn btn-ghost text-xl">Admin Dashboard</Link>
@@ -43,7 +46,9 @@ function Navbar() {
           <li>
             <NavLink to="/admin/list-users">Users</NavLink>
           </li>
-          
+          <li>
+            <NavLink to="/admin/reports">Reports</NavLink>
+          </li>
         </ul>
       </div>
       <div className="navbar-end">
@@ -55,6 +60,9 @@ function Navbar() {
               </div>
             </div>
             <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-200 rounded-box w-52">
+              <li>
+                <Link to="/products">Go Home</Link>
+              </li>
               <li>
                 <a className="justify-between">
                   {user.profile.firstName}

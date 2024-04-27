@@ -36,7 +36,7 @@ export const fetchProductByOrder = async () => {
     };
     export const fetchMostRepetitiveUserId = async () => {
         try {
-          const response = await api.get(`orders/most-repetitive-user-id`);
+          const response = await api.get(`orders/mostActiveUsers`);
           if (response.status === 200) {
             return response.data; // Assuming the user ID is returned in the response data
           } else {

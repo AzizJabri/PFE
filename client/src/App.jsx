@@ -93,7 +93,7 @@ function App() {
                 <Route path="update-categories/:categoryId" element={<UpdateCategories />} />
                 <Route path="update-order/:orderId" element={<UpdateOrder />} />
                 <Route path="/admin/updateUser/:userId" element={<UpdateUser />} />
-                <Route path="chart" element={<Chartpage/>} />
+                <Route path="reports" element={<Chartpage/>} />
               </Route>
 
               <Route path="/cart" element={<ProductsLayout />}>

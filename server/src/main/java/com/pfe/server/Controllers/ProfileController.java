@@ -10,6 +10,7 @@ import com.pfe.server.Services.ProfileService;
 import com.pfe.server.Services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.pfe.server.Models.Profile;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/profile")
@@ -53,6 +55,9 @@ public class ProfileController {
         Profile profile = profileService.getProfile(principal.getName()).orElse(null);
         if (profile == null) {
             return ResponseEntity.notFound().build();
+        }
+        if (!Objects.requireNonNull(image.getContentType()).startsWith("image")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         String oldImage = profile.getImage();
         profile.setImage(imageService.uploadImage(image));
