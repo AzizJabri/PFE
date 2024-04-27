@@ -13,6 +13,6 @@ public class KubernetesController {
     private String hostname;
     @RequestMapping("/")
     public String index() {
-        return "Greetings from Spring Boot! My hostname is: " + hostname;
+        return "Hello World!, Current HOSTNAME : " + hostname;
     }
 }

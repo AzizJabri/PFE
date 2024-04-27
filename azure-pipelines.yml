@@ -104,12 +104,12 @@ stages:
 
     - script: |
         # Tag Docker image
-        docker tag spring-server $(acr-name)/spring-server:latest
+        docker tag spring-server $(acr-name)/spring-server:$(Build.BuildId)
       displayName: Tag Docker image
 
     - script: |
         # Push Docker image to Azure Container Registry
-        docker push $(acr-name)/spring-server:latest
+        docker push $(acr-name)/spring-server:$(Build.BuildId)
       displayName: Push Docker image to ACR
 
 - stage: Deploy
@@ -117,13 +117,21 @@ stages:
   - job: Deploy
     pool:
       vmImage: 'ubuntu-latest'
+    variables:
+      imageTag: '$(Build.BuildId)'
+      acrName: '$(acr-name)' 
     steps:
     - checkout: self
     
     - task: KubectlInstaller@0
       inputs:
         kubectlVersion: 'latest'
-    
+    - task: replacetokens@6
+      inputs:
+        root: 'k8s'
+        sources: '**/*.*'
+        tokenPattern: 'azpipelines'
+        missingVarLog: 'error'
     - task: Kubernetes@1
       inputs:
         connectionType: 'Kubernetes Service Connection'
