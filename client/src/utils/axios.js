@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 let urls = {
     development: 'http://localhost:8001/api/v1/',
-    production:  'http://4.233.18.199/api/v1/',
+    production:  'http://20.19.225.136:8001/api/v1/',
 }
 const api = axios.create({
     baseURL: urls[process.env.NODE_ENV],
