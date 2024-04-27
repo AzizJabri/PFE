@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: react-client
-        image: pfeacr.azurecr.io/spring-server:41
+        image: $(acrName)/react-client:$(imageTag)
         imagePullPolicy: Always
         ports:
         - containerPort: 80
