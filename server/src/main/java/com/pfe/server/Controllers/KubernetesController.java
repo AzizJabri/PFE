@@ -13,6 +13,6 @@ public class KubernetesController {
     private String hostname;
     @RequestMapping("/")
     public String index() {
-        return "Hello World!, Current HOSTNAME : " + hostname;
+        return "Hello World!, Current HOSTNAME : " + hostname + " (rolling update)";
     }
 }
