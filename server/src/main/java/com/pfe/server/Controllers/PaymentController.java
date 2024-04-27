@@ -32,10 +32,10 @@ public class PaymentController {
     @Autowired
     private OrdersService ordersService;
 
-    @Value("${STRIPE_SECRET}")
+    @Value("${app.STRIPE_SECRET}")
     private String stripeSecret;
 
-    @Value("${FRONTEND_URL}")
+    @Value("${app.FRONTEND_URL}")
     private String frontendURL;
 
     @PostMapping("/checkout")
