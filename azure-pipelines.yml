@@ -139,6 +139,6 @@ stages:
         connectionType: 'Kubernetes Service Connection'
         kubernetesServiceEndpoint: 'PFE AKS'
         command: 'apply'
-        arguments: '-f ./k8s'
+        arguments: '-f ./k8s/server'
         secretType: 'dockerRegistry'
         containerRegistryType: 'Azure Container Registry'
