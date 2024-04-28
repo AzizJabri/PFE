@@ -46,7 +46,7 @@ stages:
       inputs:
         command: 'custom'
         workingDir: 'client'
-        customCommand: 'build'
+        customCommand: 'run build'
     
     - task: SonarQubeAnalyze@5
       inputs:
