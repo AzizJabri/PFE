@@ -26,6 +26,25 @@ stages:
       displayName: Azure CLI Login to ACR
 
     - checkout: self
+    
+    - task: SonarQubePrepare@5
+      inputs:
+        SonarQube: 'PfeSonar'
+        scannerMode: 'Other'
+        extraProperties: |
+          # Additional properties that will be passed to the scanner,
+          # Put one key=value per line, example:
+          # sonar.exclusions=**/*.bin
+          sonar.projectKey=PFE_DevOps_REPO_c81ae783-c67d-4dad-a7d6-f53abcc15189
+          sonar.projectName=REPO
+    - script: |
+        FILTERED_PARAMS=$(echo $SONARQUBE_SCANNER_PARAMS | sed 's/"sonar.branch.name":"[^"]*"\,//g')
+        echo "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$FILTERED_PARAMS"
+      displayName: Filter out Branch Name
+    
+    - task: SonarQubeAnalyze@5
+      inputs:
+        jdkversion: 'JAVA_HOME_21_X64'
 
     - script: |
         # Build Docker image
