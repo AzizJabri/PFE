@@ -104,8 +104,8 @@ export default function ProductChart(props) {
                 </div>
             </div>
             <div className="p-4 flex-auto" id="chart">
-                <div className="relative" >
-                    <ReactApexChart options={options} series={series} type="pie" width={550} />
+                <div className="relative">
+                    <ReactApexChart options={options} series={series} type="pie" />
                 </div>
             </div>
         </div>

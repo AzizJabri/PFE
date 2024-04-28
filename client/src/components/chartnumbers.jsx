@@ -5,9 +5,9 @@ import { getNewUserCountLastWeek } from '@/providers/Users';
 import { getCountOfAllProducts } from '@/services/products';
 import { sumAllPrices } from '@/providers/Orders';
 const stats = [
-  { id: 1, name: 'Total products', value: ' ' },
-  { id: 2, name: 'Total Revenue', value: '' },
-  { id: 3, name: 'New users this week', value: ' ' },
+  { id: 1, name: 'Total products', value: ' ', classNane: 'bg-info'},
+  { id: 2, name: 'Total Revenue', value: '', classNane: 'bg-success' },
+  { id: 3, name: 'New users', value: ' ', classNane: 'bg-warning' },
  
 ];
 
@@ -50,7 +50,7 @@ export default function ChartNumbers() {
       <div className="mx-auto max-w-7xl px-3 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {stats.map((stat) => (
-            <div key={stat.id} className="flex flex-col items-center p-6 bg-gray-800 rounded-lg shadow-md">
+            <div key={stat.id} className={`flex flex-col items-center p-6 rounded-lg shadow-md ${stat.classNane}`}>
               <h3 className="text-lg font-semibold text-white">{stat.name}</h3>
               <p className="text-2xl lg:text-3xl text-white mt-2">
                 {stat.id === 3 && newUserCount !== null ? `${newUserCount} Users` :

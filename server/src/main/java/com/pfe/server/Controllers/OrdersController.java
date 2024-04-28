@@ -89,9 +89,9 @@ public class OrdersController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @GetMapping("/mostActiveUsers")
-    public ResponseEntity<List<User>> findMostRepetitiveUserId() {
-        Optional<List<User>> users = ordersService.findMostRepetitiveUserId();
-        return users.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Object>> findMostRepetitiveUserId() {
+        return ResponseEntity.ok(ordersService.findMostRepetitiveUserId());
     }
     @GetMapping("/top5products")
     @PreAuthorize("hasRole('ADMIN')")

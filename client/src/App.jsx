@@ -5,8 +5,6 @@ import { Toaster } from 'react-hot-toast'
 import { CartProvider } from './providers/cart'
 import React, { lazy, Suspense } from 'react';
 import Loading from './components/Loading'
-import UpdateUser from './pages/Admin/UpdateUser'
-import CardBarChart from './components/chartbar'
 
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const AuthLayout = lazy(() => import('./layouts/AuthLayout'));
@@ -39,7 +37,7 @@ const RequireAdmin = lazy(() => import('./middlewares/RequireAdmin'));
 const ProfileLayout = lazy(() => import('./layouts/ProfileLayout'));
 const Addresses = lazy(() => import('./pages/auth/profile/Addresses'));
 const UpdateImage = lazy(() => import('./pages/auth/profile/UpdateImage'));
-const updateUser = lazy(() => import('./pages/Admin/UpdateUser'));
+const UpdateUser = lazy(() => import('./pages/Admin/UpdateUser'));
 const Chartpage = lazy(() => import('./pages/Admin/Charts/chartpage'));
 
 
@@ -75,7 +73,7 @@ function App() {
 
 
               <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
-                <Route index element={<HomeAdmin />} />
+                <Route index element={<Chartpage />} />
                 <Route path="products" element={<ListProducts />}>
                   <Route path="add" element={<AddProduct />} />
                   <Route path="update/:productId" element={<UpdateProduct />} />

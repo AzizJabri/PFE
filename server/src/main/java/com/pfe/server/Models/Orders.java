@@ -46,4 +46,9 @@ public class Orders implements Serializable {
     public void setOrderItems(List<OrderItems> orderItems) {
         this.orderItems = orderItems;
     }
+
+    @JsonIgnore
+    public double getTotalPrice() {
+        return orderItems.stream().mapToDouble(OrderItems::getPrice).sum();
+    }
 }

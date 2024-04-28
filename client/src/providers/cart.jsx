@@ -38,12 +38,32 @@ export const CartProvider = ({ children }) => {
 
   // Function to add an item to the cart
   const addToCart = async (item, quantity=1) => {
-    await api.post('/cart/', {productId: item.id, quantity: quantity}).then(() => {
-      fetchCartItems();
+    if(user){
+      await api.post('/cart/', {productId: item.id, quantity: quantity}).then(() => {
+        fetchCartItems();
+        toast.success(`Item added to cart`);
+      }).catch((error) => {
+        toast.error('Error adding item to cart');
+      });
+    }else{
+      const cartItems = cart.cartItems;
+      const existingItem = cartItems.find((cartItem) => cartItem.product.id === item.id);
+      if (existingItem) {
+        existingItem.quantity += quantity;
+      } else {
+        cartItems.push({
+          product: item,
+          quantity: quantity
+        });
+      }
+      const newCart = {
+        "cartItems": cartItems,
+        "total": cart.total + item.price * quantity
+      };
+      setCart(newCart);
+      localStorage.setItem('cart', JSON.stringify(newCart));
       toast.success(`Item added to cart`);
-    }).catch((error) => {
-      toast.error('Error adding item to cart');
-    });
+    }
   };
 
   const getCartItems = () => {
@@ -52,41 +72,81 @@ export const CartProvider = ({ children }) => {
 
   // Function to remove an item from the cart
   const removeFromCart = (itemId) => {
-    api.delete(`/cart/${itemId}`).then(() => {
-      fetchCartItems();
+    if(user){
+      api.delete(`/cart/${itemId}`).then(() => {
+        fetchCartItems();
+        toast.success(`Item removed from cart`);
+      }).catch((error) => {
+        toast.error('Error removing item from cart');
+      });
+    }else{
+      const updatedCartItems = cart.cartItems.filter((item) => item.product.id !== itemId);
+      const removedItem = cart.cartItems.find((item) => item.product.id === itemId);
+      const newCart = {
+        "cartItems": updatedCartItems,
+        "total": cart.total - removedItem.product.price * removedItem.quantity
+      };
+      setCart(newCart);
+      localStorage.setItem('cart', JSON.stringify(newCart));
       toast.success(`Item removed from cart`);
-    }).catch((error) => {
-      toast.error('Error removing item from cart');
-    });
+    }
+    
   };
 
 
   // Function to clear the cart
   const clearCart = async () => {
-    await api.delete('/cart/').then((response) => {
+    if(user){
+      await api.delete('/cart/').then((response) => {
+        setCart({
+          "cartItems": [],
+          "total": 0.0
+      });
+        localStorage.removeItem('cart');
+        toast.success(`Cart cleared`);
+      }).catch((error) => {
+        toast.error('Error clearing cart');
+      });
+    }else{
       setCart({
         "cartItems": [],
         "total": 0.0
     });
       localStorage.removeItem('cart');
       toast.success(`Cart cleared`);
-    }).catch((error) => {
-      toast.error('Error clearing cart');
-    });
+    }
+    
   };
 
   const updateItemQuantity = async (item, quantity) => {
-    console.log(item, quantity)
-    await api.patch(`/cart/${item.id}`, quantity,{"headers":{
-      "Content-Type": "application/json"
-    
-    }}).then(() => {
-      fetchCartItems();
+    if(user){
+      await api.patch(`/cart/${item.id}`, quantity,{"headers":{
+        "Content-Type": "application/json"
+      
+      }}).then(() => {
+        fetchCartItems();
+        toast.success(`Item quantity updated`);
+      }).catch((error) => {
+        toast.error('Error updating item quantity');
+      });
+    }else{
+      const updatedCartItems = cart.cartItems.map((cartItem) => {
+        if (cartItem.product.id === item.product.id) {
+          cartItem.quantity = quantity;
+        }
+        return cartItem;
+      });
+      const newCart = {
+        "cartItems": updatedCartItems,
+        "total": getSubTotal()
+      };
+      setCart(newCart);
+      localStorage.setItem('cart', JSON.stringify(newCart));
       toast.success(`Item quantity updated`);
-    }).catch((error) => {
-      toast.error('Error updating item quantity');
-    });
+    }
   }
+
+
 
   const getSubTotal = () => {
     return cart.cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
@@ -105,7 +165,7 @@ export const CartProvider = ({ children }) => {
     getSubTotal,
     getLength,
     getCartItems,
-    updateItemQuantity
+    updateItemQuantity,
   };
 
   return (

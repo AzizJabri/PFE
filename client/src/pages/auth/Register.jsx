@@ -46,7 +46,7 @@ const Register = () => {
         onSubmit={(values, { setSubmitting }) => {
             register(values.email,values.password).then(() => {
                 toast.success('Account created successfully')
-                navigate('/auth/login')
+                navigate('/')
             }).catch((error) => {
                 toast.error('Error creating account')
             }).finally(() => {

@@ -2,17 +2,32 @@ import React from 'react';
 import { useCart } from '@/providers/cart';
 import {checkout} from '@/services/payment';
 import toast from 'react-hot-toast';
+import { useAuth } from '@/auth/auth';
+import {useNavigate} from 'react-router-dom';
 
 function CartPage() {
   const { cart, getSubTotal, clearCart, getLength, removeFromCart, updateItemQuantity } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const getStripeCheckout = async () => {
-    try {
+    if (getLength() === 0) {
+      toast.error('Your cart is empty');
+      return;
+    }
+    if(user){try {
       const response = await checkout();
       window.location.href = response.data.message
     } catch (error) {
       toast.error(error.response.data.message);
+      if(error.response.data.message === 'No address found'){
+        navigate('/profile/addresses');
+      }
+    }}else{
+      toast.error('Please login or register to checkout');
+      navigate('/auth/register');
     }
+    
   };
 
   return (

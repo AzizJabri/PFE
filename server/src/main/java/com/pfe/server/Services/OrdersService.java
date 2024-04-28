@@ -104,10 +104,18 @@ public class OrdersService {
         return OrderitemsRepository.sumAllPrices();
     }
 
-    public Optional<List<User>> findMostRepetitiveUserId() {
+    public List<Object> findMostRepetitiveUserId() {
         Pageable pageable = PageRequest.of(0, 5);
         List<User> topUsers = ordersRepository.findMostRepetitiveUserId(pageable);
-        return Optional.of(topUsers);
+        Object[] result = new Object[topUsers.size()];
+        for (int i = 0; i < topUsers.size(); i++) {
+            List<Orders> orders = getOrdersByUserId(topUsers.get(i).getId());
+            double totalPrice = orders.stream().mapToDouble(Orders::getTotalPrice).sum();
+            totalPrice = Math.round(totalPrice * 100.0) / 100.0;
+            result[i] = new Object[]{topUsers.get(i), orders.size(), totalPrice};
+
+        }
+        return List.of(result);
     }
 
 

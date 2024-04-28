@@ -48,7 +48,7 @@ export default function CardBarChart() {
                 </div>
                 <div className="p-4 flex-auto">
                     {/* Chart */}
-                    <div className="relative" style={{ height: '350px' }}>
+                    <div className="relative">
                     {chartData && (
                         <ReactApexChart
                             options={{
@@ -71,15 +71,6 @@ export default function CardBarChart() {
                                     horizontalAlign: 'left',
                                     customLegendItems: ['Category']
                                 },
-                                fill: {
-                                    type: 'gradient',
-                                    gradient: {
-                                        type: 'vertical',
-                                        gradientToColors: ['cyan'],
-                                        inverseColors: true,
-                                        stops: [0, 100]
-                                    }
-                                },
                                 grid: {
                                     xaxis: {
                                         lines: {
@@ -101,8 +92,6 @@ export default function CardBarChart() {
                                 data: formatDataForChart(chartData.labels, chartData.counts)
                             }]}
                             type="bar"
-                            height="100%"
-                            width="100%"
                         />
                     )}
 
