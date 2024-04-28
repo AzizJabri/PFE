@@ -88,7 +88,7 @@ const UpdateProduct = () => {
                         </Field>
                         <ErrorMessage name="category" component="p" className="text-red-500" />
                     </div>
-                    <button type="submit" className="btn btn-primary">Update Product</button>
+                    <button type="submit" className="btn btn-primary w-full">Update Product</button>
                 </Form>
             </Formik>
             <div className="grid grid-cols-3 gap-4 py-2">
@@ -148,13 +148,13 @@ const UpdateProduct = () => {
                     }}
                 >{({setFieldValue}) => (
                     <Form encType='multipart/form-data'>
-                        <div>
+                        <div className='py-2'>
                             <label htmlFor="image" className="block">Upload Image</label>
                             <Field name="image" id="image" value={undefined} className="file-input file-input-bordered w-full max-w-xs" type="file" onChange={(event) => {
                                     setFieldValue("image", event.currentTarget.files[0]);
                                     }} />
                         </div>
-                        <button type="submit" className="btn btn-primary">Add Image</button>
+                        <button type="submit" className="btn btn-primary w-full">Add Image</button>
                     </Form>
                 )}
                 </Formik>
