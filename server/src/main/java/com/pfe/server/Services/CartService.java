@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class CartService {
     CartRepository cartRepository;
     UserRepository userRepository;
+    ProductService productService;
 
     public Cart getCartByUserId(Long userId) {
         if (cartRepository.findByUserId(userId) == null) {
@@ -35,6 +36,7 @@ public class CartService {
             order.getOrderItems().add(
                     new OrderItems(cartItem.getQuantity(), cartItem.getProduct().getPrice(),order, cartItem.getProduct()
             ));
+            productService.decreaseStock(cartItem.getProduct(), cartItem.getQuantity());
         }
         cartRepository.save(cart);
         return order;

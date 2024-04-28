@@ -38,8 +38,8 @@ function CartPage() {
           <p>Your cart is empty</p>
         </div>
       ) : (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+        <div className='h-screen'>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 ">
             {/* Render cart items */}
             {cart?.cartItems.map(item => (
               <div key={item.id} className="border border-base-300 p-4 rounded-md">
@@ -76,7 +76,7 @@ function CartPage() {
             <button className="btn btn-primary rounded-md transition" onClick={clearCart}>Clear Cart</button>
             <button className="btn btn-secondary rounded-md transition" onClick={getStripeCheckout}>Checkout</button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

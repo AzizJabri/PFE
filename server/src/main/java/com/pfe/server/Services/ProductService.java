@@ -63,6 +63,8 @@ public class ProductService {
             existingProduct.setDescription(updatedProduct.getDescription());
             existingProduct.setPrice(updatedProduct.getPrice());
             existingProduct.setCategory(categoriesService.getCategory(updatedProduct.getCategory()));
+            existingProduct.setStock(updatedProduct.getStock());
+            existingProduct.set_visible(updatedProduct.is_visible());
 
             return productRepository.save(existingProduct);
         }
@@ -76,6 +78,17 @@ public class ProductService {
     })
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "Products", allEntries = true)
+    })
+    public void decreaseStock(Product product, int quantity) {
+        if (product.getStock() < quantity) {
+            throw new RuntimeException("Not enough stock");
+        }
+        product.setStock(product.getStock() - quantity);
+        productRepository.save(product);
     }
   
     public Page<Product> getProductsByCategoryId(Long categoryId, int page, int size) {

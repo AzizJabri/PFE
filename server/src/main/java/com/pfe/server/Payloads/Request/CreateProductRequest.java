@@ -16,6 +16,8 @@ public class CreateProductRequest {
     private String description;
     private double price;
     private Long category;
+    private int stock;
+    private boolean is_visible;
 
     private MultipartFile image;
 

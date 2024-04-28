@@ -35,7 +35,9 @@ const Products = () => {
             
             setLoading(true);
             const productResponse = await getProducts(page, size, search, category)
-            setProductData(productResponse.data)
+            const res = productResponse.data
+            res.content = res.content.filter(product => product._visible === true)
+            setProductData(res)
             const categoryResponse = await getCategories()
             setCategories(categoryResponse.data)
             setLoading(false);

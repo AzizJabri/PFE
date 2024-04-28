@@ -39,7 +39,11 @@ public class CartController {
         Product product = productService.getProductById(cartItemDAO.getProductId()).orElse(null);
 
         if (product == null) {
-            return null; // Handle the case when product is not found
+            throw new RuntimeException("Product not found");
+        }
+
+        if(product.getStock() < cartItemDAO.getQuantity()){
+            throw new RuntimeException("Product is out of stock");
         }
 
         Optional<CartItem> existingItem = cart.getCartItems().stream()
@@ -104,8 +108,8 @@ public class CartController {
         CartItem item = cartItemService.getCartItemById(id).orElse(null);
 
        if (item == null) {
-            return null; // Handle the case when item is not found
-        }
+            throw new RuntimeException("Item not found");
+       }
 
         cartItemService.updateQuantity(item, quantity);
         cart.setTotal(calculateCartTotal(cart));

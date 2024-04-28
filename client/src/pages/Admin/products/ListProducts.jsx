@@ -80,6 +80,8 @@ const ListProducts = () => {
             <th>Name</th>
             <th>Description</th>
             <th>Price</th>
+            <th>Stock</th>
+            <th>Visible</th>
             <th>Category</th>
             <th>Action</th>
           </tr>
@@ -91,6 +93,8 @@ const ListProducts = () => {
               <tr key={index}>
                 <td><div className="skeleton h-6 w-16"></div></td>
                 <td><div className="skeleton h-6 w-24"></div></td>
+                <td><div className="skeleton h-6 w-48"></div></td>
+                <td><div className="skeleton h-6 w-48"></div></td>
                 <td><div className="skeleton h-6 w-48"></div></td>
                 <td><div className="skeleton h-6 w-16"></div></td>
                 <td><div className="skeleton h-6 w-24"></div></td>
@@ -117,6 +121,8 @@ const ListProducts = () => {
                 </td>
                 <td>{product.description}</td>
                 <td>{product.price}$</td>
+                <td>{product.stock}</td>
+                <td>{product.visible ? 'Yes' : 'No'}</td>
                 <td>{product.category.name}</td>
                 <td>
                   <button onClick={() => handleDelete(product.id)} className="btn mr-2">Delete</button>

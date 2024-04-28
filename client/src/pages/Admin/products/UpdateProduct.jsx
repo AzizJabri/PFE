@@ -31,6 +31,7 @@ const UpdateProduct = () => {
         try {
             await updateProduct(productId, values);
             toast.success('Product updated successfully');
+            document.getElementById('my_modal_3').close()
         } catch (error) {
             console.error('Error updating product:', error);
         }
@@ -44,7 +45,9 @@ const UpdateProduct = () => {
                     name: product?.name || '',
                     description: product?.description || '',
                     price: product?.price || '',
-                    category: product?.category?.id || ''
+                    category: product?.category?.id || '',
+                    stock: product?.stock || 0,
+                    is_visible: product?.is_visible || true
                 }}
                 onSubmit={handleSubmit}
                 enableReinitialize 
@@ -64,6 +67,16 @@ const UpdateProduct = () => {
                         <label htmlFor="price" className="block">Price</label>
                         <Field type="number" id="price" name="price" className="input w-full input-bordered" />
                         <ErrorMessage name="price" component="p" className="text-red-500" />
+                    </div>
+                    <div>
+                        <label htmlFor="stock" className="block">Stock</label>
+                        <Field type="number" id="stock" name="stock" className="input w-full input-bordered" />
+                        <ErrorMessage name="stock" component="p" className="text-red-500" />
+                    </div>
+                    <div>
+                        <label htmlFor="is_visible" className="block">Visible</label>
+                        <Field type="checkbox" id="is_visible" name="is_visible" className="checkbox" />
+                        <ErrorMessage name="is_visible" component="p" className="text-red-500" />
                     </div>
                     <div>
                         <label htmlFor="category" className="block">Category</label>

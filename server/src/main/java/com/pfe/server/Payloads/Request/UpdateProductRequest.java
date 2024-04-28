@@ -14,4 +14,6 @@ public class UpdateProductRequest {
     private String description;
     private double price;
     private Long category;
+    private int stock;
+    private boolean is_visible;
 }

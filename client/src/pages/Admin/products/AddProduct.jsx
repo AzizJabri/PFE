@@ -29,6 +29,8 @@ const AddProduct = () => {
         description: '',
         price: '',
         category: '', 
+        stock : '',
+        is_visible: true,
         image:''
       }}
       onSubmit={async (values, { setSubmitting }) => {
@@ -38,6 +40,8 @@ const AddProduct = () => {
           formData.append('description', values.description);
           formData.append('price', values.price);
           formData.append('category', values.category);
+          formData.append('stock', values.stock);
+          formData.append('is_visible', values.is_visible);
           formData.append('image', values.image);
 
           await createProduct(formData);
@@ -49,12 +53,32 @@ const AddProduct = () => {
           setSubmitting(false);
         }
       }}
+      validate={(values) => {
+        const errors = {};
+        if (!values.name) {
+          errors.name = 'Name is required';
+        }
+        if (!values.price) {
+          errors.price = 'Price is required';
+        }
+        if (!values.stock) {
+          errors.stock = 'Stock is required';
+        }
+        if (!values.category) {
+          errors.category = 'Category is required';
+        }
+        if (!values.image) {
+          errors.image = 'Image is required';
+        }
+        return errors;
+      }
+      }
     >
       {({ isSubmitting, setFieldValue }) => (
         <Form encType='multipart/form-data'>
           <div className="flex justify-center items-center">
             <div className="max-w-md">
-              <h1 className="text-4xl md:text-6xl mb-4 text-center">Fill the Form and Add a Product</h1>
+              <h1 className="text-4xl md:text-6xl mb-4 text-center">Add a Product</h1>
               <div className="mb-4">
                 <Field name="name" className="input w-full input-bordered" type="text" placeholder="Enter name" />
                 <ErrorMessage className="text-red-500" name="name" component="div" />
@@ -67,6 +91,15 @@ const AddProduct = () => {
                 <ErrorMessage className="text-red-500" name="price" component="div" />
               </div>
               <div className="mb-4">
+                <Field name="stock" className="input w-full input-bordered" placeholder="Enter Stock" type="number" />
+                <ErrorMessage className="text-red-500" name="stock" component="div" />
+              </div>
+              <div className="mb-4">
+                  <label htmlFor="is_visible" className="block">Visible</label>
+                  <Field type="checkbox" id="is_visible" name="is_visible" className="checkbox" />
+                  <ErrorMessage name="is_visible" component="p" className="text-red-500" />
+              </div>
+              <div className="mb-4">
                 <Field as="select" name="category" className="select w-full input-bordered">
                   <option value="">Select category</option>
                   {categories.map(category => (
@@ -77,6 +110,7 @@ const AddProduct = () => {
               </div>
               <div className="mb-4">
                 <Field name="image" className="file-input w-full input-bordered" value={undefined} type="file" onChange={(event) => setFieldValue("image", event.currentTarget.files[0])} />
+                <ErrorMessage className="text-red-500" name="image" component="div" />
               </div>
               <div className="text-center">
                 <div className="flex flex-col md:flex-row justify-center">

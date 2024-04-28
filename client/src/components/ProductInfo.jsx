@@ -72,6 +72,8 @@ const ProductInfo = ({ product, addToCart }) => {
                 id="quantity"
                 name="quantity"
                 value={quantity}
+                min={0}
+                max={product.stock}
                 onChange={(e) => setQuantity(Number(e.target.value))}
                 className="w-16 border border-gray-400 rounded-md py-1 px-2"
               />
@@ -80,10 +82,28 @@ const ProductInfo = ({ product, addToCart }) => {
               <span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
                 {product.category.name}
               </span>
+              {product.stock > 0 ? (
+                <span className="text-green-600 font-semibold">In Stock</span>
+              ) : (
+                <span className="text-red-600 font-semibold">Out of Stock</span>
+              )}
             </div>
-            <button className="btn btn-primary" onClick={() => addToCart(product, quantity)}>
-              Add to Cart
-            </button>
+            {
+              product.stock > 0 ? (
+                <button className="btn btn-primary" onClick={() => addToCart(product, quantity)}>
+                  Add to Cart
+                </button>
+              ) : (
+                <button className="btn btn-outline" disabled>
+                  Out of Stock
+                </button>
+              )
+            }
+            {(product.stock <= 10 && product.stock != 0) && (
+              <p className="text-sm text-red-600 mt-2">
+                Only {product.stock} left in stock - order soon!
+              </p>
+            )}
           </div>
         </div>
       </div>

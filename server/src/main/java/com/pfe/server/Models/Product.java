@@ -28,6 +28,11 @@ public class Product implements Serializable {
     private String name;
     private String description ;
     private double price;
+    @Column(name = "stock")
+    private int stock;
+
+    @Column(name = "is_visible")
+    private boolean is_visible;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

@@ -24,8 +24,13 @@ const Product = ({product}) => {
         </div>
         {/*Center Buy button */}
         <div className="card-actions grid grid-cols-2">
-            <Link className="btn btn-primary" to={`/products/${product.id}`}>Buy</Link>
-            <button className="btn btn-accent" onClick={() => addToCart(product)}>Add to cart</button>
+            <Link className="btn btn-primary" to={`/products/${product.id}`}>Visit</Link>
+            {product.stock > 0 ? (
+              <button className="btn btn-accent" onClick={() => addToCart(product)}>Add to cart</button>
+            ) : (
+              <button className="btn btn-outline btn-disabled">Out of Stock</button>
+            )
+            }
         </div>
 
     </div>

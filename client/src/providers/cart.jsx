@@ -43,7 +43,7 @@ export const CartProvider = ({ children }) => {
         fetchCartItems();
         toast.success(`Item added to cart`);
       }).catch((error) => {
-        toast.error('Error adding item to cart');
+        toast.error(error.response.data.message);
       });
     }else{
       const cartItems = cart.cartItems;
@@ -127,7 +127,7 @@ export const CartProvider = ({ children }) => {
         fetchCartItems();
         toast.success(`Item quantity updated`);
       }).catch((error) => {
-        toast.error('Error updating item quantity');
+        toast.error(error.response.data.message);
       });
     }else{
       const updatedCartItems = cart.cartItems.map((cartItem) => {
