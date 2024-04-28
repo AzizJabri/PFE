@@ -44,6 +44,11 @@ stages:
     
     - task: Npm@1
       inputs:
+        command: 'install'
+        workingDir: 'client'
+        verbose: true
+    - task: Npm@1
+      inputs:
         command: 'custom'
         workingDir: 'client'
         customCommand: 'run build'
