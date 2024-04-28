@@ -30,13 +30,16 @@ stages:
     - task: SonarQubePrepare@5
       inputs:
         SonarQube: 'PfeSonar'
-        scannerMode: 'Other'
+        scannerMode: 'CLI'
+        configMode: 'manual'
+        cliProjectKey: 'Client'
+        cliProjectName: 'Client'
+        cliSources: './client'
         extraProperties: |
           # Additional properties that will be passed to the scanner,
           # Put one key=value per line, example:
           # sonar.exclusions=**/*.bin
-          sonar.projectKey=PFE_DevOps_REPO_c81ae783-c67d-4dad-a7d6-f53abcc15189
-          sonar.projectName=REPO
+          sonar.projectKey=Client
     - script: |
         FILTERED_PARAMS=$(echo $SONARQUBE_SCANNER_PARAMS | sed 's/"sonar.branch.name":"[^"]*"\,//g')
         echo "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$FILTERED_PARAMS"
