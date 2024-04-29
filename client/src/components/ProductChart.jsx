@@ -105,7 +105,10 @@ export default function ProductChart(props) {
             </div>
             <div className="p-4 flex-auto" id="chart">
                 <div className="relative">
-                    <ReactApexChart options={options} series={series} type="pie" />
+                    {series.length > 0 ? (
+                        <ReactApexChart options={options} series={series} type="pie" />) :
+                        <div>There's no data!</div> 
+                    }
                 </div>
             </div>
         </div>

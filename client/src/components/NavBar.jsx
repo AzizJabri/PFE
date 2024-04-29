@@ -85,7 +85,7 @@ const NavBar = () => {
                         ))}
                         {getLength() === 0 && <li>Your cart is empty</li>}
                     </ul>
-                    <span className="text-info">Subtotal: ${getSubTotal()}</span>
+                    <span className="text-info">Cart Total: ${getSubTotal().toFixed(2)}</span>
                     <div className="card-actions">
                         <Link className="btn btn-primary btn-block" to={"/cart/"}>View cart</Link>
                         <button className="btn btn-secondary btn-block" onClick={clearCart}>Clear Cart</button>

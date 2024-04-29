@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,6 +20,7 @@ public class Payments implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private double amount;
+    @CreationTimestamp
     private Date paymentDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")

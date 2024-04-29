@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import { getCategories } from '@/providers/categories'
+import { getTopCategories } from '@/providers/categories'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/auth/auth';
 
@@ -18,7 +18,7 @@ const LandingNav = () => {
         const fetchCategories = async () => {
             try {
                 //set the 3 categories
-                const response = await getCategories()
+                const response = await getTopCategories()
                 setCategories(response.data)
                 console.log(response.data)
             } catch (error) {

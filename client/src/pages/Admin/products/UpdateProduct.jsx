@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useOutletContext } from 'react-router-dom'
 import { updateProduct,getProduct, addImageToProduct, deleteImageFromProduct } from '@/services/products';
 import { getCategories } from '@/providers/categories';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -8,6 +8,8 @@ const UpdateProduct = () => {
     const { productId } = useParams();
     const [product, setProduct] = useState(null);
     const [categories, setCategories] = useState([])
+
+    const [render, setRender] = useOutletContext()
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -32,6 +34,8 @@ const UpdateProduct = () => {
             await updateProduct(productId, values);
             toast.success('Product updated successfully');
             document.getElementById('my_modal_3').close()
+            setProduct(null);
+            setRender(!render)
         } catch (error) {
             console.error('Error updating product:', error);
         }
@@ -47,7 +51,7 @@ const UpdateProduct = () => {
                     price: product?.price || '',
                     category: product?.category?.id || '',
                     stock: product?.stock || 0,
-                    is_visible: product?.is_visible || true
+                    _visible: product?._visible || true
                 }}
                 onSubmit={handleSubmit}
                 enableReinitialize 
@@ -74,9 +78,9 @@ const UpdateProduct = () => {
                         <ErrorMessage name="stock" component="p" className="text-red-500" />
                     </div>
                     <div>
-                        <label htmlFor="is_visible" className="block">Visible</label>
-                        <Field type="checkbox" id="is_visible" name="is_visible" className="checkbox" />
-                        <ErrorMessage name="is_visible" component="p" className="text-red-500" />
+                        <label htmlFor="_visible" className="block">Visible</label>
+                        <Field type="checkbox" id="_visible" name="_visible" className="checkbox" />
+                        <ErrorMessage name="_visible" component="p" className="text-red-500" />
                     </div>
                     <div>
                         <label htmlFor="category" className="block">Category</label>
@@ -88,7 +92,7 @@ const UpdateProduct = () => {
                         </Field>
                         <ErrorMessage name="category" component="p" className="text-red-500" />
                     </div>
-                    <button type="submit" className="btn btn-primary w-full">Update Product</button>
+                    <button type="submit" className="btn btn-primary w-full" disabled={!product}>Update Product</button>
                 </Form>
             </Formik>
             <div className="grid grid-cols-3 gap-4 py-2">
@@ -154,7 +158,7 @@ const UpdateProduct = () => {
                                     setFieldValue("image", event.currentTarget.files[0]);
                                     }} />
                         </div>
-                        <button type="submit" className="btn btn-primary w-full">Add Image</button>
+                        <button type="submit" className="btn btn-primary w-full" disabled={!product}>Add Image</button>
                     </Form>
                 )}
                 </Formik>

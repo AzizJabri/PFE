@@ -16,7 +16,7 @@ const ProductInfo = ({ product, addToCart }) => {
     };
   
     return (
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 min-h-screen">
         <div className="text-sm breadcrumbs pb-8 pt-5 px-4">
             <ul>
                 <li><Link to={"/products/"}>Products</Link></li> 

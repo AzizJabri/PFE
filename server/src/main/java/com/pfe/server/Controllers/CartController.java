@@ -111,6 +111,11 @@ public class CartController {
             throw new RuntimeException("Item not found");
        }
 
+       if(quantity <= 0) {
+           cartItemService.deleteCartItem(item);
+           return cart;
+       }
+
         cartItemService.updateQuantity(item, quantity);
         cart.setTotal(calculateCartTotal(cart));
 

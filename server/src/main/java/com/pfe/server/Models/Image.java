@@ -19,7 +19,7 @@ public class Image implements Serializable {
     private String url;
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     @JsonBackReference
     private Product product;

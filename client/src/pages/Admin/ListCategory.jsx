@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '@/utils/axios';
 import Footer from '@/components/Footer';
 import Nav from '@/components/Nav';
-import { getCategory } from '@/providers/categories';
+import { getCategory, deleteCategory } from '@/providers/categories';
 import AddCategory from './AddCategory';
 import { Link } from 'react-router-dom';
 
@@ -28,11 +28,12 @@ const ListCategory = () => {
     fetchCategories();
   }, [currentPage, categoriesPerPage]);
 
-  const deleteCategory = async (categoryId) => {
+  const handleDelete = async (categoryId) => {
     try {
-    deleteCategory(categoryId);
+      await deleteCategory(categoryId).then(() => {
       setCategories(categories.filter(category => category.id !== categoryId));
       console.log('Category deleted successfully.');
+      });
     } catch (error) {
       console.error('Error deleting category:', error);
     }
@@ -87,7 +88,7 @@ const ListCategory = () => {
                 <td>{category.name}</td>
                 <td>{category.description}</td>
                 <td>
-                  <button onClick={() => deleteCategory(category.id)} className="btn  mr-2">Delete</button>
+                  <button onClick={() => handleDelete(category.id)} className="btn  mr-2">Delete</button>
                   <Link to={`/admin/update-categories/${category.id}`} className="btn ml-2">Update</Link>
 
                 </td>

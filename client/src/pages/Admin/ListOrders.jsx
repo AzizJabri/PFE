@@ -44,7 +44,7 @@ import { Link } from 'react-router-dom';
 
 
   return (
-    <div>
+    <div className='min-h-screen'>
       
       <br />
       <h4 className="text-4xl md:text-6xl font-semibold flex justify-center">

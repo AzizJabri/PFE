@@ -52,9 +52,9 @@ export default function ChartNumbers() {
           {stats.map((stat) => (
             <div key={stat.id} className={`flex flex-col items-center p-6 rounded-lg shadow-md ${stat.classNane}`}>
               <h3 className="text-lg font-semibold text-white">{stat.name}</h3>
-              <p className="text-2xl lg:text-3xl text-white mt-2">
-                {stat.id === 3 && newUserCount !== null ? `${newUserCount} Users` :
-                  stat.id === 1 && totalProducts !== null ? `${totalProducts} Products` :
+              <p className="text-xl lg:text-2xl text-white pt-2">
+                {stat.id === 3 && newUserCount !== null ? `${newUserCount} User` :
+                  stat.id === 1 && totalProducts !== null ? `${totalProducts} Product` :
                   stat.id === 2 && price !== null ? `$${price}` : stat.value}
               </p>
             </div>

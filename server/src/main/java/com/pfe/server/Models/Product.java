@@ -34,7 +34,7 @@ public class Product implements Serializable {
     @Column(name = "is_visible")
     private boolean is_visible;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -44,10 +44,12 @@ public class Product implements Serializable {
     private List<Image> images;
 
 
-    public Product(String name, String description, double price) {
+    public Product(String name, String description, double price, int stock, boolean is_visible) {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.stock = stock;
+        this.is_visible = is_visible;
     }
 }
 

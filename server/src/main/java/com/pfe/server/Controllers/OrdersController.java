@@ -102,6 +102,9 @@ public class OrdersController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Double> sumAllPrices() {
         Double totalPrice = ordersService.sumAllPrices();
+        if (totalPrice == null) {
+            return ResponseEntity.ok(0.0);
+        }
         //limit to 2 decimal places
         totalPrice = Math.round(totalPrice * 100.0) / 100.0;
 

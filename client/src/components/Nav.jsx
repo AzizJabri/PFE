@@ -28,7 +28,7 @@ function Navbar() {
           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
             <li><NavLink to="/admin/products">Products</NavLink></li>
             <li>
-              <NavLink to="/admin/categories">Categories</NavLink>
+              <NavLink to="/admin/list-category">Categories</NavLink>
             </li>
             <li>
               <NavLink to="/admin/users">Users</NavLink>

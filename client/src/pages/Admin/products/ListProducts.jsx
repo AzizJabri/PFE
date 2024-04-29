@@ -13,7 +13,7 @@ const ListProducts = () => {
       totalPages: 0
   });
 
-  const [categories, setCategories] = useState([])
+  const [render, setRender] = useState(false)
   const [loading, setLoading] = useState(true)
 
   const [searchParams] = useSearchParams()
@@ -28,6 +28,7 @@ const ListProducts = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    console.log("useEffect Rendered")
       const fetchData = async () => {
           setLoading(true);
           const products = await getProducts(page, size, search, category)
@@ -35,7 +36,7 @@ const ListProducts = () => {
           setLoading(false);
       }
       fetchData();
-  }, [page, size, search, category])
+  }, [page, size, search, category, render])
 
 
   const handleDelete = async (ProductId) => {
@@ -64,7 +65,7 @@ const ListProducts = () => {
   };
 
   return (
-    <div>
+    <div className='min-h-screen'>
      
       <br />
       <h4 className="text-4xl md:text-6xl font-semibold flex justify-center">
@@ -122,11 +123,11 @@ const ListProducts = () => {
                 <td>{product.description}</td>
                 <td>{product.price}$</td>
                 <td>{product.stock}</td>
-                <td>{product.visible ? 'Yes' : 'No'}</td>
+                <td>{product._visible ? 'Yes' : 'No'}</td>
                 <td>{product.category.name}</td>
                 <td>
                   <button onClick={() => handleDelete(product.id)} className="btn mr-2">Delete</button>
-                  <Link to={`update/${product.id}`} className="btn ml-2" onClick={() => document.getElementById('my_modal_3').showModal()}>Update</Link>
+                  <Link to={`update/${product.id}?page=${page}`} className="btn ml-2" onClick={() => document.getElementById('my_modal_3').showModal()}>Update</Link>
                 </td>
               </tr>
             ))
@@ -156,7 +157,7 @@ const ListProducts = () => {
 
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box overflow-y-scroll no-scrollbar">
-          <Outlet />
+          <Outlet context={[render, setRender]} />
           {/* Render the AddProduct component directly */}
           <Link to={""} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => document.getElementById('my_modal_3').close()}>✕</Link>
         </div>

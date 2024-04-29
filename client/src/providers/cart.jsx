@@ -120,6 +120,9 @@ export const CartProvider = ({ children }) => {
 
   const updateItemQuantity = async (item, quantity) => {
     if(user){
+      if(quantity === 0){
+        removeFromCart(item.product.id);
+      }
       await api.patch(`/cart/${item.id}`, quantity,{"headers":{
         "Content-Type": "application/json"
       

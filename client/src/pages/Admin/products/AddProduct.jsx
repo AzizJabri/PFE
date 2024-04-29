@@ -3,10 +3,12 @@ import { createProduct } from '@/services/products';
 import { ErrorMessage, Form, Formik, Field } from 'formik';
 import { toast } from 'react-hot-toast';
 import { getCategories } from '@/providers/categories';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
   const [categories, setCategories] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -30,7 +32,7 @@ const AddProduct = () => {
         price: '',
         category: '', 
         stock : '',
-        is_visible: true,
+        _visible: true,
         image:''
       }}
       onSubmit={async (values, { setSubmitting }) => {
@@ -41,11 +43,12 @@ const AddProduct = () => {
           formData.append('price', values.price);
           formData.append('category', values.category);
           formData.append('stock', values.stock);
-          formData.append('is_visible', values.is_visible);
+          formData.append('_visible', values._visible);
           formData.append('image', values.image);
 
-          await createProduct(formData);
-          document.getElementById('my_modal_3').close()
+          await createProduct(formData).then((res) => {
+            navigate(`/admin/products/update/${res.id}`);
+          });
           toast.success('Product added successfully');
         } catch (error) {
           toast.error('Error adding product: ' + error.message);
@@ -95,9 +98,9 @@ const AddProduct = () => {
                 <ErrorMessage className="text-red-500" name="stock" component="div" />
               </div>
               <div className="mb-4">
-                  <label htmlFor="is_visible" className="block">Visible</label>
-                  <Field type="checkbox" id="is_visible" name="is_visible" className="checkbox" />
-                  <ErrorMessage name="is_visible" component="p" className="text-red-500" />
+                  <label htmlFor="_visible" className="block">Visible</label>
+                  <Field type="checkbox" id="_visible" name="_visible" className="checkbox" />
+                  <ErrorMessage name="_visible" component="p" className="text-red-500" />
               </div>
               <div className="mb-4">
                 <Field as="select" name="category" className="select w-full input-bordered">
@@ -108,6 +111,7 @@ const AddProduct = () => {
                 </Field>
                 <ErrorMessage className="text-red-500" name="category" component="div" />
               </div>
+
               <div className="mb-4">
                 <Field name="image" className="file-input w-full input-bordered" value={undefined} type="file" onChange={(event) => setFieldValue("image", event.currentTarget.files[0])} />
                 <ErrorMessage className="text-red-500" name="image" component="div" />

@@ -64,8 +64,8 @@ public class ProductController {
     @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> saveProduct(@ModelAttribute CreateProductRequest product) throws IOException {
-        System.out.println(product.getCategory());
-        Product newProduct = new Product(product.getName(), product.getDescription(), product.getPrice());
+        System.out.println(product.is_visible());
+        Product newProduct = new Product(product.getName(), product.getDescription(), product.getPrice(), product.getStock(), product.is_visible());
 
         // Check if the category ID is not null
         if (product.getCategory() == null) {
@@ -96,6 +96,7 @@ public class ProductController {
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody UpdateProductRequest updatedProduct) {
+        System.out.println(updatedProduct.is_visible());
         Optional<Product> existingProduct = productService.getProductById(id);
 
         if (existingProduct.isPresent()) {

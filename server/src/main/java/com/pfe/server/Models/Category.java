@@ -27,7 +27,7 @@ public class Category implements Serializable {
     @Column(length = 100)
     private String description;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
     private List<Product> products;
     public Category(String name, String description) {
