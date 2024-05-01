@@ -17,7 +17,6 @@ const ListUsers = () => {
       try {
         const response = await getUsers(currentPage, UsersPerPage); 
         setUsers(response.data); 
-        console.log(response.data);
       } catch (error) {
         console.error('Error fetching Users:', error);
       }
