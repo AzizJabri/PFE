@@ -65,7 +65,6 @@ export const AuthProvider = ({ children }) => {
   const register = async (email, password) => {
     setIsLoading(true);
     await api.post('auth/register', { email, password })
-    await login(email, password)
     await updateCartOnRegister()
     setIsLoading(false);
 }
