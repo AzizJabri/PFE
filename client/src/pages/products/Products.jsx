@@ -20,6 +20,7 @@ const Products = () => {
 
     const [categories, setCategories] = useState([])
     const [loading, setLoading] = useState(true)
+    const [cLoading, setCLoading] = useState(true)
 
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
@@ -32,6 +33,17 @@ const Products = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            setCLoading(true);
+            const categoryResponse = await getCategories()
+            setCategories(categoryResponse.data)
+            setCLoading(false);
+        }
+        fetchData()
+    }, [])
+
+
+    useEffect(() => {
+        const fetchData = async () => {
             
             setLoading(true);
             const productResponse = await getProducts(page, size, search, category)
@@ -39,10 +51,7 @@ const Products = () => {
             res.content = res.content.filter(product => product._visible === true)
             res.numberOfElements = res.content.length
             setProductData(res)
-            const categoryResponse = await getCategories()
-            setCategories(categoryResponse.data)
             setLoading(false);
-            
         }
         fetchData().then(() => {}).catch(() => {
           toast.error('Error loading products')
@@ -70,7 +79,7 @@ const Products = () => {
               <div className="hidden md:block w-1/4 bg-base-200 p-4 h-auto min-h-screen">
                 <h2 className="text-lg font-semibold mb-4">Categories</h2>
                 <ul className="space-y-2">
-                  {loading ? (
+                  {cLoading ? (
                     <>
                       <GhostCategory />
                       <GhostCategory />
@@ -81,9 +90,14 @@ const Products = () => {
                   ) : (
                     categories.map(category => (
                       <li key={category.id}>
-                        <Link to={`/products/?category=${category.id}`} className="btn btn-ghost w-full text-left bg-base-100">{category.name}</Link>
+                        <Link 
+                          to={parseInt(searchParams.get('category')) === category.id ? `/products/` : `/products/?category=${category.id}`} 
+                          className={`btn btn-ghost w-full text-left ${category.id === parseInt(searchParams.get('category')) ? "bg-base-300" : ""}`}
+                        >
+                          {category.name}
+                        </Link>
                       </li>
-                    ))
+                    )) 
                   )}
                 </ul>
               </div>

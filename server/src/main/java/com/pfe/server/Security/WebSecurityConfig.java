@@ -83,6 +83,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                                 .requestMatchers("/api/v1/cart/**").authenticated()
                                 .requestMatchers("/api/v1/products/**").permitAll()
                                 .requestMatchers("/api/v1/orders/**").authenticated()
+                                .requestMatchers("/api/v1/payment/**").authenticated()
                                 .anyRequest().permitAll()
                 );
 

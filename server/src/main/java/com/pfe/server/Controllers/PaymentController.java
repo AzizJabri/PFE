@@ -39,8 +39,8 @@ public class PaymentController {
     private String frontendURL;
 
     @PostMapping("/checkout")
-    ResponseEntity<MessageResponse> checkout(Principal principal) throws StripeException {
-
+    ResponseEntity<MessageResponse> checkout(Principal principal,@RequestHeader String origin) throws StripeException {
+        
 
         User user = userService.getUserByEmail(principal.getName());
 
@@ -51,8 +51,6 @@ public class PaymentController {
         }
 
         Stripe.apiKey = stripeSecret;
-        String clientBaseURL = frontendURL;
-        System.out.println("clientBaseURL: " + clientBaseURL);
         // Start by finding an existing customer record from Stripe or creating a new one if needed
         Customer customer = CustomerUtil.findOrCreateCustomer(user.getEmail(), user.getProfile().getFirstName());
 
@@ -61,8 +59,8 @@ public class PaymentController {
                 SessionCreateParams.builder()
                         .setMode(SessionCreateParams.Mode.PAYMENT)
                         .setCustomer(customer.getId())
-                        .setSuccessUrl(clientBaseURL + "#/payment/success?session_id={CHECKOUT_SESSION_ID}")
-                        .setCancelUrl(clientBaseURL + "#/payment/failure");
+                        .setSuccessUrl(origin + "#/payment/success?session_id={CHECKOUT_SESSION_ID}")
+                        .setCancelUrl(origin + "#/payment/failure");
 
         Orders order = cartService.createOrderFromCart(user);
         if (order == null) {
