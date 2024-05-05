@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 const NavBar = () => {
     const { user, isLoading, logout } = useAuth()
-    const { cart, getSubTotal, clearCart, getLength, getCartItems } = useCart()
+    const { cart, getSubTotal, clearCart, getLength, getCartItems, getStripeCheckout } = useCart()
     const [search , setSearch] = useState('')
     const [isDark, setIsDark] = useState(
         JSON.parse(localStorage.getItem('isDark')) || false
@@ -88,7 +88,7 @@ const NavBar = () => {
                     <span className="text-info">Cart Total: ${getSubTotal().toFixed(2)}</span>
                     <div className="card-actions">
                         <Link className="btn btn-primary btn-block" to={"/cart/"}>View cart</Link>
-                        <button className="btn btn-secondary btn-block" onClick={clearCart}>Clear Cart</button>
+                        <button className="btn btn-secondary btn-block" onClick={getStripeCheckout}>Checkout</button>
                     </div>
                     </div>
                 </div>

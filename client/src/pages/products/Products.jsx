@@ -92,7 +92,7 @@ const Products = () => {
                       <li key={category.id}>
                         <Link 
                           to={parseInt(searchParams.get('category')) === category.id ? `/products/` : `/products/?category=${category.id}`} 
-                          className={`btn btn-ghost w-full text-left ${category.id === parseInt(searchParams.get('category')) ? "bg-base-300" : ""}`}
+                          className={`btn btn-ghost w-full text-left ${category.id === parseInt(searchParams.get('category')) ? "bg-base-300" : "bg-base-100"}`}
                         >
                           {category.name}
                         </Link>

@@ -1,7 +1,9 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import toast from 'react-hot-toast';
 import { useAuth } from '@/auth/auth';
+import {checkout} from '@/services/payment';
 import api from '@/utils/axios';
+import { useNavigate } from 'react-router-dom';
 // Create the cart context
 const CartContext = createContext();
 
@@ -12,7 +14,10 @@ export const CartProvider = ({ children }) => {
     "cartItems": [],
     "total": 0.0
 });
-  const {user , isLoading} = useAuth()
+  const {user , isLoading, login} = useAuth()
+  const navigate = useNavigate();
+
+
 
   // Load the cart items from local storage
   useEffect(() => {
@@ -149,6 +154,43 @@ export const CartProvider = ({ children }) => {
     }
   }
 
+  const getStripeCheckout = async () => {
+    if (getLength() === 0) {
+      toast.error('Your cart is empty');
+      return;
+    }
+    if(user){try {
+      const response = await checkout();
+      window.location.href = response.data.message
+    } catch (error) {
+      toast.error(error.response.data.message);
+      if(error.response.data.message === 'No address found'){
+        navigate('/profile/addresses');
+      }
+    }}else{
+      toast.error('Please login or register to checkout');
+      navigate('/auth/register');
+    }
+    
+  };
+
+  const updateCartOnRegister = async (email, password) => {
+    if (cart.cartItems.length > 0) {
+      const oldCart = cart.cartItems;
+      await login(email, password).then(() => {
+        oldCart.forEach((item) => {
+          api.post('/cart/', {productId: item.product.id, quantity: item.quantity}).catch((error) => {
+            console.error('Error adding cart items:', error);
+          });
+          clearCart();
+        });
+        navigate('/');
+      }).catch((error) => {
+        console.error('Error logging in:', error);
+      });
+    }
+  };
+
 
 
   const getSubTotal = () => {
@@ -169,6 +211,8 @@ export const CartProvider = ({ children }) => {
     getLength,
     getCartItems,
     updateItemQuantity,
+    updateCartOnRegister,
+    getStripeCheckout
   };
 
   return (

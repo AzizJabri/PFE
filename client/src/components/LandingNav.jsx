@@ -17,10 +17,8 @@ const LandingNav = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                //set the 3 categories
                 const response = await getTopCategories()
                 setCategories(response.data)
-                console.log(response.data)
             } catch (error) {
                 console.error('Error fetching Categories:', error)
             }
@@ -41,7 +39,7 @@ const LandingNav = () => {
                 <summary>
                     Categroies
                 </summary>
-                <ul className="p-2 bg-base-100 rounded-t-none">
+                <ul className="p-2 bg-base-100 rounded-t-none z-50">
                     {categories.map(category => (
                         <li key={category.id}>
                             <Link to={`/products/?category=${category.id}`}>{category.name}</Link>

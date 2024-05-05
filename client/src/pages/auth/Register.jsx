@@ -3,11 +3,13 @@ import { ErrorMessage, Form,Formik,Field} from 'formik'
 import { useAuth } from '@/auth/auth'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import {useCart} from '@/providers/cart'
 
 
 const Register = () => {
   const {register} = useAuth()
   const navigate = useNavigate()
+  const {updateCartOnRegister} = useCart()
 
   return (
       <Formik
@@ -46,9 +48,10 @@ const Register = () => {
         onSubmit={(values, { setSubmitting }) => {
             register(values.email,values.password).then(() => {
                 toast.success('Account created successfully')
-                navigate('/')
+                updateCartOnRegister(values.email,values.password)
             }).catch((error) => {
-                toast.error('Error creating account')
+              console.log(error)
+                toast.error(error.response.message)
             }).finally(() => {
                 setSubmitting(false)
             })
