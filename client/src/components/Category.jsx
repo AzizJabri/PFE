@@ -26,7 +26,6 @@ const callouts = [
 
 export default function Category() {
   return (
-    <div className="bg-gray-100">
       <div className="container mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-2xl font-bold text-gray-900 text-center">Categories</h2>
@@ -53,6 +52,5 @@ export default function Category() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
