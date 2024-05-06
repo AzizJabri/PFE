@@ -1,16 +1,19 @@
 import React, {useEffect} from 'react'
 import { success } from '@/services/payment'
+import { useCart } from '@/providers/cart'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 
 const Success = () => {
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
+    const { clearCart } = useCart()
 
     useEffect(() => {
         const fetchPayment = async () => {
             await success(searchParams.get('session_id')).then(response => {
                 toast.success(response.data.message)
+                clearCart()
             }).catch(error => {
                 toast.error(error.response.data.message)
             }).finally(() => {
