@@ -52,12 +52,7 @@ stages:
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
       displayName: Copy app.jar to Artifacts Directory
          
-    - task: CopyFiles@2
-      inputs:
-        SourceFolder: 'server'
-        Contents: 'Dockerfile'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      displayName: Copy Dockerfile to Artifacts Directory
+         
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.jar'
