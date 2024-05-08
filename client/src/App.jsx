@@ -83,10 +83,10 @@ function App() {
 
 
                 <Route path="add-order" element={<AddOrder />} />
-                <Route path="list-orders" element={<ListOrders />} />
-                <Route path="list-category" element={<ListCategory />} />
+                <Route path="orders" element={<ListOrders />} />
+                <Route path="categories" element={<ListCategory />} />
                 <Route path="add-category" element={<Addcategory />} />
-                <Route path="list-users" element={<ListUsers />} />
+                <Route path="users" element={<ListUsers />} />
                 <Route path="add-user" element={<AddUser />} />
                 <Route path="update-categories/:categoryId" element={<UpdateCategories />} />
                 <Route path="update-order/:orderId" element={<UpdateOrder />} />

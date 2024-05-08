@@ -28,7 +28,7 @@ function Navbar() {
           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
             <li><NavLink to="/admin/products">Products</NavLink></li>
             <li>
-              <NavLink to="/admin/list-category">Categories</NavLink>
+              <NavLink to="/admin/categories">Categories</NavLink>
             </li>
             <li>
               <NavLink to="/admin/users">Users</NavLink>
@@ -44,13 +44,13 @@ function Navbar() {
         <ul className="menu menu-horizontal px-1">
           <li><NavLink to="/admin/products">Products</NavLink></li>
           <li>
-            <NavLink to="/admin/list-orders">Orders</NavLink>
+            <NavLink to="/admin/orders">Orders</NavLink>
           </li>
           <li>
-            <NavLink to="/admin/list-category">Categories</NavLink>
+            <NavLink to="/admin/categories">Categories</NavLink>
           </li>
           <li>
-            <NavLink to="/admin/list-users">Users</NavLink>
+            <NavLink to="/admin/users">Users</NavLink>
           </li>
         </ul>
       </div>
