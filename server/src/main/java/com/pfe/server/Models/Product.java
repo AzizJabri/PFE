@@ -43,6 +43,14 @@ public class Product implements Serializable {
     @JsonManagedReference
     private List<Image> images;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CartItem> cartItems = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OrderItems> orderItems = new ArrayList<>();
+
 
     public Product(String name, String description, double price, int stock, boolean is_visible) {
         this.name = name;

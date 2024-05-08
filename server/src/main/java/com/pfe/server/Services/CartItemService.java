@@ -10,7 +10,6 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class CartItemService {
-    ProductService productService;
     CartItemRepository cartItemRepository;
 
     public void deleteCartItem(CartItem cartItem) {
