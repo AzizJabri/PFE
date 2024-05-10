@@ -6,7 +6,7 @@ const Product = ({product}) => {
   const { addToCart } = useCart()
 
   return (
-    <div className="card w-full bg-base-100 shadow-xl p-1 border border-base-300">
+    <div className="card w-full bg-base-100 shadow-xl p-2 border border-base-300">
         <figure className="avatar bg-base-200 p-3">
           <div className="rounded w-96">
             <img src={product?.images[0]?.url} alt={product?.name} />
