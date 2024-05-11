@@ -14,3 +14,7 @@ variable "loginpassword"{
   type          = string
   description = "loginpassword"
 }
+variable "db_name"{
+  type= string
+  description="spring-database" 
+}
