@@ -4,15 +4,12 @@ package com.pfe.server.Controllers;
 import com.pfe.server.Models.*;
 import com.pfe.server.Repositories.RoleRepository;
 import com.pfe.server.Repositories.UserRepository;
-import com.pfe.server.Security.Services.UserDetailsImpl;
 import com.pfe.server.Services.UserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +47,7 @@ public ResponseEntity<List<User>> getAllUsers() {
     }
     @PostMapping("/promote")
     @PreAuthorize("hasRole('ADMIN')")
+    @CacheEvict(value = "user", allEntries = true)
     public ResponseEntity<?> promoteUser(@RequestParam String email) {
         User user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
@@ -65,6 +63,7 @@ public ResponseEntity<List<User>> getAllUsers() {
 
     @PostMapping("/demote")
     @PreAuthorize("hasRole('ADMIN')")
+    @CacheEvict(value = "user", allEntries = true)
     public ResponseEntity<?> demoteUser(@RequestParam String email) {
         User user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
@@ -80,6 +79,7 @@ public ResponseEntity<List<User>> getAllUsers() {
 
     @DeleteMapping("/delete")
     @PreAuthorize("hasRole('ADMIN')")
+    @CacheEvict(value = "user", allEntries = true)
     public ResponseEntity<?> deleteUser(@RequestParam String email) {
         User user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
