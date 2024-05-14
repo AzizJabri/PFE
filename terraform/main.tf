@@ -4,31 +4,36 @@ resource "azurerm_resource_group" "azure_pfe" {
 }
 
 resource "azurerm_redis_cache" "redis_pfe_devops" {
-  name                = "redis-cache-devops"
+  name                = "rediscache-devopspfe"
   resource_group_name = azurerm_resource_group.azure_pfe.name
   location            = var.location
   sku_name            = "Basic"
   capacity            = 1
-  family              = "C" 
+  family              = "C"
+  enable_non_ssl_port = false
+  
+  redis_configuration {}
 }
 
-resource "azurerm_postgresql_server" "postgres_pfe_devops" {
-  name                = "postpfeserver"
-  resource_group_name = azurerm_resource_group.azure_pfe.name
-  location            = var.location
-  sku_name            = "B_Gen5_1"
-  version             = "11"
-  administrator_login          = var.login
-  administrator_login_password = var.loginpassword
-  ssl_enforcement_enabled     = true 
+
+resource "azurerm_postgresql_flexible_server" "default" {
+  name                   = var.db_name
+  resource_group_name    = azurerm_resource_group.azure_pfe.name
+  location               = azurerm_resource_group.azure_pfe.location
+  version                = "14"
+  administrator_login    = var.login
+  administrator_password = var.loginpassword
+  zone                   = "1"
+  storage_mb             = 32768
+  sku_name               = "B_Standard_B1ms"
+  backup_retention_days  = 7
 }
 
-resource "azurerm_postgresql_database" "postgres_pfe_devops" {
-  name                = "project"
-  resource_group_name = azurerm_resource_group.azure_pfe.name
-  server_name         = azurerm_postgresql_server.postgres_pfe_devops.name
-  charset             = "UTF8"
-  collation           = "French_France.1252"
+resource "azurerm_postgresql_flexible_server_database" "default" {
+  name      = "project"
+server_id = azurerm_postgresql_flexible_server.default.id
+  collation = "en_US.utf8"
+  charset   = "UTF8"
 }
 
 
