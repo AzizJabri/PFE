@@ -189,6 +189,7 @@ export const CartProvider = ({ children }) => {
         console.error('Error logging in:', error);
       });
     }
+    navigate('/auth/login');
   };
 
 

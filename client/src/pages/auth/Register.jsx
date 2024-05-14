@@ -49,7 +49,6 @@ const Register = () => {
             register(values.email,values.password).then(() => {
                 toast.success('Account created successfully')
                 updateCartOnRegister(values.email,values.password)
-                navigate('/auth/login')
             }).catch((error) => {
               console.log(error)
                 toast.error(error.response.message)
