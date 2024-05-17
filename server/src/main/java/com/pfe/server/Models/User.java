@@ -53,8 +53,8 @@ public class User  implements Serializable{
     @JsonManagedReference
     private Cart cart;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private Set<Orders> orders = new HashSet<>();
 
 
