@@ -4,6 +4,7 @@ import Nav from '@/components/Nav';
 import { getUsers, DeleteUsers } from '@/providers/Users';
 import AddUser from './AddUser';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 
 const ListUsers = () => {
@@ -29,9 +30,9 @@ const ListUsers = () => {
     try {
         await DeleteUsers(email); 
         setUsers(Users.filter(user => user.email !== email)); 
-        console.log('User deleted successfully.');
+        toast.success('User deleted successfully');
     } catch (error) {
-        console.error('Error deleting User:', error);
+        toast.error(`Error deleting user: ${error.response.data.message}`);
     }
 };
 

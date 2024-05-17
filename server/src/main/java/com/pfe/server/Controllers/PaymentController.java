@@ -82,7 +82,7 @@ public class PaymentController {
             paramsBuilder.addLineItem(
                     SessionCreateParams.LineItem.builder().setPriceData(priceData).setQuantity((long) orderItem.getQuantity()).build());
         }
-        ordersService.createOrder(order);
+
         Session session = Session.create(paramsBuilder.build());
 
         return ResponseEntity.ok(new MessageResponse(session.getUrl()));
@@ -95,6 +95,8 @@ public class PaymentController {
             if (session.getPaymentStatus().equals("paid")) {
                 User user = userService.getUserByEmail(principal.getName());
                 Cart cart = cartService.getCartByUserId(user.getId());
+                Orders order = cartService.createOrderFromCart(user);
+                ordersService.createOrder(order);
                 cart.getCartItems().clear();
                 cartService.saveCart(cart);
                 return ResponseEntity.ok(new MessageResponse("Payment successful"));

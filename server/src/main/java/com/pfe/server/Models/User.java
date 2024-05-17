@@ -53,6 +53,10 @@ public class User  implements Serializable{
     @JsonManagedReference
     private Cart cart;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Orders> orders = new HashSet<>();
+
 
 
     @ManyToMany(fetch = FetchType.LAZY)

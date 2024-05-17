@@ -16,7 +16,7 @@ const UpdateCategories = () => {
         const response = await getCategoryByID(categoryId);
         setCategory(response.data);
       } catch (error) {
-        console.error('Error fetching category:', error);
+        toast.error('Error fetching category: ' + error.message);
       }
     };
 

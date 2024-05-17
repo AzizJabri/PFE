@@ -32,7 +32,6 @@ const AddOrder = ({ closeModal }) => {
     try {
       const orderRequestDTO = { status, orderItems };
       const response =  await CreateOrder(orderRequestDTO)
-      console.log('Order created:', response.data);
       
       // Show success toast
       toast.success('Order created successfully!', { autoClose: 2000 });

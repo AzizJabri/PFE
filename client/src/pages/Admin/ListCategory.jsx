@@ -5,6 +5,7 @@ import Nav from '@/components/Nav';
 import { getCategory, deleteCategory } from '@/providers/categories';
 import AddCategory from './AddCategory';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const ListCategory = () => {
   const [categories, setCategories] = useState([]);
@@ -32,10 +33,10 @@ const ListCategory = () => {
     try {
       await deleteCategory(categoryId).then(() => {
       setCategories(categories.filter(category => category.id !== categoryId));
-      console.log('Category deleted successfully.');
+      toast.success('Category deleted successfully');
       });
     } catch (error) {
-      console.error('Error deleting category:', error);
+      toast.error(`Error deleting category: ${error.response.data.message}`);
     }
   };
 

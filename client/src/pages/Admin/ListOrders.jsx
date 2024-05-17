@@ -5,6 +5,7 @@ import Nav from '@/components/Nav';
 import AddOrder from './AddOrder';
 import { DeleteOrders, getOrders } from '@/providers/Orders';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
   const ListOrders = () => {
     const [orders, setOrders] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -29,9 +30,9 @@ import { Link } from 'react-router-dom';
     try {
       DeleteOrders(orderId);
       setOrders(orders.filter(order => order.id !== orderId));
-      console.log('Order deleted successfully.');
+      toast.success('Order deleted successfully');
     } catch (error) {
-      console.error('Error deleting order:', error);
+      toast.error(`Error deleting order: ${error.response.data.message}`);
     }
   };
 
