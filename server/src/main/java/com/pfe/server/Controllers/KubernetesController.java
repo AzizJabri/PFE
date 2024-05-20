@@ -14,7 +14,7 @@ public class KubernetesController {
     private String hostname;
     @RequestMapping("/")
     public String index() {
-        return "Hello World!, Current pod : " + hostname;
+        return "Hello World!, Current pod (test) : " + hostname;
     }
 
     @GetMapping("/health")
