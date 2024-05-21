@@ -144,20 +144,6 @@ import toast from 'react-hot-toast';
         <button onClick={() => paginate(currentPage + 1)} disabled={currentOrders.length < ordersPerPage} className="btn btn-neutral">Next</button>
       </div>
 
-      <div className="flex justify-center mt-4">
-      <button className="btn" onClick={()=>document.getElementById('my_modal_3').showModal()}>Add Order</button>
-      </div>
-
-      <dialog id="my_modal_3" className="modal">
-        <div className="modal-box">
-          <form method="dialog">
-    <AddOrder/>
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => document.getElementById('my_modal_3').close()}>✕</button>
-          </form>
-  
-         
-        </div>
-      </dialog>
 <br></br>
 
     </div>
