@@ -36,13 +36,18 @@ stages:
       inputs:
         mavenPomFile: 'server/pom.xml'
         options: '-DskipTests'
-        publishJUnitResults: false
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        testRunTitle: 'test'
+        codeCoverageToolOption: 'JaCoCo'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.21'
         mavenVersionOption: 'Default'
         mavenAuthenticateFeed: false
         effectivePomSkip: false
         sonarQubeRunAnalysis: true
+        isJacocoCoverageReportXML: true
+        sqMavenPluginVersionChoice: 'latest'
       displayName: Build Spring Boot App
 
     - task: CopyFiles@2
